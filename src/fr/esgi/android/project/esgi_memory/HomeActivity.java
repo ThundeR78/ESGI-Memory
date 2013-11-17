@@ -1,8 +1,9 @@
 package fr.esgi.android.project.esgi_memory;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 
 public class HomeActivity extends Activity {
 
@@ -12,11 +13,23 @@ public class HomeActivity extends Activity {
 		setContentView(R.layout.activity_home);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.home, menu);
-		return true;
+	public void goPlayGame(View v) {
+		Intent intent = new Intent(this, LevelActivity.class);
+		startActivity(intent);
+	}
+	
+	public void goQuickGame(View v) {
+//		Intent intent = new Intent(this, GameActivity.class);
+//		startActivity(intent);
 	}
 
+	public void goScores(View v) {
+//		Intent intent = new Intent(this, ScoresActivity.class);
+//		startActivity(intent);
+	}
+	
+	public void goSettings(View v) {
+//		Intent intent = new Intent(this, SettingsActivity.class);
+//		startActivity(intent);
+	}
 }

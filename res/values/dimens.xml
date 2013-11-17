@@ -4,4 +4,21 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="line_separator_size_4">4px</dimen> <!-- 4 hdpi -->
+    <dimen name="line_separator_size_3">3px</dimen> <!-- 3 hdpi -->
+    <dimen name="line_separator_size_2">2px</dimen> <!-- 2 hdpi -->
+    <dimen name="line_separator_size_1">1px</dimen> <!-- 1 hdpi -->
+    
+    <dimen name="text_12">8sp</dimen>  <!-- 12 -->
+    <dimen name="text_16">11sp</dimen> <!-- 16 -->
+    <dimen name="text_18">12sp</dimen> <!-- 18 -->
+    <dimen name="text_20">13sp</dimen> <!-- 20 -->
+    <dimen name="text_21">13sp</dimen> <!-- 21 -->
+    <dimen name="text_22">15sp</dimen> <!-- 22 -->
+    <dimen name="text_24">16sp</dimen> <!-- 24 -->
+    <dimen name="text_26">18sp</dimen> <!-- 26 -->
+    <dimen name="text_28">20sp</dimen> <!-- 28 -->
+    <dimen name="text_30">22sp</dimen> <!-- 30 -->
+    
+    
 </resources>

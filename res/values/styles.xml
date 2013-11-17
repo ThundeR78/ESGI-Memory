@@ -16,5 +16,27 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="ButtonHome">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+<!-- 	    <item name="android:layout_weight">0.5</item> -->
+		<item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_22</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    
+    <style name="ButtonLevel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+<!-- 	    <item name="android:layout_weight">0.5</item> -->
+		<item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_22</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
 </resources>

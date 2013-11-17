@@ -9,20 +9,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".HomeActivity" >
 
-    <Button android:onClick="goPlayGame"
-        style="@style/ButtonHome"
-        android:text="@string/home_button_play" />
-    
-    <Button android:onClick="goQuickGame"
-        style="@style/ButtonHome"
-        android:text="@string/home_button_quick_game" />
-    
-    <Button android:onClick="goScores"
-        style="@style/ButtonHome"
-        android:text="@string/home_button_scores" />
-    
-    <Button android:onClick="goSettings"
-        style="@style/ButtonHome"
-        android:text="@string/home_button_settings" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
 
 </LinearLayout>

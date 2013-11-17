@@ -2,7 +2,24 @@
 <resources>
 
     <string name="app_name">ESGI-Memory</string>
-    <string name="action_settings">Settings</string>
+    
+<!-- TITLE -->
+	<string name="title_home">ESGI Memory</string>
+	<string name="title_level">Difficulté</string>
+    <string name="title_settings">Paramètres</string>
+    <string name="title_scores">Scores</string>
+    
+<!-- HOME -->
+    <string name="home_button_play">Jouer</string>
+	<string name="home_button_quick_game">Partie rapide</string>
+    <string name="home_button_scores">Scores</string>
+    <string name="home_button_settings">Paramètres</string>
+    
+<!-- LEVEL -->
+    <string name="level_easy">Facile</string>
+    <string name="level_normal">Normal</string>
+    <string name="level_hard">Difficile</string>
+    
     <string name="hello_world">Hello world!</string>
 
 </resources>
