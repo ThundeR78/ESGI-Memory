@@ -9,15 +9,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LevelActivity" >
 
-    <Button android:onClick="playEasy"
+    <Button android:onClick="goPlayEasy"
         style="@style/ButtonLevel"
         android:text="@string/level_easy" />
     
-    <Button android:onClick="playNormal"
+    <Button android:onClick="goPlayNormal"
         style="@style/ButtonLevel"
         android:text="@string/level_normal" />
     
-    <Button android:onClick="playHard"
+    <Button android:onClick="goPlayHard"
         style="@style/ButtonLevel"
         android:text="@string/level_hard" />
 
