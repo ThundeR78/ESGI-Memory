@@ -9,16 +9,43 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LevelActivity" >
 
-    <Button android:id="@+id/buttonEasy" android:onClick="goPlayGame"
+    <Button
+        android:id="@+id/buttonEasy"
         style="@style/ButtonLevel"
+        android:onClick="goPlayGame"
         android:text="@string/level_easy" />
-    
-    <Button android:id="@+id/buttonNormal" android:onClick="goPlayGame"
+
+    <Button
+        android:id="@+id/buttonNormal"
         style="@style/ButtonLevel"
+        android:onClick="goPlayGame"
         android:text="@string/level_normal" />
-    
-    <Button android:id="@+id/buttonHard" android:onClick="goPlayGame"
+
+    <Button
+        android:id="@+id/buttonHard"
         style="@style/ButtonLevel"
+        android:onClick="goPlayGame"
         android:text="@string/level_hard" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/label_timer" />
+
+        <CheckBox
+            android:id="@+id/chekcboxTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 
 </LinearLayout>

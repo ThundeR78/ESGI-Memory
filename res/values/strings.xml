@@ -20,6 +20,13 @@
     <string name="level_normal">Normal</string>
     <string name="level_hard">Difficile</string>
     
-    <string name="hello_world">Hello world!</string>
+<!-- LABEL -->
+    <string name="title_label_general">Général</string>
+	<string name="title_label_quickgame">Partie rapide</string>
+	<string name="label_timer">Chronomètre :</string>
+    <string name="label_sound">Son :</string>
+    <string name="label_level">Difficulté :</string>
+    <string name="label_username">Pseudo :</string>
+	
 
 </resources>
