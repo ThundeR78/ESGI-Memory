@@ -44,36 +44,42 @@ public class GameActivity extends Activity {
 		    }
 		});
 		
+		loadImages();
+	}
+	
+	private void loadImages() {
 		//Load array imagesId
 		TypedArray images;
-		if (level == LevelActivity.KEY_LEVEL_EASY)
+		if (level == LevelActivity.KEY_LEVEL_EASY) {
 			images = getResources().obtainTypedArray(R.array.images_easy);
-		else if (level == LevelActivity.KEY_LEVEL_HARD)
+			gridview.setNumColumns(3);
+		} else if (level == LevelActivity.KEY_LEVEL_HARD) {
 			images = getResources().obtainTypedArray(R.array.images_hard);
-		else 
+			gridview.setNumColumns(4);
+		} else  {
 			images = getResources().obtainTypedArray(R.array.images_normal);
+			gridview.setNumColumns(3);
+		}
 			
 		//Transfer array imagesId into List
 		for (int i=0; i<images.length() ;i++) {
 			listImageIDs.add(images.getResourceId(i, 0));
 		}
-		//Add pair of images Id
+		//Add pair of each imageId
 		listImageIDs.addAll(listImageIDs);
 		
 		//Shuffle List imagesId
-		Log.v("BEFORE SHUFFLE", listImageIDs.toString() );
+		Log.v("BEFORE SHUFFLE", listImageIDs.toString());
 		Collections.shuffle(listImageIDs); 
-		Log.v("AFTER SHUFFLE", listImageIDs.toString() );
+		Log.v("AFTER SHUFFLE", listImageIDs.toString());
 
 		Integer[] array = listImageIDs.toArray(new Integer[listImageIDs.size()]);
 		gridview.setAdapter(new ImageAdapter(this, array));
 		 
         gridview.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Toast.makeText(GameActivity.this, "" + position, Toast.LENGTH_SHORT).show();
             }
         });
 	}
-	
-	
 }
