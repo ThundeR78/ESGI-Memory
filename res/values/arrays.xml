@@ -5,8 +5,6 @@
         <item>@drawable/bouton_vert</item>
         <item>@drawable/bouton_vert</item>
         <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
     </array>
     
     <array name="images_normal">

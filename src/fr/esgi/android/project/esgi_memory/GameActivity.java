@@ -11,7 +11,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.Toast;
+import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
 
 public class GameActivity extends Activity {
 	
@@ -53,12 +57,22 @@ public class GameActivity extends Activity {
 		for (int i=0; i<images.length() ;i++) {
 			listImageIDs.add(images.getResourceId(i, 0));
 		}
+		//Add pair of images Id
+		listImageIDs.addAll(listImageIDs);
 		
 		//Shuffle List imagesId
 		Log.v("BEFORE SHUFFLE", listImageIDs.toString() );
 		Collections.shuffle(listImageIDs); 
 		Log.v("AFTER SHUFFLE", listImageIDs.toString() );
 
+		Integer[] array = listImageIDs.toArray(new Integer[listImageIDs.size()]);
+		gridview.setAdapter(new ImageAdapter(this, array));
+		 
+        gridview.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                Toast.makeText(GameActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 	}
 	
 	
