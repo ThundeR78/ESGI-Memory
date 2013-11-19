@@ -39,4 +39,9 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="blinkText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FF0000</item>
+    </style>
+    
 </resources>

@@ -19,8 +19,8 @@ public class HomeActivity extends Activity {
 	}
 	
 	public void goQuickGame(View v) {
-//		Intent intent = new Intent(this, GameActivity.class);
-//		startActivity(intent);
+		Intent intent = new Intent(this, GameActivity.class);
+		startActivity(intent);
 	}
 
 	public void goScores(View v) {

@@ -12,7 +12,7 @@ public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private Integer[] images;
  
-    public ImageAdapter(Context mContext,Integer[] images) {
+    public ImageAdapter(Context mContext, Integer[] images) {
         this.mContext = mContext;
         this.images = images;
     }
@@ -22,11 +22,11 @@ public class ImageAdapter extends BaseAdapter {
     }
  
     public Object getItem(int position) {
-        return null;
+        return images[position];
     }
  
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
  
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -39,8 +39,23 @@ public class ImageAdapter extends BaseAdapter {
         }else{
             imageView = (ImageView) convertView;
         }
+//        imageView.setEnabled(false);
+//        imageView.setClickable(false);
+//        imageView.setFocusable(false);
         imageView.setImageResource(images[position]);
+        imageView.setTag(images[position]);	//ImageId is the tag of the view
+        
         return imageView;
     }
- 
+
+    //http://stackoverflow.com/questions/13697957/how-to-disable-item-in-gridview-in-android
+    @Override
+    public boolean isEnabled(int position) {
+    	return super.isEnabled(position);
+    }
+    
+    @Override
+    public boolean areAllItemsEnabled() {
+    	return false;
+    }
 }

@@ -17,6 +17,12 @@ public class ESGIMemoryApp extends Application {
 	
 	public static String ESGIMEMORY_PREFS = "ESGIMEMORY_PREFERENCES";
 	
+	public static final String KEY_LEVEL = "KEY_LEVEL";
+	public static final int KEY_LEVEL_EASY = 1;
+	public static final int KEY_LEVEL_NORMAL = 2;
+	public static final int KEY_LEVEL_HARD = 3;
+	public static final String KEY_CHRONO = "KEY_CHRONO";
+	
 	public static SimpleDateFormat parserDateWebService = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	public static SimpleDateFormat parserMonthDateWebService = new SimpleDateFormat("yyyy-MM");
 	public static SimpleDateFormat parserDayDateWebService = new SimpleDateFormat("yyyy-MM-dd");

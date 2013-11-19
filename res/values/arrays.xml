@@ -2,11 +2,11 @@
 <resources>
 <!-- Total= 12 -->
     <array name="images_easy">
-        <item>@drawable/ic_launcher</item>
+        <item>@drawable/logo_iphone</item>
         <item>@drawable/bouton_vert</item>
-        <item>@drawable/bouton_vert</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
+        <item>@drawable/logo_android</item>
+        <item>@drawable/bouton_bleu</item>
+        <item>@drawable/bouton_rouge</item>
         <item>@drawable/ic_launcher</item>
     </array>
     
