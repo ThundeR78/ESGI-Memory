@@ -33,7 +33,9 @@
     <string name="label_level">Difficulté :</string>
     <string name="label_username">Pseudo :</string>
     
-    
+<!-- RESULT -->
+	<string name="dialog_title_win">Félicitation !</string>
+    <string name="dialog_title_loose">P\'tite caisse !</string>
     <plurals name="numberMove">
         <item quantity="zero">0 coup</item>
         <item quantity="one">1 coup</item>

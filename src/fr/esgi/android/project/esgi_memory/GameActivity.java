@@ -6,12 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -75,6 +80,11 @@ public class GameActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
 		
 		startTime();
 	}
@@ -96,10 +106,6 @@ public class GameActivity extends Activity {
 		//Init GridView columns
 		gridview.setNumColumns((level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 3 : (level == ESGIMemoryApp.KEY_LEVEL_HARD) ? 4 : 3);
 		
-		//Get images
-		Integer[] array = listImageIDs.toArray(new Integer[listImageIDs.size()]);
-		gridview.setAdapter(new ImageAdapter(this, array));
-		
 		//Avoid Scroll
 		gridview.setOnTouchListener(new OnTouchListener(){
 		    @Override
@@ -111,6 +117,13 @@ public class GameActivity extends Activity {
 		});
 		//Get Click Listener
 		gridview.setOnItemClickListener(onGridViewItemClickListener);
+	}
+	
+	//Load GridView
+	private void loadGridView() {
+		//Get images
+		Integer[] array = listImageIDs.toArray(new Integer[listImageIDs.size()]);
+		gridview.setAdapter(new ImageAdapter(this, array));
 	}
 	
 	//Initialize Game
@@ -135,7 +148,6 @@ public class GameActivity extends Activity {
 		listImageIDs.addAll(listImageIDs);
 		
 		initGridView();
-		
 		initTime();
 	}
 	
@@ -145,25 +157,36 @@ public class GameActivity extends Activity {
 		Log.v("BEFORE SHUFFLE", listImageIDs.toString());
 		Collections.shuffle(listImageIDs); 
 		Log.v("AFTER SHUFFLE", listImageIDs.toString());
+		
+		loadGridView();
+		loadTime();
+		
+		nbMove = 0;
+		
+		//TODO: AlertDialog Ready?
 	}
 	
 	//Initialize Time
 	private void initTime() {
 		if (hasTimer) {
 			chrono.setVisibility(View.GONE);
-			timeInMilliseconds = timeTotal * 1000;
 		} else {
 			txtTimer.setVisibility(View.GONE);
-			chrono.setBase(SystemClock.elapsedRealtime());
 			chrono.setOnChronometerTickListener(new OnChronometerTickListener() {
 			    public void onChronometerTick(Chronometer cArg) {
-//			        long t = SystemClock.elapsedRealtime() - cArg.getBase();
-//			        cArg.setText(DateFormat.format("m'min'ss", t));
-			        
 			        cArg.setText(millisecondFormat(SystemClock.elapsedRealtime() - cArg.getBase()));
 			    }
 			});
 		}
+	}
+	
+	private void loadTime() {
+		if (hasTimer) 
+			timeInMilliseconds = timeTotal * 1000;
+		else 
+			chrono.setBase(SystemClock.elapsedRealtime());
+		
+		startTime();
 	}
 	
 	//Start Timer or Chrono
@@ -196,7 +219,7 @@ public class GameActivity extends Activity {
 			public void onFinish() {
 				txtTimer.setVisibility(View.VISIBLE);
 				txtTimer.setText("Temps écoulé !");
-				gameFailed();
+				gameFinished(false);
 			}
 		}.start();
 	}
@@ -212,23 +235,21 @@ public class GameActivity extends Activity {
 		}
 	}
 	
-	private void gameSuccess() {
-		gameFinished();
-		
-		String timeToFinish = (hasTimer) ? millisecondFormat(timeInMilliseconds) : millisecondFormat(SystemClock.elapsedRealtime() - chrono.getBase());
-		Toast.makeText(GameActivity.this, "BRAVO, tu as finis en "+timeToFinish+" et "+nbMove+"coups !", Toast.LENGTH_LONG).show();
-
-	}
-	
-	private void gameFailed() {
-		gameFinished();
-		Toast.makeText(GameActivity.this, "P'TITE CAISSE !", Toast.LENGTH_LONG).show();
-	}
-	
-	private void gameFinished() {
+	private void gameFinished(boolean win) {
 		isGameFinished = true;
 		
+		if (win) {
+			String timeToFinish = (hasTimer) ? millisecondFormat(timeInMilliseconds) : millisecondFormat(SystemClock.elapsedRealtime() - chrono.getBase());
+			Toast.makeText(GameActivity.this, "BRAVO, tu as finis en "+timeToFinish+" et "+nbMove+"coups !", Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(GameActivity.this, "P'TITE CAISSE !", Toast.LENGTH_LONG).show();
+		}
+			
 		stopTime();
+		
+		displayResult(win);
+		
+		isGameFinished = false;
 	}
 	
 	private String millisecondFormat(long time) {
@@ -236,6 +257,37 @@ public class GameActivity extends Activity {
 	    	return (String) DateFormat.format("m'min' ss'sec'", new Date(time));
 	    else 
 	    	return (String) DateFormat.format("s'sec'", new Date(time));
+	}
+	
+	private void displayResult(boolean win) {
+		Resources res = getResources();
+		LayoutInflater inflater = getLayoutInflater();
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder
+//			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setTitle(res.getString(win ? R.string.dialog_title_win : R.string.dialog_title_loose))
+			.setMessage("Veux tu réessayer?")
+//			.setView(inflater.inflate(R.layout.dialog_game_result, null))
+			.setCancelable(false)
+			.setPositiveButton(res.getString(R.string.button_retry), new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					loadGame();
+				}
+			})
+			.setNegativeButton(res.getString(R.string.button_leave), new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					Intent intent = new Intent(GameActivity.this, HomeActivity.class);
+					startActivity(intent);
+					GameActivity.this.finish();
+				}
+			});
+	 
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+ 
+		// show it
+		alertDialog.show();
 	}
 	
 	//Click on a card
@@ -266,7 +318,7 @@ public class GameActivity extends Activity {
             			v.setVisibility(View.INVISIBLE);
             			
             			if (nbPairFound == parent.getCount()/2)
-            				gameSuccess();
+            				gameFinished(true);
             		} else {
             			//TODO: Different
             			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCard).getTag()+" != "+v.getTag());
