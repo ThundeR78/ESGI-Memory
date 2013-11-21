@@ -10,14 +10,14 @@ public class LevelActivity extends Activity {
 	
 	public static final String TAG = "LevelActivity";
 	
-	private CheckBox checkboxChrono;
+	private CheckBox checkboxTimer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_level);
 		
-		checkboxChrono = (CheckBox) findViewById(R.id.checkboxChrono);
+		checkboxTimer = (CheckBox) findViewById(R.id.checkboxTimer);
 	}
 	
 	public void goPlayGame(View v) {
@@ -36,7 +36,7 @@ public class LevelActivity extends Activity {
 	        break;
 		}
 		
-		intent.putExtra(ESGIMemoryApp.KEY_CHRONO, checkboxChrono.isChecked());
+		intent.putExtra(ESGIMemoryApp.KEY_TIMER, checkboxTimer.isChecked());
      
 		startActivity(intent);
 	}
