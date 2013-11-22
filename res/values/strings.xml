@@ -25,15 +25,22 @@
     <string name="level_hard">Difficile</string>
     
 <!-- LABEL -->
-    <string name="title_label_general">Général</string>
-	<string name="title_label_quickgame">Partie rapide</string>
+    <string name="label_title_general">Général</string>
+	<string name="label_title_quickgame">Partie rapide</string>
+    <string name="label_username">Pseudo :</string>
 	<string name="label_chrono">Chronomètre :</string>
 	<string name="label_timer">Minuteur :</string>
+	<string name="label_time">Temps :</string>
     <string name="label_sound">Son :</string>
     <string name="label_level">Difficulté :</string>
-    <string name="label_username">Pseudo :</string>
+    <string name="label_bonus">Bonus difficulté :</string>
+    <string name="label_points">Points :</string>
+    <string name="label_times_up">Temps écoulé</string>
+    <string name="label_equal">=</string>
     
 <!-- RESULT -->
+	<string name="init_value_time">0 sec</string>
+	<string name="init_value_move">0 coup</string>
 	<string name="dialog_title_win">Félicitation !</string>
     <string name="dialog_title_loose">P\'tite caisse !</string>
     <plurals name="numberMove">

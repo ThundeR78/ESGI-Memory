@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <!-- Total= 12 -->
+<!-- Logo GES -->
     <array name="images_easy">
         <item>@drawable/logo_iphone</item>
         <item>@drawable/bouton_vert</item>
@@ -11,6 +12,7 @@
     </array>
     
 <!-- Total= 18 -->
+<!-- Photo Prof -->
     <array name="images_normal">
         <item>@drawable/ic_launcher</item>
         <item>@drawable/ic_launcher</item>
@@ -24,6 +26,7 @@
     </array>
     
 <!-- Total= 28 -->
+<!-- Logo Dev -->
     <array name="images_hard">
         <item>@drawable/ic_launcher</item>
         <item>@drawable/ic_launcher</item>

@@ -2,6 +2,8 @@ package fr.esgi.android.project.esgi_memory;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Application;
 import android.app.Dialog;
@@ -15,24 +17,33 @@ public class ESGIMemoryApp extends Application {
 	
 	public static String DATABASE_NAME = "esgimemory_db";
 	
-	public static String ESGIMEMORY_PREFS = "ESGIMEMORY_PREFERENCES";
-	
-	public static final int TIMER_EASY = 30;
-	public static final int TIMER_NORMAL = 45;
+	//GAME TIMER
+	public static final int TIMER_EASY = 45;
+	public static final int TIMER_NORMAL = 50;
 	public static final int TIMER_HARD = 60;
 	
+	//KEY INTENT
 	public static final String KEY_LEVEL = "KEY_LEVEL";
 	public static final int KEY_LEVEL_EASY = 1;
 	public static final int KEY_LEVEL_NORMAL = 2;
 	public static final int KEY_LEVEL_HARD = 3;
 	public static final String KEY_TIMER = "KEY_TIMER";
+	public static final String KEY_MOVE = "KEY_MOVE";
+	public static final String KEY_GAME_FINISHED = "KEY_GAME_FINISHED";
+	public static final String KEY_HAS_TIMER = "KEY_HAS_TIMER";
+	public static final String KEY_TIME_TOTAL = "KEY_TIME_TOTAL";
+	public static final String KEY_TIME_MS = "KEY_DELAY_TICK";
+	public static final String KEY_DELAY_TICK = "KEY_DELAY_TICK";
+	public static final String KEY_TIME_BLINK_MS = "KEY_TIME_BLINK_MS";
+	public static final String KEY_BLINK = "KEY_BLINK";
+	public static final String KEY_LIST_IMAGEID = "KEY_LIST_IMAGEID";
+	public static final String KEY_PAIR_FOUND = "KEY_PAIR_FOUND";
+	public static final String KEY_FIRST_CARD = "KEY_FIRST_CARD";
 	
-	public static SimpleDateFormat dateWebServiceFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-	public static SimpleDateFormat datetimeShortFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-	public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	public static SimpleDateFormat datetimeLabelFormat = new SimpleDateFormat("HH:mm 'le' dd/MM/yyyy");
-	public static SimpleDateFormat timedateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-	public static NumberFormat numberFormat = NumberFormat.getInstance();
+	//KEY PREFERENCES
+	public static final String PREFS_APP = "ESGI_MEMORY_PREFERENCES";
+	public static final String PREF_USERNAME = "PREF_USERNAME";
+	
 	
 	private static SQLiteDatabase db;
 

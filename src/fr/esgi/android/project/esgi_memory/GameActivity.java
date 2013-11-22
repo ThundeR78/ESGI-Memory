@@ -2,19 +2,19 @@ package fr.esgi.android.project.esgi_memory;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,9 +24,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Chronometer;
 import android.widget.Chronometer.OnChronometerTickListener;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+import fr.esgi.android.project.esgi_memory.util.FormatDate;
 import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
 
 public class GameActivity extends Activity {
@@ -47,7 +49,7 @@ public class GameActivity extends Activity {
 	//Card
 	private List<Integer> listImageIDs = new ArrayList<Integer>();
 	private int nbPairFound = 0;
-	private int firstCard = -1; //index of the first card selected
+	private int firstCardIndex = -1; //index of the first card selected
 	
 	//Components
 	private TextView txtTimer, txtMove;
@@ -70,6 +72,7 @@ public class GameActivity extends Activity {
 		txtTimer = (TextView) findViewById(R.id.text_countdown);
 		txtMove = (TextView) findViewById(R.id.text_move);
 		
+		//Launch Game
 		initGame();
 		loadGame();
 
@@ -99,6 +102,46 @@ public class GameActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		//Game
+		outState.putInt(ESGIMemoryApp.KEY_LEVEL, level);
+		outState.putInt(ESGIMemoryApp.KEY_MOVE, nbMove);
+		outState.putBoolean(ESGIMemoryApp.KEY_GAME_FINISHED, isGameFinished);
+		//Time
+		outState.putBoolean(ESGIMemoryApp.KEY_HAS_TIMER, hasTimer);
+		outState.putInt(ESGIMemoryApp.KEY_TIME_TOTAL, timeTotal);
+		outState.putLong(ESGIMemoryApp.KEY_TIME_MS, timeInMilliseconds);
+//		outState.putInt(ESGIMemoryApp.KEY_DELAY_TICK, delayBetweenEachTick);
+//		outState.putLong(ESGIMemoryApp.KEY_TIME_BLINK_MS, timeBlinkInMilliseconds);
+		outState.putBoolean(ESGIMemoryApp.KEY_BLINK, blink);
+		//Card
+		outState.putIntegerArrayList(ESGIMemoryApp.KEY_LIST_IMAGEID, (ArrayList<Integer>) listImageIDs);
+		outState.putInt(ESGIMemoryApp.KEY_PAIR_FOUND, nbPairFound);
+		outState.putInt(ESGIMemoryApp.KEY_TIME_TOTAL, firstCardIndex);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		//Game
+		level = savedInstanceState.getInt(ESGIMemoryApp.KEY_LEVEL, 2);
+		nbMove = savedInstanceState.getInt(ESGIMemoryApp.KEY_MOVE, 0);
+		isGameFinished = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_GAME_FINISHED, false);
+		//Time
+		hasTimer = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_HAS_TIMER, false);
+		timeTotal = savedInstanceState.getInt(ESGIMemoryApp.KEY_TIME_TOTAL, ESGIMemoryApp.TIMER_NORMAL);
+		timeInMilliseconds = savedInstanceState.getLong(ESGIMemoryApp.KEY_TIME_MS, 0);
+//		delayBetweenEachTick = savedInstanceState.getInt(ESGIMemoryApp.KEY_DELAY_TICK, 500);
+//		timeBlinkInMilliseconds = savedInstanceState.getLong(ESGIMemoryApp.KEY_TIME_BLINK_MS, 10000);
+		blink = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_BLINK, false);
+		//Card
+		listImageIDs = savedInstanceState.getIntegerArrayList(ESGIMemoryApp.KEY_LIST_IMAGEID);
+		nbPairFound = savedInstanceState.getInt(ESGIMemoryApp.KEY_PAIR_FOUND, 0);
+		firstCardIndex = savedInstanceState.getInt(ESGIMemoryApp.KEY_TIME_TOTAL, -1);
 	}
 	
 	//Initialize GridView
@@ -162,6 +205,7 @@ public class GameActivity extends Activity {
 		loadTime();
 		
 		nbMove = 0;
+		nbPairFound = 0;
 		
 		//TODO: AlertDialog Ready?
 	}
@@ -174,7 +218,7 @@ public class GameActivity extends Activity {
 			txtTimer.setVisibility(View.GONE);
 			chrono.setOnChronometerTickListener(new OnChronometerTickListener() {
 			    public void onChronometerTick(Chronometer cArg) {
-			        cArg.setText(millisecondFormat(SystemClock.elapsedRealtime() - cArg.getBase()));
+			        cArg.setText(FormatDate.millisecondFormat(SystemClock.elapsedRealtime() - cArg.getBase()));
 			    }
 			});
 		}
@@ -237,38 +281,75 @@ public class GameActivity extends Activity {
 	
 	private void gameFinished(boolean win) {
 		isGameFinished = true;
-		
-		if (win) {
-			String timeToFinish = (hasTimer) ? millisecondFormat(timeInMilliseconds) : millisecondFormat(SystemClock.elapsedRealtime() - chrono.getBase());
-			Toast.makeText(GameActivity.this, "BRAVO, tu as finis en "+timeToFinish+" et "+nbMove+"coups !", Toast.LENGTH_LONG).show();
-		} else {
-			Toast.makeText(GameActivity.this, "P'TITE CAISSE !", Toast.LENGTH_LONG).show();
-		}
 			
 		stopTime();
 		
-		displayResult(win);
+		loadResult(win);
 		
 		isGameFinished = false;
 	}
 	
-	private String millisecondFormat(long time) {
-	    if (time > 60000)	//1min
-	    	return (String) DateFormat.format("m'min' ss'sec'", new Date(time));
-	    else 
-	    	return (String) DateFormat.format("s'sec'", new Date(time));
+	//Count Result Score
+	private void loadResult(boolean win) {
+		//Get Username
+		Editor editor = getSharedPreferences(ESGIMemoryApp.PREFS_APP, 0).edit();
+		editor.putString(ESGIMemoryApp.PREF_USERNAME, "ThundeR");
+		editor.commit();
+		
+		SharedPreferences prefs = getSharedPreferences(ESGIMemoryApp.PREFS_APP, 0);
+		String username = prefs.getString(ESGIMemoryApp.PREF_USERNAME, "");
+		
+		//Count Time
+		long timeToFinish = 0;
+		String time = "";
+		if (win) {
+			if (hasTimer) {
+				timeToFinish = timeInMilliseconds;
+				time = FormatDate.millisecondFormat(timeInMilliseconds);
+			} else {		
+				timeToFinish = timeTotal - (SystemClock.elapsedRealtime() - chrono.getBase());
+				time = FormatDate.millisecondFormat(timeToFinish);
+			}
+		} else {
+			time = getResources().getString(R.string.label_times_up);
+		}
+		
+		//Get Move
+		String move = getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove);
+		
+		//TODO: Count Bonus Level
+		int bonus = (level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 1000 : (level == ESGIMemoryApp.KEY_LEVEL_NORMAL) ? 2000 : 3000;
+		
+		//TODO: Count points
+		int points = 0;
+
+		//TODO: Save in DB score
+		saveResult(win, username, timeToFinish, nbMove, bonus, points);
+		
+		displayResult(win, username, time, move, bonus+"", points+"");
 	}
 	
-	private void displayResult(boolean win) {
+	//Save Score in Database
+	private void saveResult(boolean win, String username, long time, int move, int bonus, int points) {
+		
+	}
+	
+	//Display Score result
+	private void displayResult(boolean win, String username, String time, String move, String bonus, String points) {
 		Resources res = getResources();
 		LayoutInflater inflater = getLayoutInflater();
+		
+		if (win)
+			Toast.makeText(this, "BRAVO, tu as finis en "+time+" et "+move+" !", Toast.LENGTH_LONG).show();
+		else
+			Toast.makeText(this, "P'TITE CAISSE !", Toast.LENGTH_LONG).show();
 		
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder
 //			.setIcon(android.R.drawable.ic_dialog_alert)
 			.setTitle(res.getString(win ? R.string.dialog_title_win : R.string.dialog_title_loose))
-			.setMessage("Veux tu réessayer?")
-//			.setView(inflater.inflate(R.layout.dialog_game_result, null))
+//			.setMessage("Veux tu réessayer?")
+			.setView(inflater.inflate(R.layout.dialog_game_result, null))
 			.setCancelable(false)
 			.setPositiveButton(res.getString(R.string.button_retry), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
@@ -282,10 +363,20 @@ public class GameActivity extends Activity {
 					GameActivity.this.finish();
 				}
 			});
+		
+		//TODO: Display pseudo + time + move
 	 
 		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
+		final AlertDialog alertDialog = alertDialogBuilder.create();
  
+		EditText editUsername = (EditText) alertDialog.findViewById(R.id.editUsername);
+		((TextView) alertDialog.findViewById(R.id.text_value_time)).setText(time);
+		((TextView) alertDialog.findViewById(R.id.text_value_move)).setText(move);
+		((TextView) alertDialog.findViewById(R.id.text_value_bonus)).setText(bonus);
+		((TextView) alertDialog.findViewById(R.id.text_value_points)).setText(points);
+
+		editUsername.setText(username);
+		
 		// show it
 		alertDialog.show();
 	}
@@ -293,15 +384,15 @@ public class GameActivity extends Activity {
 	//Click on a card
 	OnItemClickListener onGridViewItemClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        	if (firstCard == position)
+        	if (firstCardIndex == position)
         		return;
         	
-        	if (firstCard == -1 || (firstCard != -1 && position != firstCard)) {
+        	if (firstCardIndex == -1 || (firstCardIndex != -1 && position != firstCardIndex)) {
             	nbMove++;
             	txtMove.setText(getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove));
             	
-            	if (firstCard == -1) {
-            		firstCard = position;
+            	if (firstCardIndex == -1) {
+            		firstCardIndex = position;
 //            		v.setEnabled(false);
 //            		gridview.getAdapter().isEnabled(position);
 //            		v.setFocusable(false);
@@ -310,31 +401,31 @@ public class GameActivity extends Activity {
 //            		v.setVisibility(View.INVISIBLE);
 //            		v.setOnClickListener(null);
             	} else {
-            		if (gridview.getChildAt(firstCard).getTag() == v.getTag()) {
+            		if (gridview.getChildAt(firstCardIndex).getTag() == v.getTag()) {
             			//TODO: Same
-            			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCard).getTag()+" = "+v.getTag());
+            			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
             			nbPairFound++;
-            			gridview.getChildAt(firstCard).setVisibility(View.INVISIBLE);
+            			gridview.getChildAt(firstCardIndex).setVisibility(View.INVISIBLE);
             			v.setVisibility(View.INVISIBLE);
             			
             			if (nbPairFound == parent.getCount()/2)
             				gameFinished(true);
             		} else {
             			//TODO: Different
-            			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCard).getTag()+" != "+v.getTag());
+            			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCardIndex).getTag()+" != "+v.getTag());
             		}
             		
 //            		gridview.getChildAt(firstCard).setOnClickListener((OnClickListener) onGridViewItemClickListener);
 //            		gridview.getChildAt(firstCard).setEnabled(true);
-            		firstCard = -1;
+            		firstCardIndex = -1;
             	}
             	
 //                Toast.makeText(GameActivity.this, "" + position, Toast.LENGTH_SHORT).show();
         	} else {
-        		if (firstCard != -1)
+        		if (firstCardIndex != -1)
         			Log.d("CARD", "EXACTLY THE SAME CARD");
         	}
-        	Log.d("CARD", "POSITION="+position+" - FIRSTCARD="+firstCard);
+        	Log.d("CARD", "POSITION="+position+" - FIRSTCARD="+firstCardIndex);
         }
         
     };
