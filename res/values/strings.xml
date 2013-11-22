@@ -31,6 +31,7 @@
 	<string name="label_chrono">Chronomètre :</string>
 	<string name="label_timer">Minuteur :</string>
 	<string name="label_time">Temps :</string>
+	<string name="label_move">Nombre de coup :</string>
     <string name="label_sound">Son :</string>
     <string name="label_level">Difficulté :</string>
     <string name="label_bonus">Bonus difficulté :</string>

@@ -44,7 +44,7 @@ public class GameActivity extends Activity {
 	private long timeInMilliseconds = 0;
 	private final int delayBetweenEachTick = 500;
 	private final long timeBlinkInMilliseconds = 10000; //Start time of start blinking (10sec)
-	private boolean blink; 	//Controls the blinking, on and off
+	private boolean blink = false; 	//Controls the blinking, on and off
 	
 	//Card
 	private List<Integer> listImageIDs = new ArrayList<Integer>();
@@ -206,6 +206,7 @@ public class GameActivity extends Activity {
 		
 		nbMove = 0;
 		nbPairFound = 0;
+		blink = false;
 		
 		//TODO: AlertDialog Ready?
 	}
@@ -304,10 +305,10 @@ public class GameActivity extends Activity {
 		String time = "";
 		if (win) {
 			if (hasTimer) {
-				timeToFinish = timeInMilliseconds;
+				timeToFinish = timeTotal - (timeInMilliseconds/1000);
 				time = FormatDate.millisecondFormat(timeInMilliseconds);
 			} else {		
-				timeToFinish = timeTotal - (SystemClock.elapsedRealtime() - chrono.getBase());
+				timeToFinish = SystemClock.elapsedRealtime() - chrono.getBase();
 				time = FormatDate.millisecondFormat(timeToFinish);
 			}
 		} else {
@@ -322,16 +323,13 @@ public class GameActivity extends Activity {
 		
 		//TODO: Count points
 		int points = 0;
-
-		//TODO: Save in DB score
-		saveResult(win, username, timeToFinish, nbMove, bonus, points);
 		
 		displayResult(win, username, time, move, bonus+"", points+"");
 	}
 	
 	//Save Score in Database
-	private void saveResult(boolean win, String username, long time, int move, int bonus, int points) {
-		
+	private void saveScore(boolean win, String username, long time, int move, int bonus, int points) {
+		//TODO: Save in DB score
 	}
 	
 	//Display Score result
@@ -344,41 +342,44 @@ public class GameActivity extends Activity {
 		else
 			Toast.makeText(this, "P'TITE CAISSE !", Toast.LENGTH_LONG).show();
 		
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-		alertDialogBuilder
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(res.getString(win ? R.string.dialog_title_win : R.string.dialog_title_loose))
 //			.setIcon(android.R.drawable.ic_dialog_alert)
-			.setTitle(res.getString(win ? R.string.dialog_title_win : R.string.dialog_title_loose))
-//			.setMessage("Veux tu réessayer?")
 			.setView(inflater.inflate(R.layout.dialog_game_result, null))
 			.setCancelable(false)
 			.setPositiveButton(res.getString(R.string.button_retry), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
+	//				saveScore();
+					refreshUI();
 					loadGame();
 				}
 			})
 			.setNegativeButton(res.getString(R.string.button_leave), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
+	//				saveScore();
 					Intent intent = new Intent(GameActivity.this, HomeActivity.class);
 					startActivity(intent);
 					GameActivity.this.finish();
 				}
 			});
-		
-		//TODO: Display pseudo + time + move
 	 
-		// create alert dialog
-		final AlertDialog alertDialog = alertDialogBuilder.create();
- 
-		EditText editUsername = (EditText) alertDialog.findViewById(R.id.editUsername);
-		((TextView) alertDialog.findViewById(R.id.text_value_time)).setText(time);
-		((TextView) alertDialog.findViewById(R.id.text_value_move)).setText(move);
-		((TextView) alertDialog.findViewById(R.id.text_value_bonus)).setText(bonus);
-		((TextView) alertDialog.findViewById(R.id.text_value_points)).setText(points);
-
-		editUsername.setText(username);
+		//Create alert dialog
+		final AlertDialog dialog = builder.create();
+		//Show it
+		dialog.show();
 		
-		// show it
-		alertDialog.show();
+		//Display score
+		EditText editUsername = (EditText) dialog.findViewById(R.id.editUsername);
+		((TextView) dialog.findViewById(R.id.text_value_time)).setText(time);
+		((TextView) dialog.findViewById(R.id.text_value_move)).setText(move);
+		((TextView) dialog.findViewById(R.id.text_value_bonus)).setText(bonus);
+		((TextView) dialog.findViewById(R.id.text_value_points)).setText(points);
+		editUsername.setText(username);
+	}
+	
+	private void refreshUI() {
+		txtMove.setText(getResources().getString(R.string.init_value_move));
+		txtTimer.setText(getResources().getString(R.string.init_value_time));
 	}
 	
 	//Click on a card

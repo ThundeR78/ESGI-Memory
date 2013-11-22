@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="@string/label_username" />
+            android:text="@string/label_time" />
         <TextView
             android:id="@+id/text_value_time"
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="@string/label_username" />
+            android:text="@string/label_move" />
         <TextView
             android:id="@+id/text_value_move"
             android:layout_width="wrap_content"
