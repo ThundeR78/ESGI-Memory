@@ -49,6 +49,7 @@
 	        android:layout_centerInParent="true"
 	        android:gravity="center"
 	        android:numColumns="auto_fit"
+	        android:columnWidth="100dp"
 	        android:horizontalSpacing="5dp"
 	        android:verticalSpacing="5dp"
 	        android:stretchMode="spacingWidthUniform" >

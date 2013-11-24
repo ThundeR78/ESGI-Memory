@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.util.FormatDate;
 import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
 
@@ -330,6 +331,7 @@ public class GameActivity extends Activity {
 	//Save Score in Database
 	private void saveScore(boolean win, String username, long time, int move, int bonus, int points) {
 		//TODO: Save in DB score
+		DatabaseHandler dbHelper = new DatabaseHandler(this);
 	}
 	
 	//Display Score result
