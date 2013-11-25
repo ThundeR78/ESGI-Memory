@@ -18,6 +18,9 @@ import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -27,6 +30,7 @@ import android.widget.Chronometer;
 import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.esgi.android.project.esgi_memory.business.Score;
@@ -54,6 +58,7 @@ public class GameActivity extends Activity {
 	private List<Integer> listImageIDs = new ArrayList<Integer>();
 	private int nbPairFound = 0;
 	private int firstCardIndex = -1; //index of the first card selected
+	private final Integer cardBackId = R.drawable.ic_launcher;
 	
 	//Components
 	private TextView txtTimer, txtMove;
@@ -107,6 +112,25 @@ public class GameActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.game_menu, menu);
+	    return true;
+	} 
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+	    case R.id.action_refresh:
+	    	stopTime();
+	    	refreshUI();
+	    	loadGame();
+	    	break;
+		}
+	    return true;
 	}
 	
 	@Override
@@ -171,7 +195,7 @@ public class GameActivity extends Activity {
 	private void loadGridView() {
 		//Get images
 		Integer[] array = listImageIDs.toArray(new Integer[listImageIDs.size()]);
-		gridview.setAdapter(new ImageAdapter(this, array));
+		gridview.setAdapter(new ImageAdapter(this, array, cardBackId));
 	}
 	
 	//Initialize Game
@@ -392,16 +416,34 @@ public class GameActivity extends Activity {
 	
 	//Click on a card
 	OnItemClickListener onGridViewItemClickListener = new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+        	//Second click on the same card 
         	if (firstCardIndex == position)
         		return;
         	
+        	//If first card not clicked or second card different to the first 
         	if (firstCardIndex == -1 || (firstCardIndex != -1 && position != firstCardIndex)) {
-            	nbMove++;
-            	txtMove.setText(getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove));
-            	
+        		ImageView imageView = (ImageView) v;
+        		Integer resId = (Integer) adapter.getItemAtPosition(position);
+        		imageView.setImageResource(resId);
+        		
+//        		ImageAdapter imgAdapter = (ImageAdapter) gridview.getAdapter();
+//        		imgAdapter.toggleItem(position);
+//        		imgAdapter.notifyDataSetChanged();
+//        		try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+        		
+            	//First card clicked
             	if (firstCardIndex == -1) {
             		firstCardIndex = position;
+            		
+//            		imgAdapter.toggleItem(position);
+//            		imgAdapter.notifyDataSetChanged();
+            		
+            		//Test disable
 //            		v.setEnabled(false);
 //            		gridview.getAdapter().isEnabled(position);
 //            		v.setFocusable(false);
@@ -410,6 +452,10 @@ public class GameActivity extends Activity {
 //            		v.setVisibility(View.INVISIBLE);
 //            		v.setOnClickListener(null);
             	} else {
+            		nbMove++;
+                	txtMove.setText(getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove));
+            		
+            		//First and second card are a pair
             		if (gridview.getChildAt(firstCardIndex).getTag() == v.getTag()) {
             			//TODO: Same
             			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
@@ -417,19 +463,23 @@ public class GameActivity extends Activity {
             			gridview.getChildAt(firstCardIndex).setVisibility(View.INVISIBLE);
             			v.setVisibility(View.INVISIBLE);
             			
-            			if (nbPairFound == parent.getCount()/2)
+            			if (nbPairFound == adapter.getCount()/2)
             				gameFinished(true);
             		} else {
             			//TODO: Different
             			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCardIndex).getTag()+" != "+v.getTag());
+            			((ImageView) gridview.getChildAt(firstCardIndex)).setImageResource(cardBackId);
+                        imageView.setImageResource(cardBackId);
+            			
+//            			imgAdapter.toggleItem(position);
+//            			imgAdapter.toggleItem(firstCardIndex);
+//                		imgAdapter.notifyDataSetChanged();
             		}
             		
 //            		gridview.getChildAt(firstCard).setOnClickListener((OnClickListener) onGridViewItemClickListener);
 //            		gridview.getChildAt(firstCard).setEnabled(true);
             		firstCardIndex = -1;
             	}
-            	
-//                Toast.makeText(GameActivity.this, "" + position, Toast.LENGTH_SHORT).show();
         	} else {
         		if (firstCardIndex != -1)
         			Log.d("CARD", "EXACTLY THE SAME CARD");

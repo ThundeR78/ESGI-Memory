@@ -12,6 +12,7 @@
 <!-- BUTTON -->
     <string name="button_retry">Réessayer</string>
     <string name="button_leave">Quitter</string>
+    <string name="button_reload">Recommencer</string>
     
 <!-- HOME -->
     <string name="home_button_play">Jouer</string>
