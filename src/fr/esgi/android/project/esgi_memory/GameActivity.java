@@ -2,6 +2,7 @@ package fr.esgi.android.project.esgi_memory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.util.FormatDate;
 import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
@@ -38,6 +40,7 @@ public class GameActivity extends Activity {
 	private int level;
 	private int nbMove = 0;
 	private boolean isGameFinished = false;
+	Score score;
 	
 	//Time
 	private boolean hasTimer = false;
@@ -57,6 +60,7 @@ public class GameActivity extends Activity {
 	private GridView gridview;
 	private Chronometer chrono;
 	private CountDownTimer countdownTimer;
+	private AlertDialog dialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -174,17 +178,13 @@ public class GameActivity extends Activity {
 	private void initGame() {
 		//Get array imagesId + timeTotal
 		TypedArray images;
-		if (level == ESGIMemoryApp.KEY_LEVEL_EASY) {
-			timeTotal = ESGIMemoryApp.TIMER_EASY;
+		if (level == ESGIMemoryApp.KEY_LEVEL_EASY) 
 			images = getResources().obtainTypedArray(R.array.images_easy);
-		} else if (level == ESGIMemoryApp.KEY_LEVEL_HARD) {
-			timeTotal = ESGIMemoryApp.TIMER_HARD;
+		else if (level == ESGIMemoryApp.KEY_LEVEL_HARD)
 			images = getResources().obtainTypedArray(R.array.images_hard);
-		} else  {
-			timeTotal = ESGIMemoryApp.TIMER_NORMAL;
+		else
 			images = getResources().obtainTypedArray(R.array.images_normal);
-		}
-			
+					
 		//Transfer array imagesId into List
 		for (int i=0; i<images.length() ;i++) 
 			listImageIDs.add(images.getResourceId(i, 0));
@@ -208,6 +208,7 @@ public class GameActivity extends Activity {
 		nbMove = 0;
 		nbPairFound = 0;
 		blink = false;
+		score = null;
 		
 		//TODO: AlertDialog Ready?
 	}
@@ -215,6 +216,8 @@ public class GameActivity extends Activity {
 	//Initialize Time
 	private void initTime() {
 		if (hasTimer) {
+			timeTotal = (level==ESGIMemoryApp.KEY_LEVEL_EASY) ? ESGIMemoryApp.TIMER_EASY : (level==ESGIMemoryApp.KEY_LEVEL_HARD) ?  ESGIMemoryApp.TIMER_HARD : ESGIMemoryApp.TIMER_NORMAL;
+			
 			chrono.setVisibility(View.GONE);
 		} else {
 			txtTimer.setVisibility(View.GONE);
@@ -227,10 +230,7 @@ public class GameActivity extends Activity {
 	}
 	
 	private void loadTime() {
-		if (hasTimer) 
-			timeInMilliseconds = timeTotal * 1000;
-		else 
-			chrono.setBase(SystemClock.elapsedRealtime());
+		timeInMilliseconds = (hasTimer) ? timeTotal * 1000 : 0;
 		
 		startTime();
 	}
@@ -241,6 +241,7 @@ public class GameActivity extends Activity {
 			if (hasTimer) {
 				startCountdown(timeInMilliseconds);
 			} else {
+				chrono.setBase(SystemClock.elapsedRealtime()+timeInMilliseconds);
 				chrono.start();
 			}
 		}
@@ -275,9 +276,8 @@ public class GameActivity extends Activity {
 		if (hasTimer) 
 			countdownTimer.cancel();
 		else {
+			timeInMilliseconds = chrono.getBase() - SystemClock.elapsedRealtime();
 			chrono.stop();
-			//TODO: restart with good time
-			Log.d("CHRONO", chrono.getText().toString());
 		}
 	}
 	
@@ -285,7 +285,6 @@ public class GameActivity extends Activity {
 		isGameFinished = true;
 			
 		stopTime();
-		
 		loadResult(win);
 		
 		isGameFinished = false;
@@ -307,11 +306,10 @@ public class GameActivity extends Activity {
 		if (win) {
 			if (hasTimer) {
 				timeToFinish = timeTotal - (timeInMilliseconds/1000);
-				time = FormatDate.millisecondFormat(timeInMilliseconds);
 			} else {		
 				timeToFinish = SystemClock.elapsedRealtime() - chrono.getBase();
-				time = FormatDate.millisecondFormat(timeToFinish);
 			}
+			time = FormatDate.millisecondFormat(timeToFinish);
 		} else {
 			time = getResources().getString(R.string.label_times_up);
 		}
@@ -325,13 +323,10 @@ public class GameActivity extends Activity {
 		//TODO: Count points
 		int points = 0;
 		
+		//Save new Score
+		score = new Score(username, new Date(), win, level, timeToFinish, nbMove, bonus, points);
+
 		displayResult(win, username, time, move, bonus+"", points+"");
-	}
-	
-	//Save Score in Database
-	private void saveScore(boolean win, String username, long time, int move, int bonus, int points) {
-		//TODO: Save in DB score
-		DatabaseHandler dbHelper = new DatabaseHandler(this);
 	}
 	
 	//Display Score result
@@ -350,15 +345,17 @@ public class GameActivity extends Activity {
 			.setView(inflater.inflate(R.layout.dialog_game_result, null))
 			.setCancelable(false)
 			.setPositiveButton(res.getString(R.string.button_retry), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-	//				saveScore();
+				public void onClick(DialogInterface dialogInterface,int id) {
+					score.setUsername(((EditText)dialog.findViewById(R.id.editUsername)).getText().toString());
+					saveScore(score);
 					refreshUI();
 					loadGame();
 				}
 			})
 			.setNegativeButton(res.getString(R.string.button_leave), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog,int id) {
-	//				saveScore();
+				public void onClick(DialogInterface dialogInterface,int id) {
+					score.setUsername(((EditText)dialog.findViewById(R.id.editUsername)).getText().toString());
+					saveScore(score);
 					Intent intent = new Intent(GameActivity.this, HomeActivity.class);
 					startActivity(intent);
 					GameActivity.this.finish();
@@ -366,19 +363,28 @@ public class GameActivity extends Activity {
 			});
 	 
 		//Create alert dialog
-		final AlertDialog dialog = builder.create();
+		dialog = builder.create();
 		//Show it
 		dialog.show();
 		
 		//Display score
-		EditText editUsername = (EditText) dialog.findViewById(R.id.editUsername);
+		((EditText) dialog.findViewById(R.id.editUsername)).setText(username);
 		((TextView) dialog.findViewById(R.id.text_value_time)).setText(time);
 		((TextView) dialog.findViewById(R.id.text_value_move)).setText(move);
 		((TextView) dialog.findViewById(R.id.text_value_bonus)).setText(bonus);
 		((TextView) dialog.findViewById(R.id.text_value_points)).setText(points);
-		editUsername.setText(username);
 	}
 	
+	//Save Score in Database
+	private void saveScore(Score score) {
+		DatabaseHandler db = new DatabaseHandler(this);
+		db.addScore(score);
+		
+		List<Score> scores = db.getAllScores();
+		Log.d("SCORES", "Nb="+scores.size());
+	}
+	
+	//Refresh interface
 	private void refreshUI() {
 		txtMove.setText(getResources().getString(R.string.init_value_move));
 		txtTimer.setText(getResources().getString(R.string.init_value_time));

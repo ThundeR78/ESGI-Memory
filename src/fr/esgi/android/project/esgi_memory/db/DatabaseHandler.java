@@ -98,7 +98,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return score;
     }
     
-    //Getting All Scores
+    //Getting All Scores (id, username, date, point only)
     public List<Score> getAllScores() {
        List<Score> scoreList = new ArrayList<Score>();
        // Select All Query
@@ -112,7 +112,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        if (cursor.moveToFirst()) {
            do {
                Score score = new Score();
-               score.setId(Integer.parseInt(cursor.getString(0)));
+               score.setId(cursor.getInt(0));
                score.setUsername(cursor.getString(1));
                score.setDate(new Date(cursor.getInt(2)));
                score.setPoint(cursor.getInt(2));
@@ -172,7 +172,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
     
-  //Deleting single score
+    //Deleting single score
     public void deleteAllScore() {
         SQLiteDatabase db = this.getWritableDatabase();     
         

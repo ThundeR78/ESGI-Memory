@@ -19,6 +19,17 @@ public class Score {
 	
 	}
 	
+	public Score(String username, Date date, boolean win, int level, long time, int move, int bonus, int point) {
+		this.username = username;
+		this.date = date;
+		this.win = win;
+		this.level = level;
+		this.time = time;
+		this.move = move;
+		this.bonus = bonus;
+		this.point = point;
+	}
+	
 	public Score(int id, String username, Date date, boolean win, int level, long time, int move, int bonus, int point) {
 		this.id = id;
 		this.username = username;
