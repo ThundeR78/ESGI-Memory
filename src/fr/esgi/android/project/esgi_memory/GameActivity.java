@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
@@ -44,7 +45,7 @@ public class GameActivity extends Activity {
 	private int level;
 	private int nbMove = 0;
 	private boolean isGameFinished = false;
-	Score score;
+	private Score score;
 	
 	//Time
 	private boolean hasTimer = false;
@@ -66,6 +67,15 @@ public class GameActivity extends Activity {
 	private Chronometer chrono;
 	private CountDownTimer countdownTimer;
 	private AlertDialog dialog;
+	private MediaPlayer mediaPlayer;
+	
+	//Sound
+	private boolean hasSound = true;
+	private int SOUND_TURN_CARD = R.raw.card;
+	private int SOUND_WRONG_CARD = R.raw.fartshort;
+	private int SOUND_SAME_CARDS = R.raw.wolfwis;
+	private int SOUND_WIN_GAME = R.raw.applause;
+	private int SOUND_LOOSE_GAME = R.raw.fartlong;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +85,9 @@ public class GameActivity extends Activity {
 		//Get parameters
 		level = getIntent().getIntExtra(ESGIMemoryApp.KEY_LEVEL, ESGIMemoryApp.KEY_LEVEL_NORMAL);
 		hasTimer = getIntent().getBooleanExtra(ESGIMemoryApp.KEY_TIMER, false);
+
+		//Get value sound
+		hasSound = getSharedPreferences(ESGIMemoryApp.PREFS_APP, 0).getBoolean(ESGIMemoryApp.PREF_HAS_SOUND, true);
 		
 		//Link interface and components
 		gridview = (GridView) findViewById(R.id.gridView);
@@ -112,6 +125,9 @@ public class GameActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
+		
+		mediaPlayer.release();
+		mediaPlayer = null;
 	}
 	
 	@Override
@@ -307,6 +323,8 @@ public class GameActivity extends Activity {
 	
 	private void gameFinished(boolean win) {
 		isGameFinished = true;
+		
+		playSound(win ? SOUND_WIN_GAME : SOUND_LOOSE_GAME);
 			
 		stopTime();
 		loadResult(win);
@@ -414,6 +432,14 @@ public class GameActivity extends Activity {
 		txtTimer.setText(getResources().getString(R.string.init_value_time));
 	}
 	
+	//Play a sound
+	private void playSound(int soundIndex) {
+		if (hasSound) {
+			mediaPlayer = MediaPlayer.create(this, soundIndex);
+			mediaPlayer.start();
+		}
+	}
+	
 	//Click on a card
 	OnItemClickListener onGridViewItemClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
@@ -426,6 +452,7 @@ public class GameActivity extends Activity {
         		ImageView imageView = (ImageView) v;
         		Integer resId = (Integer) adapter.getItemAtPosition(position);
         		imageView.setImageResource(resId);
+        		playSound(SOUND_TURN_CARD);
         		
 //        		ImageAdapter imgAdapter = (ImageAdapter) gridview.getAdapter();
 //        		imgAdapter.toggleItem(position);
@@ -462,6 +489,7 @@ public class GameActivity extends Activity {
             			nbPairFound++;
             			gridview.getChildAt(firstCardIndex).setVisibility(View.INVISIBLE);
             			v.setVisibility(View.INVISIBLE);
+            			playSound(SOUND_SAME_CARDS);
             			
             			if (nbPairFound == adapter.getCount()/2)
             				gameFinished(true);
@@ -471,6 +499,8 @@ public class GameActivity extends Activity {
             			((ImageView) gridview.getChildAt(firstCardIndex)).setImageResource(cardBackId);
                         imageView.setImageResource(cardBackId);
             			
+                        playSound(SOUND_WRONG_CARD);
+                        
 //            			imgAdapter.toggleItem(position);
 //            			imgAdapter.toggleItem(firstCardIndex);
 //                		imgAdapter.notifyDataSetChanged();
