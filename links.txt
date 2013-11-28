@@ -1,0 +1,53 @@
+Animation :
+http://stackoverflow.com/questions/5611123/android-make-animation-from-still-images
+http://www.jasoncavett.com/2011/05/advanced-animations-in-android.html
+http://developertip.wordpress.com/2011/03/28/android-image-animation/
+http://sampleprogramz.com/android/viewanimator.php
+http://learnandroideasily.blogspot.fr/2013/08/android-viewanimator-example.html
+https://code.google.com/p/android-3d-flip-view-transition/
+http://www.techrepublic.com/blog/software-engineer/use-androids-scale-animation-to-simulate-a-3d-flip/
+
+Chrono : (+ en +)
+http://developer.android.com/reference/android/widget/Chronometer.html
+
+CountDownTimer : (- en -)
+http://developer.android.com/reference/android/os/CountDownTimer.html
+http://androidbite.blogspot.fr/2012/11/android-count-down-timer-example.html
+http://www.androidhub4you.com/2013/04/countdown-demo-in-android-custom-timer.html
+http://stackoverflow.com/questions/15404143/i-want-countdown-timer-in-hhmmss-format-in-android
+http://stackoverflow.com/questions/5738362/pause-countdowntimer-in-android-when-activity-is-not-in-front
+http://www.coderzheaven.com/2011/08/24/simple-countdown-timer-in-android/
+
+CountDownLatch pour attendre des tâches ou autres synchro
+
+
+GridView :
+http://developer.android.com/guide/topics/ui/layout/gridview.html
+http://javacvm.blogspot.fr/2013/11/android-recuperer-les-images-contenues.html
+http://stackoverflow.com/questions/14002964/android-how-to-get-grid-view-item-tag-by-its-position-from-with-in-another-grid
+http://stackoverflow.com/questions/12899258/android-how-to-disable-gridviews-onitemselected-on-some-items		onKey
+http://javatechig.com/android/android-gridview-example-building-image-gallery-in-android
+http://stackoverflow.com/questions/15261088/gridview-with-two-columns-and-auto-resized-images
+http://stackoverflow.com/questions/6455681/android-replacing-images-in-gridview-array-after-onitemclick
+http://stackoverflow.com/questions/6975833/change-image-when-clicking-on-item-in-a-gridview
+
+
+Time :
+http://stackoverflow.com/questions/625433/how-to-convert-milliseconds-to-x-mins-x-seconds-in-java
+
+String :
+http://developer.android.com/guide/topics/resources/string-resource.html
+
+AlertDialog :
+http://developer.android.com/guide/topics/ui/dialogs.html
+http://www.tutomobile.fr/personnaliser-un-alertdialog-tutoriel-android-n%C2%B020/04/11/2010/
+
+Database :
+http://www.androidhive.info/2011/11/android-sqlite-database-tutorial/
+http://www.androidhive.info/2013/09/android-sqlite-database-with-multiple-tables/
+http://developer.android.com/training/basics/data-storage/databases.html
+http://www.vogella.com/articles/AndroidSQLite/article.html
+
+
+Sound : 
+http://stackoverflow.com/questions/2627101/playing-multiple-sounds-at-the-same-time-in-android

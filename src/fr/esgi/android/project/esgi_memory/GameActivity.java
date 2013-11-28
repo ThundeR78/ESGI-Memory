@@ -37,6 +37,7 @@ import android.widget.Toast;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.util.FormatDate;
+import fr.esgi.android.project.esgi_memory.util.SoundManager;
 import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
 
 public class GameActivity extends Activity {
@@ -71,11 +72,7 @@ public class GameActivity extends Activity {
 	
 	//Sound
 	private boolean hasSound = true;
-	private int SOUND_TURN_CARD = R.raw.card;
-	private int SOUND_WRONG_CARD = R.raw.fartshort;
-	private int SOUND_SAME_CARDS = R.raw.wolfwis;
-	private int SOUND_WIN_GAME = R.raw.applause;
-	private int SOUND_LOOSE_GAME = R.raw.fartlong;
+	private SoundManager soundManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +110,7 @@ public class GameActivity extends Activity {
 		super.onRestart();
 		
 		startTime();
+		resumeSound();
 	}
 	
 	@Override
@@ -120,14 +118,14 @@ public class GameActivity extends Activity {
 		super.onPause();
 		
 		stopTime();
+		pauseSound();
 	}
 	
 	@Override
 	protected void onStop() {
 		super.onStop();
 		
-		mediaPlayer.release();
-		mediaPlayer = null;
+		stopSound();
 	}
 	
 	@Override
@@ -233,6 +231,7 @@ public class GameActivity extends Activity {
 		
 		initGridView();
 		initTime();
+		initSound();
 	}
 	
 	//Load Game
@@ -241,6 +240,8 @@ public class GameActivity extends Activity {
 		Log.v("BEFORE SHUFFLE", listImageIDs.toString());
 		Collections.shuffle(listImageIDs); 
 		Log.v("AFTER SHUFFLE", listImageIDs.toString());
+		
+		soundManager.playSound(SoundManager.SOUND_DEAL_CARDS);
 		
 		loadGridView();
 		loadTime();
@@ -321,10 +322,11 @@ public class GameActivity extends Activity {
 		}
 	}
 	
+	//Game is finished
 	private void gameFinished(boolean win) {
 		isGameFinished = true;
 		
-		playSound(win ? SOUND_WIN_GAME : SOUND_LOOSE_GAME);
+		soundManager.playSound(win ? SoundManager.SOUND_WIN_GAME : SoundManager.SOUND_LOOSE_GAME);
 			
 		stopTime();
 		loadResult(win);
@@ -432,12 +434,34 @@ public class GameActivity extends Activity {
 		txtTimer.setText(getResources().getString(R.string.init_value_time));
 	}
 	
-	//Play a sound
+	//Init Sound
+	private void initSound() {
+		soundManager = SoundManager.getInstance(this);
+		SoundManager.setSoundTurnedOff(hasSound);
+	}
+	
+	//Play a Sound
 	private void playSound(int soundIndex) {
-		if (hasSound) {
+		if (hasSound && (mediaPlayer != null && !mediaPlayer.isPlaying())) {
 			mediaPlayer = MediaPlayer.create(this, soundIndex);
 			mediaPlayer.start();
 		}
+	}
+	
+	
+	//Stop Sound
+	private void resumeSound() {
+		soundManager.resume();
+	}
+	
+	//Stop Sound
+	private void pauseSound() {
+		soundManager.pause();
+	}
+	
+	//Stop Sound
+	private void stopSound() {
+		soundManager.clear();
 	}
 	
 	//Click on a card
@@ -452,7 +476,7 @@ public class GameActivity extends Activity {
         		ImageView imageView = (ImageView) v;
         		Integer resId = (Integer) adapter.getItemAtPosition(position);
         		imageView.setImageResource(resId);
-        		playSound(SOUND_TURN_CARD);
+        		soundManager.playSound(SoundManager.SOUND_TURN_CARD);
         		
 //        		ImageAdapter imgAdapter = (ImageAdapter) gridview.getAdapter();
 //        		imgAdapter.toggleItem(position);
@@ -482,24 +506,24 @@ public class GameActivity extends Activity {
             		nbMove++;
                 	txtMove.setText(getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove));
             		
-            		//First and second card are a pair
+            		//Pair cards
             		if (gridview.getChildAt(firstCardIndex).getTag() == v.getTag()) {
             			//TODO: Same
             			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
             			nbPairFound++;
             			gridview.getChildAt(firstCardIndex).setVisibility(View.INVISIBLE);
             			v.setVisibility(View.INVISIBLE);
-            			playSound(SOUND_SAME_CARDS);
+            			soundManager.playSound(SoundManager.SOUND_SAME_CARDS);
             			
             			if (nbPairFound == adapter.getCount()/2)
             				gameFinished(true);
             		} else {
-            			//TODO: Different
+            			//Different cards
             			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCardIndex).getTag()+" != "+v.getTag());
             			((ImageView) gridview.getChildAt(firstCardIndex)).setImageResource(cardBackId);
                         imageView.setImageResource(cardBackId);
             			
-                        playSound(SOUND_WRONG_CARD);
+                        soundManager.playSound(SoundManager.SOUND_WRONG_CARDS);
                         
 //            			imgAdapter.toggleItem(position);
 //            			imgAdapter.toggleItem(firstCardIndex);
