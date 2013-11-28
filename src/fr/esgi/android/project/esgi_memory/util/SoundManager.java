@@ -75,9 +75,11 @@ public class SoundManager {
     public static void clear() {
         if (mSoundManager != null) {
         	mSoundManager.mSoundPool.release();
+            mSoundManager.mSoundPoolMap.clear();
+            mSoundManager.mAudioManager.unloadSoundEffects();
             mSoundManager.mSoundPool = null; 
-            mSoundManager.mAudioManager = null;
             mSoundManager.mSoundPoolMap = null;
+            mSoundManager.mAudioManager = null;
         }
         mSoundManager = null;
     }
