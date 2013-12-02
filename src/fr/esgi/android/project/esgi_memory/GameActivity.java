@@ -16,6 +16,7 @@ import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.util.FormatDate;
 import fr.esgi.android.project.esgi_memory.util.SoundManager;
+import fr.esgi.android.project.esgi_memory.view.CardView;
 import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
 
 public class GameActivity extends Activity {
@@ -47,6 +49,7 @@ public class GameActivity extends Activity {
 	private int nbMove = 0;
 	private boolean isGameFinished = false;
 	private Score score;
+	private boolean inAnimation = false;
 	
 	//Time
 	private boolean hasTimer = false;
@@ -58,9 +61,11 @@ public class GameActivity extends Activity {
 	
 	//Card
 	private List<Integer> listImageIDs = new ArrayList<Integer>();
+	private CardView cardView;
 	private int nbPairFound = 0;
-	private int firstCardIndex = -1; //index of the first card selected
+	private int firstCardIndex = -1, secondCardIndex = -1; //index of cards selected
 	private final Integer cardBackId = R.drawable.ic_launcher;
+	private boolean sameCard = false;
 	
 	//Components
 	private TextView txtTimer, txtMove;
@@ -98,6 +103,14 @@ public class GameActivity extends Activity {
 
 		Log.i(ESGIMemoryApp.KEY_LEVEL, "Level= "+level);
 		Log.i(ESGIMemoryApp.KEY_TIMER, "Timer= "+timeTotal);
+		
+//		Handler handler = new Handler();
+//		handler.post(runnableTurnCard);
+//		handler.postDelayed(new Runnable() {
+//			public void run() {
+//				
+//			}
+//		}, 2000);
 	}
 	
 	@Override
@@ -447,8 +460,7 @@ public class GameActivity extends Activity {
 			mediaPlayer.start();
 		}
 	}
-	
-	
+
 	//Stop Sound
 	private void resumeSound() {
 		soundManager.resume();
@@ -467,79 +479,107 @@ public class GameActivity extends Activity {
 	//Click on a card
 	OnItemClickListener onGridViewItemClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-        	//Second click on the same card 
-        	if (firstCardIndex == position)
-        		return;
-        	
-        	//If first card not clicked or second card different to the first 
-        	if (firstCardIndex == -1 || (firstCardIndex != -1 && position != firstCardIndex)) {
-        		ImageView imageView = (ImageView) v;
-        		Integer resId = (Integer) adapter.getItemAtPosition(position);
-        		imageView.setImageResource(resId);
-        		soundManager.playSound(SoundManager.SOUND_TURN_CARD);
-        		
-//        		ImageAdapter imgAdapter = (ImageAdapter) gridview.getAdapter();
-//        		imgAdapter.toggleItem(position);
-//        		imgAdapter.notifyDataSetChanged();
-//        		try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-        		
-            	//First card clicked
-            	if (firstCardIndex == -1) {
-            		firstCardIndex = position;
-            		
-//            		imgAdapter.toggleItem(position);
-//            		imgAdapter.notifyDataSetChanged();
-            		
-            		//Test disable
-//            		v.setEnabled(false);
-//            		gridview.getAdapter().isEnabled(position);
-//            		v.setFocusable(false);
-//            		v.setFocusableInTouchMode(false);
-//            		v.setClickable(false);
-//            		v.setVisibility(View.INVISIBLE);
-//            		v.setOnClickListener(null);
-            	} else {
-            		nbMove++;
-                	txtMove.setText(getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove));
-            		
-            		//Pair cards
-            		if (gridview.getChildAt(firstCardIndex).getTag() == v.getTag()) {
-            			//TODO: Same
-            			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
-            			nbPairFound++;
-            			gridview.getChildAt(firstCardIndex).setVisibility(View.INVISIBLE);
-            			v.setVisibility(View.INVISIBLE);
-            			soundManager.playSound(SoundManager.SOUND_SAME_CARDS);
-            			
-            			if (nbPairFound == adapter.getCount()/2)
-            				gameFinished(true);
-            		} else {
-            			//Different cards
-            			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCardIndex).getTag()+" != "+v.getTag());
-            			((ImageView) gridview.getChildAt(firstCardIndex)).setImageResource(cardBackId);
-                        imageView.setImageResource(cardBackId);
-            			
-                        soundManager.playSound(SoundManager.SOUND_WRONG_CARDS);
-                        
-//            			imgAdapter.toggleItem(position);
-//            			imgAdapter.toggleItem(firstCardIndex);
-//                		imgAdapter.notifyDataSetChanged();
-            		}
-            		
-//            		gridview.getChildAt(firstCard).setOnClickListener((OnClickListener) onGridViewItemClickListener);
-//            		gridview.getChildAt(firstCard).setEnabled(true);
-            		firstCardIndex = -1;
-            	}
-        	} else {
-        		if (firstCardIndex != -1)
-        			Log.d("CARD", "EXACTLY THE SAME CARD");
+        	if (!inAnimation) {
+	        	cardView = (CardView) v;
+	        	
+	        	//Second click on the same card or card since found 
+	        	if (position == firstCardIndex || cardView.isReturned())
+	        		return;
+	        	
+	        	//If first card not clicked or second card different to the first 
+	        	if (firstCardIndex == -1 || (firstCardIndex != -1 && position != firstCardIndex)) {
+	        		inAnimation = true;
+	        		
+	            	//First card clicked
+	            	if (firstCardIndex == -1) {
+	            		firstCardIndex = position;
+	            	} else {
+	            		nbMove++;
+	                	txtMove.setText(getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove));
+	                	secondCardIndex = position;
+	                	
+	            		if (gridview.getChildAt(firstCardIndex).getTag() == v.getTag()) {
+	            			//Pair cards
+	            			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
+	            			nbPairFound++;
+	            			sameCard = true;
+	            		} else {
+	            			//Different cards
+	            			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCardIndex).getTag()+" != "+v.getTag());
+	            			sameCard = false;
+	            		}
+	            	}
+	            	
+	            	//Call animation
+	            	Handler handler = new Handler();
+	        		handler.post(runnableTurnCard);
+	        	} else {
+	        		if (firstCardIndex != -1)
+	        			Log.d("CARD", "EXACTLY THE SAME CARD");
+	        	}
+	        	Log.d("CARD", "POSITION="+position+" - FIRSTCARD="+firstCardIndex);
         	}
-        	Log.d("CARD", "POSITION="+position+" - FIRSTCARD="+firstCardIndex);
         }
-        
     };
+    
+    Runnable runnableTurnCard = new Runnable() {
+		public void run() {
+			Log.v("HANDLER", "TURN CARD");
+			
+			if (firstCardIndex != -1) {
+				Integer resId = 0;
+				if (secondCardIndex == -1) {
+					//First card selected
+					resId = (Integer) gridview.getItemAtPosition(firstCardIndex);
+				} else {
+					//Second card selected
+					resId = (Integer) gridview.getItemAtPosition(secondCardIndex);
+				}
+				
+				soundManager.playSound(SoundManager.SOUND_TURN_CARD);
+				cardView.setImageResource(resId);
+				cardView.toggleSide();
+			}
+			
+			if (secondCardIndex != -1) {
+				//Call animation back
+				Handler handlerReturn = new Handler();
+	    		handlerReturn.postDelayed(runnableReturnCards, 1000); 
+			} else {
+				inAnimation = false;
+			}
+		}
+	};
+	
+	Runnable runnableReturnCards = new Runnable() {
+		public void run() {
+			Log.v("HANDLER", "RETURN CARD");
+			
+			if (sameCard) {
+				//Is pair
+//				gridview.getChildAt(firstCardIndex).setVisibility(View.INVISIBLE);
+//				gridview.getChildAt(secondCardIndex).setVisibility(View.INVISIBLE);
+				
+    			soundManager.playSound(SoundManager.SOUND_SAME_CARDS);
+    			
+    			if (nbPairFound == gridview.getChildCount()/2)
+    				gameFinished(true);
+			} else {
+				//Not the same
+				soundManager.playSound(SoundManager.SOUND_WRONG_CARDS);
+				CardView cardFirst = (CardView) gridview.getChildAt(firstCardIndex);
+				CardView cardSecond = (CardView) gridview.getChildAt(secondCardIndex);
+				cardFirst.setImageResource(cardBackId);
+				cardSecond.setImageResource(cardBackId);
+				cardFirst.toggleSide();
+				cardSecond.toggleSide();
+			}
+			
+            firstCardIndex = -1;
+			secondCardIndex = -1;
+			cardView = null;
+			sameCard = false;
+			inAnimation = false;
+		}
+	};
 }

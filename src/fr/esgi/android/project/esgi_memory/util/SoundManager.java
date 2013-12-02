@@ -60,8 +60,10 @@ public class SoundManager {
         if (!isSoundTurnedOn())
             return;
 
-         int streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC); 
-         mSoundPool.play(mSoundPoolMap.get(index), streamVolume, streamVolume, 1, 0, 1f); 
+        if (mAudioManager != null) {
+        	int streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC); 
+        	mSoundPool.play(mSoundPoolMap.get(index), streamVolume, streamVolume, 1, 0, 1f); 
+        }
     }
     
     public static void resume() {
