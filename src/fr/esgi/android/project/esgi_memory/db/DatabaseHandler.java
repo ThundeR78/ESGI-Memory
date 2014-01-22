@@ -103,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        List<Score> scoreList = new ArrayList<Score>();
        // Select All Query
        String selectQuery = "SELECT "+ScoreBase.COLUMN_NAME_ID+", "+ScoreBase.COLUMN_NAME_USERNAME+", "+ScoreBase.COLUMN_NAME_DATE+", "+ScoreBase.COLUMN_NAME_POINT+
-       		" FROM " + ScoreBase.TABLE_NAME;
+       		" FROM " + ScoreBase.TABLE_NAME + " ORDER BY "+ ScoreBase.COLUMN_NAME_POINT;
     
        SQLiteDatabase db = this.getWritableDatabase();
        Cursor cursor = db.rawQuery(selectQuery, null);

@@ -1,10 +1,23 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activity" >
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout style="@style/listview_header" >
 
-</RelativeLayout>
+        <TextView
+            style="@style/listview_column_1"
+            android:layout_weight="3"
+            android:text="@string/column_username" />
+
+        <TextView
+            style="@style/listview_column_2"
+            android:layout_weight="1"
+            android:text="@string/column_score" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/android:list"
+        style="@style/listview" >
+    </ListView>
+
+</LinearLayout>

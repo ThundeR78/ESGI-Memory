@@ -65,7 +65,7 @@ public class ScoreListActivity extends FragmentActivity implements OnTabChangeLi
         mTabHost = (TabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup();
 
-        // TODO Put here your Tabs
+        //Put here our Tabs
         ScoreListActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("EasyTab").setIndicator(getResources().getString(R.string.level_easy)));
         ScoreListActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("NormalTab").setIndicator(getResources().getString(R.string.level_normal)));
         ScoreListActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("HardTab").setIndicator(getResources().getString(R.string.level_hard)));

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/list_score_row" >
+
+    <TextView
+        android:id="@+id/score_row_username"
+        style="@style/list_score_row_value_1"
+         />
+
+    <TextView
+        android:id="@+id/score_row_score"
+        style="@style/list_score_row_value_2"
+        android:layout_weight="1" />
+
+</LinearLayout>

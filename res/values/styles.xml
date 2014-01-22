@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 <!-- GENERAL -->
     <style name="activity">
@@ -62,6 +62,47 @@
     <style name="blinkText">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FF0000</item>
+    </style>
+    
+<!-- LISTVIEW -->
+	<style name="listview_header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="listview_column">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="listview_column_1" parent="listview_column">
+        <item name="android:layout_weight">3</item>
+    </style>
+    <style name="listview_column_2" parent="listview_column">
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="listview">
+    	<item name="android:layout_width">match_parent</item>
+    	<item name="android:layout_height">wrap_content</item>
+    	<item name="android:dividerHeight">1dp</item>
+    	<item name="android:divider">@color/grey_separator</item>
+    	<item name="android:cacheColorHint">@color/transparent</item>
+   	</style>
+    <style name="list_score_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/grey_light</item>
+    </style>
+    <style name="list_score_row_value">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="list_score_row_value_1" parent="list_score_row_value">
+        <item name="android:layout_weight">3</item>
+    </style>
+    <style name="list_score_row_value_2" parent="list_score_row_value">
+        <item name="android:layout_weight">1</item>
     </style>
     
 </resources>

@@ -51,4 +51,7 @@
         <item quantity="other">%d coups</item>
     </plurals>
     
+    <!-- LISTVIEW -->
+    <string name="column_username">Pseudo</string>
+	<string name="column_score">Score</string>
 </resources>
