@@ -1,14 +1,6 @@
 package fr.esgi.android.project.esgi_memory;
 
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Application;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 public class ESGIMemoryApp extends Application {
@@ -39,6 +31,9 @@ public class ESGIMemoryApp extends Application {
 	public static final String KEY_LIST_IMAGEID = "KEY_LIST_IMAGEID";
 	public static final String KEY_PAIR_FOUND = "KEY_PAIR_FOUND";
 	public static final String KEY_FIRST_CARD = "KEY_FIRST_CARD";
+	public static final String KEY_IN_ANIMATION = "KEY_IN_ANIMATION";
+	public static final String KEY_SAME_CARD = "KEY_SAME_CARD";
+	public static final String KEY_HAS_SOUND = "KEY_HAS_SOUND";
 	
 	//KEY PREFERENCES
 	public static final String PREFS_APP = "ESGI_MEMORY_PREFERENCES";

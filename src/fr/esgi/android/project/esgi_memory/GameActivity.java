@@ -32,7 +32,6 @@ import android.widget.Chronometer;
 import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.esgi.android.project.esgi_memory.business.Score;
@@ -103,14 +102,6 @@ public class GameActivity extends Activity {
 
 		Log.i(ESGIMemoryApp.KEY_LEVEL, "Level= "+level);
 		Log.i(ESGIMemoryApp.KEY_TIMER, "Timer= "+timeTotal);
-		
-//		Handler handler = new Handler();
-//		handler.post(runnableTurnCard);
-//		handler.postDelayed(new Runnable() {
-//			public void run() {
-//				
-//			}
-//		}, 2000);
 	}
 	
 	@Override
@@ -167,6 +158,7 @@ public class GameActivity extends Activity {
 		outState.putInt(ESGIMemoryApp.KEY_LEVEL, level);
 		outState.putInt(ESGIMemoryApp.KEY_MOVE, nbMove);
 		outState.putBoolean(ESGIMemoryApp.KEY_GAME_FINISHED, isGameFinished);
+		outState.putBoolean(ESGIMemoryApp.KEY_HAS_SOUND, hasSound);
 		//Time
 		outState.putBoolean(ESGIMemoryApp.KEY_HAS_TIMER, hasTimer);
 		outState.putInt(ESGIMemoryApp.KEY_TIME_TOTAL, timeTotal);
@@ -178,6 +170,8 @@ public class GameActivity extends Activity {
 		outState.putIntegerArrayList(ESGIMemoryApp.KEY_LIST_IMAGEID, (ArrayList<Integer>) listImageIDs);
 		outState.putInt(ESGIMemoryApp.KEY_PAIR_FOUND, nbPairFound);
 		outState.putInt(ESGIMemoryApp.KEY_TIME_TOTAL, firstCardIndex);
+		outState.putBoolean(ESGIMemoryApp.KEY_IN_ANIMATION, inAnimation);
+		outState.putBoolean(ESGIMemoryApp.KEY_SAME_CARD, sameCard);
 	}
 	
 	@Override
@@ -187,6 +181,7 @@ public class GameActivity extends Activity {
 		level = savedInstanceState.getInt(ESGIMemoryApp.KEY_LEVEL, 2);
 		nbMove = savedInstanceState.getInt(ESGIMemoryApp.KEY_MOVE, 0);
 		isGameFinished = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_GAME_FINISHED, false);
+		hasSound = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_HAS_SOUND, false);
 		//Time
 		hasTimer = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_HAS_TIMER, false);
 		timeTotal = savedInstanceState.getInt(ESGIMemoryApp.KEY_TIME_TOTAL, ESGIMemoryApp.TIMER_NORMAL);
@@ -198,6 +193,8 @@ public class GameActivity extends Activity {
 		listImageIDs = savedInstanceState.getIntegerArrayList(ESGIMemoryApp.KEY_LIST_IMAGEID);
 		nbPairFound = savedInstanceState.getInt(ESGIMemoryApp.KEY_PAIR_FOUND, 0);
 		firstCardIndex = savedInstanceState.getInt(ESGIMemoryApp.KEY_TIME_TOTAL, -1);
+		inAnimation = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_IN_ANIMATION, false);
+		sameCard = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_SAME_CARD, false);
 	}
 	
 	//Initialize GridView
@@ -276,7 +273,8 @@ public class GameActivity extends Activity {
 		} else {
 			txtTimer.setVisibility(View.GONE);
 			chrono.setOnChronometerTickListener(new OnChronometerTickListener() {
-			    public void onChronometerTick(Chronometer cArg) {
+			    @Override
+				public void onChronometerTick(Chronometer cArg) {
 			        cArg.setText(FormatDate.millisecondFormat(SystemClock.elapsedRealtime() - cArg.getBase()));
 			    }
 			});
@@ -304,6 +302,7 @@ public class GameActivity extends Activity {
 	//Start Timer
 	private void startCountdown (long timeInMillisec) {
 		countdownTimer = new CountDownTimer(timeInMillisec, delayBetweenEachTick) {
+			@Override
 			public void onTick(long millisUntilFinished) {
 				timeInMilliseconds = millisUntilFinished;
 				long seconds = millisUntilFinished / 1000;
@@ -317,6 +316,7 @@ public class GameActivity extends Activity {
 				txtTimer.setText(String.format("%02d", seconds / 60) + ":" + String.format("%02d", seconds % 60));
 			}
 			
+			@Override
 			public void onFinish() {
 				txtTimer.setVisibility(View.VISIBLE);
 				txtTimer.setText("Temps écoulé !");
@@ -402,6 +402,7 @@ public class GameActivity extends Activity {
 			.setView(inflater.inflate(R.layout.dialog_game_result, null))
 			.setCancelable(false)
 			.setPositiveButton(res.getString(R.string.button_retry), new DialogInterface.OnClickListener() {
+				@Override
 				public void onClick(DialogInterface dialogInterface,int id) {
 					score.setUsername(((EditText)dialog.findViewById(R.id.editUsername)).getText().toString());
 					saveScore(score);
@@ -410,6 +411,7 @@ public class GameActivity extends Activity {
 				}
 			})
 			.setNegativeButton(res.getString(R.string.button_leave), new DialogInterface.OnClickListener() {
+				@Override
 				public void onClick(DialogInterface dialogInterface,int id) {
 					score.setUsername(((EditText)dialog.findViewById(R.id.editUsername)).getText().toString());
 					saveScore(score);
@@ -463,22 +465,23 @@ public class GameActivity extends Activity {
 
 	//Stop Sound
 	private void resumeSound() {
-		soundManager.resume();
+		SoundManager.resume();
 	}
 	
 	//Stop Sound
 	private void pauseSound() {
-		soundManager.pause();
+		SoundManager.pause();
 	}
 	
 	//Stop Sound
 	private void stopSound() {
-		soundManager.clear();
+		SoundManager.clear();
 	}
 	
 	//Click on a card
 	OnItemClickListener onGridViewItemClickListener = new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+        @Override
+		public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
         	if (!inAnimation) {
 	        	cardView = (CardView) v;
 	        	
@@ -523,6 +526,7 @@ public class GameActivity extends Activity {
     };
     
     Runnable runnableTurnCard = new Runnable() {
+		@Override
 		public void run() {
 			Log.v("HANDLER", "TURN CARD");
 			
@@ -552,6 +556,7 @@ public class GameActivity extends Activity {
 	};
 	
 	Runnable runnableReturnCards = new Runnable() {
+		@Override
 		public void run() {
 			Log.v("HANDLER", "RETURN CARD");
 			

@@ -38,11 +38,12 @@ public class SoundManager {
     }
 
     public SoundManager(Context mContext) {
-        mAudioManager = (AudioManager) mContext.getSystemService(mContext.AUDIO_SERVICE);
+        mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         mSoundPool = new SoundPool(maxSounds, AudioManager.STREAM_MUSIC, 0);
 
         mSoundPool.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-            public void onLoadComplete(SoundPool soundPool, int sampleId,int status) {
+            @Override
+			public void onLoadComplete(SoundPool soundPool, int sampleId,int status) {
             	isLoaded = true;
             }
         });

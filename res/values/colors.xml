@@ -4,6 +4,7 @@
     <color name="black">#000</color>
 	<color name="white">#FFF</color>
 	<color name="grey">#8F8F8F</color>
+	<color name="grey_medium">#cbcbcb</color>
 	<color name="grey_light">#E8E8E8</color> 			<!-- 232/232/232 -->
 	<color name="grey_light_separator">#DEDEDE</color> 	<!-- 222/222/222 -->
 	<color name="grey_dark">#7F8182</color> 			<!-- 127/129/130 -->
