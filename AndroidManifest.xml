@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".LevelActivity" android:screenOrientation="unspecified" android:configChanges="orientation" /> 
         <activity android:name=".GameActivity" android:screenOrientation="unspecified" android:configChanges="orientation" />
-        <activity android:name="fr.esgi.android.project.esgi_memory.ScoreListActivity" android:screenOrientation="unspecified" android:configChanges="orientation" />
+        <activity android:name=".ScoreListActivity" android:screenOrientation="unspecified" android:configChanges="orientation" />
         <activity android:name=".SettingsActivity" android:screenOrientation="unspecified" android:configChanges="orientation" />
     </application>
 
