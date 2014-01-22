@@ -14,15 +14,15 @@
 <!-- Total= 18 -->
 <!-- Photo Prof -->
     <array name="images_normal">
+        <item>@drawable/logo_iphone</item>
         <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
+        <item>@drawable/bouton_vert</item>
+        <item>@drawable/logo_blackberry</item>
+        <item>@drawable/bouton_bleu</item>
+        <item>@drawable/bouton_rouge</item>
+        <item>@drawable/logo_windows_phone</item>
+        <item>@drawable/logo_android</item>
+        <item>@drawable/logo_esgi</item>
     </array>
     
 <!-- Total= 28 -->

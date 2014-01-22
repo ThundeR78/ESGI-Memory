@@ -51,7 +51,6 @@ public class ScoreListItemAdapter extends ArrayAdapter<Score> {
 		}
 		
 		holder.username.setText(currentItem.getUsername());
-		Log.v("POINT", currentItem.getPoint()+"");
 		String points = FormatNumber.formatPoint(currentItem.getPoint());
 		holder.score.setText(points);
 

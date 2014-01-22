@@ -37,17 +37,16 @@ public class ScoreListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.fragment_score_list, container, false);
-		
-		
-		
+	
 		return rootView;
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
+		
 		DatabaseHandler db = new DatabaseHandler(getActivity());
-		updateListAdapter(db.getAllScores());
+		updateListAdapter(db.getAllScoresByLevel(level));
 	}
 	
 	private void updateListAdapter(List<Score> inItems) {

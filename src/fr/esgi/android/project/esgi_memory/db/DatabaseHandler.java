@@ -123,7 +123,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
        // return score list
        return scoreList;
-   }
+    }
+    
+    //Getting All Scores (id, username, date, point only)
+    public List<Score> getAllScoresByLevel(int level) {
+       List<Score> scoreList = new ArrayList<Score>();
+       if (level == 0)
+    	   level = 1;
+       
+       // Select All Query
+       String selectQuery = "SELECT "+ScoreBase.COLUMN_NAME_ID+", "+ScoreBase.COLUMN_NAME_USERNAME+", "+ScoreBase.COLUMN_NAME_DATE+", "+ScoreBase.COLUMN_NAME_POINT+
+       		" FROM " + ScoreBase.TABLE_NAME + 
+       		" WHERE " + ScoreBase.COLUMN_NAME_LEVEL +" = "+ level +
+       		" ORDER BY "+ ScoreBase.COLUMN_NAME_POINT;
+    
+       SQLiteDatabase db = this.getWritableDatabase();
+       Cursor cursor = db.rawQuery(selectQuery, null);
+    
+       //Looping through all rows and adding to list
+       if (cursor.moveToFirst()) {
+           do {
+               Score score = new Score();
+               score.setId(cursor.getInt(0));
+               score.setUsername(cursor.getString(1));
+               score.setDate(new Date(cursor.getInt(2)));
+               score.setPoint(cursor.getInt(2));
+               // Adding score to list
+               scoreList.add(score);
+           } while (cursor.moveToNext());
+       }
+    
+       // return score list
+       return scoreList;
+    }
     
     //Getting scores Count
     public int getScoresCount() {
