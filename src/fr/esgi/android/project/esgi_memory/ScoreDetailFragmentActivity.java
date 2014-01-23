@@ -12,12 +12,13 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.fragment.ScoreDetailFragment;
 import fr.esgi.android.project.esgi_memory.view.MyPagerAdapter;
 
-public class ScoreDetailFragmentsSlider extends FragmentActivity {
+public class ScoreDetailFragmentActivity extends FragmentActivity {
 	
 	private static final String TAG = "DetailFragmentsSlider";
 
@@ -34,7 +35,7 @@ public class ScoreDetailFragmentsSlider extends FragmentActivity {
 	protected Button navigation_previous;
 	protected Button navigation_next;
 	protected ViewPager pager; 
-
+	protected LinearLayout navigation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +48,14 @@ public class ScoreDetailFragmentsSlider extends FragmentActivity {
 			currentIndex = intent.getIntExtra(STARTING_PAGE_NUMBER_KEY, 0);
 		}
 		
-		setContentView(R.layout.detail);
+		setContentView(R.layout.activity_score_detail);
 		
+		navigation = (LinearLayout) findViewById(R.id.navigation);
 		navigation_previous = (Button) findViewById(R.id.navigation_previous);
 		navigation_previous.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				currentIndex--;
-				
 				pager.setCurrentItem(currentIndex);
 			}
 		});
@@ -63,7 +64,6 @@ public class ScoreDetailFragmentsSlider extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				currentIndex++;
-
 				pager.setCurrentItem(currentIndex);				
 			}
 		});
@@ -119,6 +119,9 @@ public class ScoreDetailFragmentsSlider extends FragmentActivity {
 	}
 	
 	protected void updateNavigation() {
+		if (scores.size() < 2) 
+			navigation.setVisibility(View.GONE);
+		
 		navigation_previous.setEnabled(true);
 		navigation_next.setEnabled(true);
 		

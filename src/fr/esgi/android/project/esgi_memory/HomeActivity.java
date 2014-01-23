@@ -24,7 +24,7 @@ public class HomeActivity extends Activity {
 	}
 
 	public void goScores(View v) {
-		Intent intent = new Intent(this, ScoreListActivity.class);
+		Intent intent = new Intent(this, ScoreListFragmentActivity.class);
 		startActivity(intent);
 	}
 	

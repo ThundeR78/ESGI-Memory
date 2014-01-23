@@ -9,7 +9,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import fr.esgi.android.project.esgi_memory.util.MyTabFactory;
 import fr.esgi.android.project.esgi_memory.view.TabsPagerAdapter;
 
-public class ScoreListActivity extends FragmentActivity implements OnTabChangeListener, OnPageChangeListener {
+public class ScoreListFragmentActivity extends FragmentActivity implements OnTabChangeListener, OnPageChangeListener {
 
 	private TabsPagerAdapter mAdapter;
     private ViewPager mViewPager;
@@ -28,11 +28,11 @@ public class ScoreListActivity extends FragmentActivity implements OnTabChangeLi
         // Fragments and ViewPager Initialization
        
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOnPageChangeListener(ScoreListActivity.this);
+        mViewPager.setOnPageChangeListener(ScoreListFragmentActivity.this);
     }
 
     // Method to add a TabHost
-    private static void AddTab(ScoreListActivity activity, TabHost tabHost, TabHost.TabSpec tabSpec) {
+    private static void AddTab(ScoreListFragmentActivity activity, TabHost tabHost, TabHost.TabSpec tabSpec) {
         tabSpec.setContent(new MyTabFactory(activity));
         tabHost.addTab(tabSpec);
     }
@@ -66,9 +66,9 @@ public class ScoreListActivity extends FragmentActivity implements OnTabChangeLi
         mTabHost.setup();
 
         //Put here our Tabs
-        ScoreListActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("EasyTab").setIndicator(getResources().getString(R.string.level_easy)));
-        ScoreListActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("NormalTab").setIndicator(getResources().getString(R.string.level_normal)));
-        ScoreListActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("HardTab").setIndicator(getResources().getString(R.string.level_hard)));
+        ScoreListFragmentActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("EasyTab").setIndicator(getResources().getString(R.string.level_easy)));
+        ScoreListFragmentActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("NormalTab").setIndicator(getResources().getString(R.string.level_normal)));
+        ScoreListFragmentActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("HardTab").setIndicator(getResources().getString(R.string.level_hard)));
 
         mTabHost.setOnTabChangedListener(this);
     }
