@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
 
     <string name="app_name">ESGI-Memory</string>
     
@@ -8,11 +8,13 @@
 	<string name="title_level">Difficulté</string>
     <string name="title_settings">Paramètres</string>
     <string name="title_scores">Scores</string>
+    <string name="title_score">Score</string>
     
 <!-- BUTTON -->
     <string name="button_retry">Réessayer</string>
     <string name="button_leave">Quitter</string>
     <string name="button_reload">Recommencer</string>
+    <string name="button_delete_all_scores">Effacer tous les scores</string>
     
 <!-- NAVIGATION -->
 	<string name="nav_previous">PRÉCÉDENT</string>

@@ -29,7 +29,7 @@ public class HomeActivity extends Activity {
 	}
 	
 	public void goSettings(View v) {
-//		Intent intent = new Intent(this, SettingsActivity.class);
-//		startActivity(intent);
+		Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
 	}
 }
