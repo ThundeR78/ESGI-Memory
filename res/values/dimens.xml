@@ -23,5 +23,7 @@
     <dimen name="navigation_height">40dp</dimen> 
     <dimen name="navigation_arrow_margin">15dp</dimen>
     
-    
+    <dimen name="list_score_header_column_padding">7dp</dimen>
+    <dimen name="list_score_row_column_padding_vertical">5dp</dimen>
+    <dimen name="list_score_row_column_padding_horizontal">10dp</dimen>
 </resources>

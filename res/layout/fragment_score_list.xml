@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/activity" >
+    style="@style/activity" android:padding="0dp" >
 
     <LinearLayout style="@style/listview_header" >
 
         <TextView
-            style="@style/listview_column_1"
+            style="@style/listview_header_column_1"
             android:layout_weight="3"
             android:text="@string/column_username" />
 
         <TextView
-            style="@style/listview_column_2"
+            style="@style/listview_header_column_2"
             android:layout_weight="1"
             android:text="@string/column_score" />
     </LinearLayout>
