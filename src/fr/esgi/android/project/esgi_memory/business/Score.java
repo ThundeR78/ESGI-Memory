@@ -2,7 +2,10 @@ package fr.esgi.android.project.esgi_memory.business;
 
 import java.util.Date;
 
-public class Score {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Score implements Parcelable {
 
 	private int id;
 	private String username = "";
@@ -113,5 +116,53 @@ public class Score {
 
 	public void setPoint(int point) {
 		this.point = point;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	
+	public static final Parcelable.Creator<Score> CREATOR = new Parcelable.Creator<Score>() {
+		@Override
+		public Score createFromParcel(Parcel in) {
+			return new Score(in);
+		}
+
+		@Override
+		public Score[] newArray(int size) {
+			return new Score[size];
+		}
+	};
+
+	private Score(Parcel in) {
+		readFromParcel(in);
+	}
+
+	public void writeToParcel(Parcel dest, int flags) {
+		boolean[] bool = { win };
+		dest.writeInt(id);
+		dest.writeString(username);
+		dest.writeLong(date.getTime());
+		dest.writeInt(level);
+		dest.writeLong(time);
+		dest.writeInt(move);
+		dest.writeInt(bonus);
+		dest.writeInt(point);
+		dest.writeBooleanArray(bool);
+	}
+
+	public void readFromParcel(Parcel in) {
+		boolean[] bool = new boolean[1];
+		id = in.readInt();
+		username = in.readString();
+		date = new Date(in.readLong());
+		level = in.readInt();
+		time = in.readLong();
+		move = in.readInt();
+		bonus = in.readInt();
+		point = in.readInt();
+		in.readBooleanArray(bool);
+		win = bool[0];
 	}
 }

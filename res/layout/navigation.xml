@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="@dimen/navigation_height"
+    android:layout_marginTop="1dp"
+    android:orientation="horizontal">
+
+   	<Button android:id="@+id/navigation_previous" style="@style/navigation_button" android:text="@string/nav_previous" android:drawableLeft="@drawable/tab_left_arrow" android:paddingLeft="@dimen/navigation_arrow_margin" />
+
+    <View android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/white" />
+
+    <Button android:id="@+id/navigation_next" style="@style/navigation_button" android:text="@string/nav_next" android:drawableRight="@drawable/tab_right_arrow" android:paddingRight="@dimen/navigation_arrow_margin" />
+
+</LinearLayout>

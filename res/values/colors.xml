@@ -32,6 +32,9 @@
 	<color name="navbar_menu_button">#2F353B</color>
 	<color name="navbar_background">@color/orange_dark</color>
 	<color name="navbar_separator">#8F8F8F</color>
+	
+	<color name="navigation_pressed">#3286BA</color>
+	<color name="navigation_disabled">#FBFBFB</color>
 
 	<color name="activity_background">@color/orange_light</color>	
 	<color name="listview_background">#FFF</color>

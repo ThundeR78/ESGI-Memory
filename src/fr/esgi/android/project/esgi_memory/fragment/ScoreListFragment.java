@@ -1,8 +1,10 @@
 package fr.esgi.android.project.esgi_memory.fragment;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -10,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import fr.esgi.android.project.esgi_memory.R;
+import fr.esgi.android.project.esgi_memory.ScoreDetailFragmentsSlider;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.view.ScoreListItemAdapter;
@@ -20,7 +24,7 @@ public class ScoreListFragment extends ListFragment {
 	public static final String TAG ="ScoreListFragment";
 	
 	private int level;
-//	private
+	private List<Score> listScore;
 
 	public ScoreListFragment() {
 		super();
@@ -46,12 +50,25 @@ public class ScoreListFragment extends ListFragment {
 		super.onStart();
 		
 		DatabaseHandler db = new DatabaseHandler(getActivity());
-		updateListAdapter(db.getAllScoresByLevel(level));
+		listScore = db.getAllScoresByLevel(level);
+		
+		updateListAdapter(listScore);
 	}
 	
 	private void updateListAdapter(List<Score> inItems) {
 		ArrayAdapter<Score> arrayAdapter = new ScoreListItemAdapter(getActivity(), R.layout.list_score_row, inItems);
 		getListView().setAdapter(arrayAdapter);
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		
+		Intent intent = new Intent(getActivity(), ScoreDetailFragmentsSlider.class);
+		intent.putParcelableArrayListExtra(ScoreDetailFragmentsSlider.ITEM_LIST_KEY, new ArrayList<Score>(listScore));
+		intent.putExtra(ScoreDetailFragmentsSlider.STARTING_PAGE_NUMBER_KEY, position);
+		intent.putExtra(ScoreDetailFragmentsSlider.ITEM_KEY, listScore.get(position));
+    	startActivity(intent);
 	}
 
 }
