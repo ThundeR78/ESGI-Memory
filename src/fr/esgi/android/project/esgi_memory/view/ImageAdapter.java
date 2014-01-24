@@ -1,5 +1,6 @@
 package fr.esgi.android.project.esgi_memory.view;
 
+import fr.esgi.android.project.esgi_memory.R;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +39,13 @@ public class ImageAdapter extends BaseAdapter {
     @Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         CardView cardView;
-        if(convertView == null){
-            cardView = new CardView(mContext);        
+        if (convertView == null){
+            cardView = new CardView(mContext);
             cardView.setLayoutParams(new GridView.LayoutParams(100, 100));
-            cardView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            cardView.setScaleType(ImageView.ScaleType.FIT_XY);
+            cardView.setBackgroundResource(R.color.white);
             cardView.setPadding(8, 8, 8, 8);
-        }else{
+        } else {
             cardView = (CardView) convertView;
         }
 //        cardView.setEnabled(false);
