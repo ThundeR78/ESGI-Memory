@@ -10,7 +10,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
@@ -18,6 +17,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
-import fr.esgi.android.project.esgi_memory.util.FormatDate;
+import fr.esgi.android.project.esgi_memory.util.FormatValue;
 import fr.esgi.android.project.esgi_memory.util.SoundManager;
 import fr.esgi.android.project.esgi_memory.view.CardView;
 import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
@@ -49,6 +49,7 @@ public class GameActivity extends Activity {
 	private boolean isGameFinished = false;
 	private Score score;
 	private boolean inAnimation = false;
+	private String username;
 	
 	//Time
 	private boolean hasTimer = false;
@@ -83,12 +84,21 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		//Get parameters
-		level = getIntent().getIntExtra(ESGIMemoryApp.KEY_LEVEL, ESGIMemoryApp.KEY_LEVEL_NORMAL);
-		hasTimer = getIntent().getBooleanExtra(ESGIMemoryApp.KEY_TIMER, false);
+		Intent intent = getIntent();
+		if (intent != null && intent.getExtras() != null) {
+			level = intent.getIntExtra(ESGIMemoryApp.KEY_LEVEL, ESGIMemoryApp.KEY_LEVEL_NORMAL);
+			hasTimer = intent.getBooleanExtra(ESGIMemoryApp.KEY_TIMER, false);
+		} else {
+			level = Integer.parseInt(prefs.getString(ESGIMemoryApp.PREF_LEVEL, "2"));
+			hasTimer = prefs.getBoolean(ESGIMemoryApp.PREF_TIMER, false);
+		}
 
-		//Get value sound
-		hasSound = getSharedPreferences(ESGIMemoryApp.PREFS_APP, 0).getBoolean(ESGIMemoryApp.PREF_HAS_SOUND, true);
+		//Get pref value
+		hasSound =  prefs.getBoolean(ESGIMemoryApp.PREF_HAS_SOUND, true);
+		username = prefs.getString(ESGIMemoryApp.PREF_USERNAME, "");
 		
 		//Link interface and components
 		gridview = (GridView) findViewById(R.id.gridView);
@@ -275,7 +285,7 @@ public class GameActivity extends Activity {
 			chrono.setOnChronometerTickListener(new OnChronometerTickListener() {
 			    @Override
 				public void onChronometerTick(Chronometer cArg) {
-			        cArg.setText(FormatDate.millisecondFormat(SystemClock.elapsedRealtime() - cArg.getBase()));
+			        cArg.setText(FormatValue.millisecondFormat(SystemClock.elapsedRealtime() - cArg.getBase()));
 			    }
 			});
 		}
@@ -340,7 +350,8 @@ public class GameActivity extends Activity {
 		isGameFinished = true;
 		
 		soundManager.playSound(win ? SoundManager.SOUND_WIN_GAME : SoundManager.SOUND_LOOSE_GAME);
-			
+		
+		//Stop Game
 		stopTime();
 		loadResult(win);
 		
@@ -349,24 +360,16 @@ public class GameActivity extends Activity {
 	
 	//Count Result Score
 	private void loadResult(boolean win) {
-		//Get Username
-		Editor editor = getSharedPreferences(ESGIMemoryApp.PREFS_APP, 0).edit();
-		editor.putString(ESGIMemoryApp.PREF_USERNAME, "ThundeR");
-		editor.commit();
-		
-		SharedPreferences prefs = getSharedPreferences(ESGIMemoryApp.PREFS_APP, 0);
-		String username = prefs.getString(ESGIMemoryApp.PREF_USERNAME, "");
-		
-		//Count Time
 		long timeToFinish = 0;
 		String time = "";
+		
+		//Count Time
 		if (win) {
-			if (hasTimer) {
+			if (hasTimer)
 				timeToFinish = timeTotal - (timeInMilliseconds/1000);
-			} else {		
+			else		
 				timeToFinish = SystemClock.elapsedRealtime() - chrono.getBase();
-			}
-			time = FormatDate.millisecondFormat(timeToFinish);
+			time = FormatValue.millisecondFormat(timeToFinish);
 		} else {
 			time = getResources().getString(R.string.label_times_up);
 		}
@@ -383,7 +386,8 @@ public class GameActivity extends Activity {
 		//Save new Score
 		score = new Score(username, new Date(), win, level, timeToFinish, nbMove, bonus, points);
 
-		displayResult(win, username, time, move, bonus+"", points+"");
+		//Display Dialog with result
+		displayResult(win, username, time, move, FormatValue.formatBigNumber(bonus), FormatValue.formatBigNumber(points));
 	}
 	
 	//Display Score result
@@ -404,17 +408,22 @@ public class GameActivity extends Activity {
 			.setPositiveButton(res.getString(R.string.button_retry), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialogInterface,int id) {
-					score.setUsername(((EditText)dialog.findViewById(R.id.editUsername)).getText().toString());
+					score.setUsername(((EditText) dialog.findViewById(R.id.editUsername)).getText().toString());
+					//Save Score
 					saveScore(score);
+					//Reinit Score
 					refreshUI();
+					//Load new Game
 					loadGame();
 				}
 			})
 			.setNegativeButton(res.getString(R.string.button_leave), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialogInterface,int id) {
-					score.setUsername(((EditText)dialog.findViewById(R.id.editUsername)).getText().toString());
+					score.setUsername(((EditText) dialog.findViewById(R.id.editUsername)).getText().toString());
+					//Save Score
 					saveScore(score);
+					//Go Home
 					Intent intent = new Intent(GameActivity.this, HomeActivity.class);
 					startActivity(intent);
 					GameActivity.this.finish();
@@ -548,7 +557,7 @@ public class GameActivity extends Activity {
 			if (secondCardIndex != -1) {
 				//Call animation back
 				Handler handlerReturn = new Handler();
-	    		handlerReturn.postDelayed(runnableReturnCards, 1000); 
+	    		handlerReturn.postDelayed(runnableReturnCards, 750); 
 			} else {
 				inAnimation = false;
 			}

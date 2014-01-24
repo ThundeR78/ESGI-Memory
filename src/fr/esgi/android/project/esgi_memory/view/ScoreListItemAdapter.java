@@ -3,7 +3,6 @@ package fr.esgi.android.project.esgi_memory.view;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import fr.esgi.android.project.esgi_memory.R;
 import fr.esgi.android.project.esgi_memory.business.Score;
-import fr.esgi.android.project.esgi_memory.util.FormatNumber;
+import fr.esgi.android.project.esgi_memory.util.FormatValue;
 
 public class ScoreListItemAdapter extends ArrayAdapter<Score> {
 	private static final String TAG = "ScoreListItemAdapter";
@@ -51,7 +50,7 @@ public class ScoreListItemAdapter extends ArrayAdapter<Score> {
 		}
 		
 		holder.username.setText(currentItem.getUsername());
-		String points = FormatNumber.formatPoint(currentItem.getPoint());
+		String points = FormatValue.formatBigNumber(currentItem.getPoint());
 		holder.score.setText(points);
 
 		return convertView;
