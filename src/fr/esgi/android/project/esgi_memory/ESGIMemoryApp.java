@@ -39,6 +39,8 @@ public class ESGIMemoryApp extends Application {
 	public static final String PREFS_APP = "ESGI_MEMORY_PREFERENCES";
 	public static final String PREF_USERNAME = "PREF_USERNAME";
 	public static final String PREF_HAS_SOUND = "PREF_HAS_SOUND";
+	public static final String PREF_LEVEL = "PREF_LEVEL";
+	public static final String PREF_TIMER = "PREF_TIMER";
 	
 	
 	private static SQLiteDatabase db;

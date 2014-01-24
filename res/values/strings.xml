@@ -50,14 +50,19 @@
 	<string name="init_value_time">0 sec</string>
 	<string name="init_value_move">0 coup</string>
 	<string name="dialog_title_win">Félicitation !</string>
-    <string name="dialog_title_loose">P\'tite caisse !</string>
+    <string name="dialog_title_loose">Fucking noob !</string>
     <plurals name="numberMove">
         <item quantity="zero">0 coup</item>
         <item quantity="one">1 coup</item>
         <item quantity="other">%d coups</item>
     </plurals>
     
-    <!-- LISTVIEW -->
+<!-- LISTVIEW -->
     <string name="column_username">Pseudo</string>
 	<string name="column_score">Score</string>
+	
+<!-- DIALOG -->
+	<string name="alert_delete_all_title">Suppression des scores</string>
+	<string name="alert_delete_all_message">Es-tu sûr de vouloir tout supprimer ?</string>
+	
 </resources>

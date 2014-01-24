@@ -5,27 +5,24 @@
             android:title="@string/label_title_general">
             
 	    <CheckBoxPreference
-	        android:dialogTitle="@string/label_sound"
-	        android:key="edittext_sound"
+	        android:key="PREF_HAS_SOUND"
 	        android:title="@string/label_sound" />
 	    
 	    <EditTextPreference
-	        android:key="checkbox_username"
+	        android:key="PREF_USERNAME"
 	        android:title="@string/label_username" />
 	</PreferenceCategory>
 	
     <PreferenceCategory
-            android:title="@string/label_title_quickgame" android:summary="Test">
+            android:title="@string/label_title_quickgame">
 	    
         <ListPreference 
-            android:dialogTitle="@string/label_level" 
-            android:key="listpref_level" 
+            android:key="PREF_LEVEL" 
             android:title="@string/label_level" 
             android:entries="@array/array_level_label" android:entryValues="@array/array_level_value" />
         
         <CheckBoxPreference
-	        android:dialogTitle="@string/label_timer"
-	        android:key="edittext_timer"
+	        android:key="PREF_TIMER"
 	        android:title="@string/label_timer" />
         
     </PreferenceCategory>
