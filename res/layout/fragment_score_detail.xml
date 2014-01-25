@@ -41,8 +41,17 @@
 		</TableLayout>		
 	</ScrollView>
 	
- 	<Button style="@style/button_score" 
-     	android:text="@string/button_delete_score"
-     	android:id="@+id/buttonDelete" />
+	<LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+	 	<Button style="@style/button_score_red" 
+	     	android:text="@string/button_delete_score"
+	     	android:id="@+id/buttonDelete" 
+	     	android:layout_marginRight="5dp" />
+	 	
+	 	<Button style="@style/button_score_green" 
+	     	android:text="@string/button_update_score"
+	     	android:id="@+id/buttonUpdate"
+	     	android:layout_marginLeft="5dp" />
+ 	
+ 	</LinearLayout>
  	
 </LinearLayout>

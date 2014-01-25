@@ -15,7 +15,8 @@
     <string name="button_leave">Quitter</string>
     <string name="button_reload">Recommencer</string>
     <string name="button_delete_all_scores">Effacer tous les scores</string>
-    <string name="button_delete_score">Supprimer ce score</string>
+    <string name="button_delete_score">Supprimer</string>
+    <string name="button_update_score">Mettre à jour</string>
     
 <!-- NAVIGATION -->
 	<string name="nav_previous">PRÉCÉDENT</string>

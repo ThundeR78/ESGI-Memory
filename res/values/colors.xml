@@ -45,7 +45,7 @@
 	
 	<color name="button_red_enabled">#FF4444</color>
 	<color name="button_red_pressed">#CC0000</color>
-	<color name="button_yellow_enabled">@color/yellow</color>
-	<color name="button_yellow_pressed">#B4C100</color>	
+	<color name="button_green_enabled">@color/green</color>
+	<color name="button_green_pressed">@color/green_dark</color>
 	<color name="button_disabled">#E8E8E8</color>
 </resources>

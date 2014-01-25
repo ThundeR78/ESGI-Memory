@@ -22,7 +22,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	
 	private EditText editUsername;
 	private TextView textDate, textLevel, textTime, textMove, textBonus, textPoints;
-	private Button buttonDelete;
+	private Button buttonDelete, buttonUpdate;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -42,7 +42,10 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 		textBonus = (TextView) contentView.findViewById(R.id.bonus);
 		textPoints = (TextView) contentView.findViewById(R.id.points);
 		buttonDelete = (Button) contentView.findViewById(R.id.buttonDelete);
+		buttonUpdate = (Button) contentView.findViewById(R.id.buttonUpdate);
+		
 		buttonDelete.setOnClickListener(this);
+		buttonUpdate.setOnClickListener(this);
 		
 		return contentView;
 	}
@@ -60,6 +63,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	protected void displayItem(Score inItem) {
 		if (inItem != null && inItem.getDate() != null && this.isAdded()) {
 			editUsername.setText(inItem.getUsername());
+			editUsername.setSelection(editUsername.getText().length());
 			textDate.setText(FormatValue.datetimeLabelFormat2.format(inItem.getDate()));
 			textLevel.setText(inItem.getLevel()+"");
 			textTime.setText(FormatValue.millisecondFormat(inItem.getTime()));
@@ -76,6 +80,16 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	public void deleteScore() {
 		if (getActivity() != null && this.isAdded() && score != null && score.getId() >0) {
 			db.deleteScore(score);
+			
+			getActivity().finish();
+		}
+	}
+	
+	public void updateScore() {
+		if (getActivity() != null && this.isAdded() && score != null && score.getId() >0) {
+			score.setUsername(editUsername.getText().toString());
+			db.updateScore(score);
+			
 			getActivity().finish();
 		}
 	}
@@ -84,6 +98,8 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		if (v.getId() == R.id.buttonDelete) {
 			deleteScore();
+		} else if (v.getId() == R.id.buttonUpdate) {
+			updateScore();
 		}
 	}
 }

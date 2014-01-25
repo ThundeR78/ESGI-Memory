@@ -41,6 +41,11 @@ public class ScoreDetailFragmentActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		setContentView(R.layout.activity_score_detail);
+		
+//		getActionBar().setDisplayHomeAsUpEnabled(true);
+
+		//Get values intent
 		final Intent intent = getIntent();
 		if (intent != null) {
 			scores = intent.getParcelableArrayListExtra(ITEM_LIST_KEY);
@@ -48,8 +53,7 @@ public class ScoreDetailFragmentActivity extends FragmentActivity {
 			currentIndex = intent.getIntExtra(STARTING_PAGE_NUMBER_KEY, 0);
 		}
 		
-		setContentView(R.layout.activity_score_detail);
-		
+		//Navigation
 		navigation = (LinearLayout) findViewById(R.id.navigation);
 		navigation_previous = (Button) findViewById(R.id.navigation_previous);
 		navigation_previous.setOnClickListener(new OnClickListener() {
@@ -68,7 +72,7 @@ public class ScoreDetailFragmentActivity extends FragmentActivity {
 			}
 		});
 		
-
+		//Create fragments
 		List<Fragment> fragments = new ArrayList<Fragment>();
 		for (int i = 0; i < scores.size(); i++) {
 			ScoreDetailFragment scoreDetailFragment = (ScoreDetailFragment) Fragment.instantiate(this, ScoreDetailFragment.class.getName());
@@ -78,11 +82,11 @@ public class ScoreDetailFragmentActivity extends FragmentActivity {
 		}
 
 		this.myPagerAdapter = new MyPagerAdapter(super.getSupportFragmentManager(), fragments);
-
+		
+		//ViewPager
 		pager = (ViewPager) super.findViewById(R.id.viewpager);
 		pager.setAdapter(this.myPagerAdapter);
 		pager.setCurrentItem(currentIndex);
-		
 		pager.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
