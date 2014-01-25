@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseContract.ScoreBase;
+import fr.esgi.android.project.esgi_memory.util.FormatValue;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 	
@@ -19,10 +20,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	private static final String SQL_CREATE_SCORES =
         "CREATE TABLE "+ ScoreBase.TABLE_NAME +" (" +
-        		ScoreBase._ID +" INTEGER PRIMARY KEY,"+
-        		ScoreBase.COLUMN_NAME_ID +" TEXT,"+
+        		ScoreBase.COLUMN_NAME_ID +" INTEGER PRIMARY KEY,"+
+//        		ScoreBase.COLUMN_NAME_ID +" TEXT,"+
         		ScoreBase.COLUMN_NAME_USERNAME +" TEXT,"+
-        		ScoreBase.COLUMN_NAME_DATE +" DATETIME,"+
+        		ScoreBase.COLUMN_NAME_DATE +" DATETIME DEFAULT CURRENT_TIMESTAMP,"+
         		ScoreBase.COLUMN_NAME_LEVEL +" INTEGER,"+
         		ScoreBase.COLUMN_NAME_TIME +" INTEGER,"+
         		ScoreBase.COLUMN_NAME_MOVE +" INTEGER,"+
@@ -91,7 +92,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         //Convert result in object Score
-        Score score = new Score(Integer.parseInt(cursor.getString(0)),
+        Score score = new Score(cursor.getInt(0),
                 cursor.getString(1), new Date(cursor.getLong(2)), (cursor.getInt(3)==1) ? true : false, 
                 cursor.getInt(4), cursor.getLong(5), cursor.getInt(6), cursor.getInt(7), cursor.getInt(8));
         
@@ -114,8 +115,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                Score score = new Score();
                score.setId(cursor.getInt(0));
                score.setUsername(cursor.getString(1));
-               score.setDate(new Date(cursor.getInt(2)));
-               score.setPoint(cursor.getInt(2));
+               score.setDate(new Date(cursor.getLong(2)));
+               score.setPoint(cursor.getInt(3));
                // Adding score to list
                scoreList.add(score);
            } while (cursor.moveToNext());
@@ -143,12 +144,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        //Looping through all rows and adding to list
        if (cursor.moveToFirst()) {
            do {
+        	   //Create new Score with values
                Score score = new Score();
                score.setId(cursor.getInt(0));
                score.setUsername(cursor.getString(1));
-               score.setDate(new Date(cursor.getInt(2)));
-               score.setPoint(cursor.getInt(2));
-               // Adding score to list
+               score.setDate(new Date(cursor.getLong(2)));
+               score.setPoint(cursor.getInt(3));
+               //Adding score to list
                scoreList.add(score);
            } while (cursor.moveToNext());
        }

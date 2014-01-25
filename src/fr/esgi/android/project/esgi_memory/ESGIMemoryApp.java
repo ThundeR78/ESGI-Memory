@@ -42,7 +42,6 @@ public class ESGIMemoryApp extends Application {
 	public static final String PREF_LEVEL = "PREF_LEVEL";
 	public static final String PREF_TIMER = "PREF_TIMER";
 	
-	
 	private static SQLiteDatabase db;
 
 	@Override

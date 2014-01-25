@@ -381,7 +381,7 @@ public class GameActivity extends Activity {
 		int bonus = (level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 1000 : (level == ESGIMemoryApp.KEY_LEVEL_NORMAL) ? 2000 : 3000;
 		
 		//TODO: Count points
-		int points = 0;
+		int points = (int) timeToFinish;
 		
 		//Save new Score
 		score = new Score(username, new Date(), win, level, timeToFinish, nbMove, bonus, points);

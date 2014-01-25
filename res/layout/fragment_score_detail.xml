@@ -5,7 +5,7 @@
 		<TableLayout style="@style/table_layout" > 
 		    <TableRow style="@style/table_row"> 
 		        <TextView android:text="@string/label_username" style="@style/table_column1" /> 
-		        <TextView android:id="@+id/username" style="@style/table_column2" /> 
+		        <EditText android:id="@+id/username" style="@style/table_column2" /> 
 		    </TableRow> 
 		
 		    <TableRow style="@style/table_row"> 
@@ -43,6 +43,6 @@
 	
  	<Button style="@style/button_score" 
      	android:text="@string/button_delete_score"
-     	android:onClick="deleteScore" />
+     	android:id="@+id/buttonDelete" />
  	
 </LinearLayout>

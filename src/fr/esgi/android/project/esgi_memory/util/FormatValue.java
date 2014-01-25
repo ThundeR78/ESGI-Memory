@@ -10,11 +10,13 @@ import android.text.format.DateFormat;
 public class FormatValue {
 
 	//DATE FORMAT
-	public static SimpleDateFormat dateWebServiceFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-	public static SimpleDateFormat datetimeShortFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-	public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	public static SimpleDateFormat datetimeLabelFormat = new SimpleDateFormat("HH:mm 'le' dd/MM/yyyy");
-	public static SimpleDateFormat timedateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+	public static SimpleDateFormat datetimeSQLiteFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+	public static SimpleDateFormat dateWebServiceFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+	public static SimpleDateFormat datetimeShortFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+	public static SimpleDateFormat datetimeLabelFormat = new SimpleDateFormat("HH:mm 'le' dd/MM/yyyy", Locale.getDefault());
+	public static SimpleDateFormat datetimeLabelFormat2 = new SimpleDateFormat("'le 'dd/MM/yyyy' à 'HH'h'mm", Locale.getDefault());
+	public static SimpleDateFormat timedateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.getDefault());
 	public static NumberFormat numberFormat = NumberFormat.getInstance();
 	
 	public static String millisecondFormat(long time) {
