@@ -15,6 +15,7 @@
     <string name="button_leave">Quitter</string>
     <string name="button_reload">Recommencer</string>
     <string name="button_delete_all_scores">Effacer tous les scores</string>
+    <string name="button_delete_score">Supprimer ce score</string>
     
 <!-- NAVIGATION -->
 	<string name="nav_previous">PRÉCÉDENT</string>
@@ -35,6 +36,7 @@
     <string name="label_title_general">Général</string>
 	<string name="label_title_quickgame">Partie rapide</string>
     <string name="label_username">Pseudo :</string>
+    <string name="label_date">Date :</string>
 	<string name="label_chrono">Chronomètre :</string>
 	<string name="label_timer">Minuteur :</string>
 	<string name="label_time">Temps :</string>

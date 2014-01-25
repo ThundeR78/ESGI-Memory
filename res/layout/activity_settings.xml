@@ -10,7 +10,7 @@
         android:layout_weight="1" />
 
     <Button
-        style="@style/button_preference"
+        style="@style/button_red"
         android:onClick="DeleteAllScore"
         android:text="@string/button_delete_all_scores" />
 

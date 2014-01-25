@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/activity">
-
-    <TextView android:id="@+id/score" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-			
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  style="@style/activity">
+    
+	<ScrollView style="@style/scrollview">
+		<TableLayout style="@style/table_layout" > 
+		    <TableRow style="@style/table_row"> 
+		        <TextView android:text="@string/label_username" style="@style/table_column1" /> 
+		        <TextView android:id="@+id/username" style="@style/table_column2" /> 
+		    </TableRow> 
+		
+		    <TableRow style="@style/table_row"> 
+		        <TextView android:text="@string/label_date" style="@style/table_column1" /> 
+		        <TextView android:id="@+id/date" style="@style/table_column2" /> 
+		    </TableRow> 
+		    
+		    <TableRow style="@style/table_row"> 
+		        <TextView android:text="@string/label_level" style="@style/table_column1" /> 
+		        <TextView android:id="@+id/level" style="@style/table_column2" /> 
+		    </TableRow> 
+		    
+		    
+		    <TableRow style="@style/table_row"> 
+		        <TextView android:text="@string/label_time" style="@style/table_column1" /> 
+		        <TextView android:id="@+id/time" style="@style/table_column2" /> 
+		    </TableRow> 
+		    
+		    <TableRow style="@style/table_row"> 
+		        <TextView android:text="@string/label_move" style="@style/table_column1" /> 
+		        <TextView android:id="@+id/move" style="@style/table_column2" /> 
+		    </TableRow> 
+		
+		    <TableRow style="@style/table_row"> 
+		        <TextView android:text="@string/label_bonus" style="@style/table_column1" /> 
+		        <TextView android:id="@+id/bonus" style="@style/table_column2" /> 
+		    </TableRow>
+		    
+		    <TableRow style="@style/table_row"> 
+		        <TextView android:text="@string/label_points" style="@style/table_column1" /> 
+		        <TextView android:id="@+id/points" style="@style/table_column2" /> 
+		    </TableRow> 
+		</TableLayout>		
+	</ScrollView>
+	
+ 	<Button style="@style/button_score" 
+     	android:text="@string/button_delete_score"
+     	android:onClick="deleteScore" />
+ 	
 </LinearLayout>

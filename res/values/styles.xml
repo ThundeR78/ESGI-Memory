@@ -1,6 +1,12 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 <!-- GENERAL -->
+	<style name="scrollview">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    
     <style name="activity">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -41,7 +47,7 @@
         <item name="android:textStyle">normal</item>
     </style>
     
-    <style name="button_preference">
+    <style name="button_red">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_gravity">center</item>
@@ -52,6 +58,9 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_24</item>
         <item name="android:textStyle">normal</item>
+    </style>
+    
+    <style name="button_score" parent="button_red">
     </style>
     
 <!-- LABEL -->
@@ -140,4 +149,25 @@
 		<item name="android:background">@drawable/navigation_button_selector</item>
 	</style>
 	
+<!-- TABLE -->
+    <style name="table_layout"> 
+        <item name="android:layout_width">match_parent</item> 
+        <item name="android:layout_height">wrap_content</item> 
+    </style> 
+    <style name="table_row" parent="table_layout"> 
+    </style> 
+	<style name="table_column"> 
+        <item name="android:layout_width">0dp</item> 
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item> 
+        <item name="android:padding">3dp</item>
+    </style> 
+    <style name="table_column1" parent="table_column"> 
+        <item name="android:gravity">left</item> 
+        <item name="android:textStyle">bold</item> 
+    </style> 
+    <style name="table_column2" parent="table_column"> 
+        <item name="android:gravity">right</item> 
+    </style> 
+    
 </resources>
