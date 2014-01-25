@@ -6,24 +6,27 @@
     <Button
         android:id="@+id/buttonEasy"
         style="@style/button_level"
+        android:background="@drawable/bouton_bleu"
         android:onClick="goPlayGame"
         android:text="@string/level_easy" />
 
     <Button
         android:id="@+id/buttonNormal"
         style="@style/button_level"
+        android:background="@drawable/bouton_bleu"
         android:onClick="goPlayGame"
         android:text="@string/level_normal" />
 
     <Button
         android:id="@+id/buttonHard"
         style="@style/button_level"
+        android:background="@drawable/bouton_rouge"
         android:onClick="goPlayGame"
         android:text="@string/level_hard" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp" android:layout_weight="1"
         style="@style/field_row">
         
         <TextView
