@@ -425,6 +425,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		//Create alert dialog
 		dialog = builder.create();
 		
+		//Override show method to decide when I want to hide dialog
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 		    @Override
 		    public void onShow(DialogInterface dialogInterface) {
@@ -452,6 +453,7 @@ public class GameActivity extends Activity implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
+		//Click on a result dialog button
 		if (v.getId() == AlertDialog.BUTTON_POSITIVE || v.getId() == AlertDialog.BUTTON_NEGATIVE) {
 			EditText editUsername = (EditText) dialog.findViewById(R.id.editUsername);
 			String user = editUsername.getText().toString().trim();
@@ -504,12 +506,12 @@ public class GameActivity extends Activity implements OnClickListener {
 	}
 	
 	//Play a Sound
-	private void playSound(int soundIndex) {
-		if (hasSound && (mediaPlayer != null && !mediaPlayer.isPlaying())) {
-			mediaPlayer = MediaPlayer.create(this, soundIndex);
-			mediaPlayer.start();
-		}
-	}
+//	private void playSound(int soundIndex) {
+//		if (hasSound && (mediaPlayer != null && !mediaPlayer.isPlaying())) {
+//			mediaPlayer = MediaPlayer.create(this, soundIndex);
+//			mediaPlayer.start();
+//		}
+//	}
 
 	//Stop Sound
 	private void resumeSound() {

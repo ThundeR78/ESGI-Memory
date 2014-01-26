@@ -20,7 +20,10 @@
 		    
 		    <TableRow style="@style/table_row"> 
 		        <TextView android:text="@string/label_timer" style="@style/table_column1" /> 
-		        <CheckBox android:id="@+id/timer" style="@style/table_column2" /> 
+		        <RelativeLayout style="@style/table_column2">
+		        	<CheckBox android:id="@+id/timer" android:layout_width="wrap_content" android:layout_height="wrap_content"
+		        	    android:enabled="false" android:clickable="false" /> 
+		        </RelativeLayout>
 		    </TableRow> 
 		    
 		    <TableRow style="@style/table_row"> 
@@ -55,7 +58,6 @@
 	     	android:text="@string/button_update_score"
 	     	android:id="@+id/buttonUpdate"
 	     	android:layout_marginLeft="5dp" />
- 	
  	</LinearLayout>
  	
 </LinearLayout>
