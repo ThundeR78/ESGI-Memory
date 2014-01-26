@@ -23,6 +23,14 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
     
+    <style name="card_view">
+        <item name="android:layout_width">@dimen/card_size</item>
+        <item name="android:layout_height">@dimen/card_size</item>
+		<item name="android:scaleType">fitXY</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:padding">10dp</item>
+    </style>
+    
 <!-- BUTTON -->
     <style name="button_home">
         <item name="android:layout_width">match_parent</item>

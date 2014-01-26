@@ -2,6 +2,7 @@ package fr.esgi.android.project.esgi_memory.view;
 
 import fr.esgi.android.project.esgi_memory.R;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,13 +11,13 @@ import android.widget.ImageView;
  
 public class ImageAdapter extends BaseAdapter {
  
-    private Context mContext;
+    private Context context;
     private Integer[] images;
     private Integer defaultCard;
  
     public ImageAdapter(Context mContext, Integer[] images, Integer cardBackId) {
     	super();
-        this.mContext = mContext;
+        this.context = mContext;
         this.images = images;
         this.defaultCard = cardBackId;
     }
@@ -38,26 +39,32 @@ public class ImageAdapter extends BaseAdapter {
  
     @Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-        CardView cardView;
-        if (convertView == null){
-            cardView = new CardView(mContext);
-            cardView.setLayoutParams(new GridView.LayoutParams(100, 100));
-            cardView.setScaleType(ImageView.ScaleType.FIT_XY);
-            cardView.setBackgroundResource(R.color.white);
-            cardView.setPadding(8, 8, 8, 8);
+        View view = convertView;
+    	CardView cardView;
+        
+        if (view == null){
+        	LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        	view = inflater.inflate(R.layout.view_card, parent, false);
+            
+        	cardView = new CardView(context);
+        	cardView.imageview = (ImageView) view.findViewById(R.id.imageView);
+//            cardView.setLayoutParams(new GridView.LayoutParams(R.dimen.card_size, R.dimen.card_size));
+//            cardView.setScaleType(ImageView.ScaleType.FIT_XY);
+//            cardView.setBackgroundResource(R.color.white);
+//            cardView.setPadding(8, 8, 8, 8);
+        	view.setTag(cardView);
         } else {
-            cardView = (CardView) convertView;
+//            cardView = (CardView) convertView;
+        	cardView = (CardView) view.getTag();
         }
-//        cardView.setEnabled(false);
-//        cardView.setClickable(false);
-//        cardView.setFocusable(false);
+
         if (cardView.isReturned())
-        	cardView.setImageResource(images[position]);
+        	cardView.imageview.setImageResource(images[position]);
         else
-        	cardView.setImageResource(defaultCard);
+        	cardView.imageview.setImageResource(defaultCard);
         cardView.setTag(images[position]);	//ImageId is the tag of the view
         
-        return cardView;
+        return view;
     }
 
     //http://stackoverflow.com/questions/13697957/how-to-disable-item-in-gridview-in-android

@@ -1,11 +1,13 @@
 package fr.esgi.android.project.esgi_memory.view;
 
 import android.content.Context;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
  
-public class CardView extends ImageView {
+public class CardView extends FrameLayout {
  
 	private boolean isReturned = false;
+	public ImageView imageview;
 	
     public CardView(Context ctx) {
     	super(ctx);

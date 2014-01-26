@@ -61,7 +61,7 @@ public class GameActivity extends Activity {
 	
 	//Card
 	private List<Integer> listImageIDs = new ArrayList<Integer>();
-	private CardView cardView;
+	private CardView cardViewClicked;
 	private int nbPairFound = 0;
 	private int firstCardIndex = -1, secondCardIndex = -1; //index of cards selected
 	private final Integer cardBackId = R.drawable.ic_launcher;
@@ -492,10 +492,10 @@ public class GameActivity extends Activity {
         @Override
 		public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
         	if (!inAnimation) {
-	        	cardView = (CardView) v;
+	        	cardViewClicked = (CardView) v.getTag();
 	        	
 	        	//Second click on the same card or card since found 
-	        	if (position == firstCardIndex || cardView.isReturned())
+	        	if (position == firstCardIndex || cardViewClicked.isReturned())
 	        		return;
 	        	
 	        	//If first card not clicked or second card different to the first 
@@ -510,7 +510,9 @@ public class GameActivity extends Activity {
 	                	txtMove.setText(getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove));
 	                	secondCardIndex = position;
 	                	
-	            		if (gridview.getChildAt(firstCardIndex).getTag() == v.getTag()) {
+	                	CardView firstCardView = (CardView) gridview.getChildAt(firstCardIndex).getTag();
+	                	//Compare Resource Id 
+	            		if (firstCardView.getTag() == cardViewClicked.getTag()) {
 	            			//Pair cards
 	            			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
 	            			nbPairFound++;
@@ -550,8 +552,8 @@ public class GameActivity extends Activity {
 				}
 				
 				soundManager.playSound(SoundManager.SOUND_TURN_CARD);
-				cardView.setImageResource(resId);
-				cardView.toggleSide();
+				cardViewClicked.imageview.setImageResource(resId);
+				cardViewClicked.toggleSide();
 			}
 			
 			if (secondCardIndex != -1) {
@@ -581,17 +583,17 @@ public class GameActivity extends Activity {
 			} else {
 				//Not the same
 				soundManager.playSound(SoundManager.SOUND_WRONG_CARDS);
-				CardView cardFirst = (CardView) gridview.getChildAt(firstCardIndex);
-				CardView cardSecond = (CardView) gridview.getChildAt(secondCardIndex);
-				cardFirst.setImageResource(cardBackId);
-				cardSecond.setImageResource(cardBackId);
+				CardView cardFirst = (CardView) gridview.getChildAt(firstCardIndex).getTag();
+				CardView cardSecond = (CardView) gridview.getChildAt(secondCardIndex).getTag();
+				cardFirst.imageview.setImageResource(cardBackId);
+				cardSecond.imageview.setImageResource(cardBackId);
 				cardFirst.toggleSide();
 				cardSecond.toggleSide();
 			}
 			
             firstCardIndex = -1;
 			secondCardIndex = -1;
-			cardView = null;
+			cardViewClicked = null;
 			sameCard = false;
 			inAnimation = false;
 		}
