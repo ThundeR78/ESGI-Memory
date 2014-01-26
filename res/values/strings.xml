@@ -18,6 +18,10 @@
     <string name="button_delete_score">Supprimer</string>
     <string name="button_update_score">Mettre à jour</string>
     
+<!-- ACTION -->
+	<string name="action_sort_name">Trier par nom</string>
+	<string name="action_sort_points">Trier par points</string>
+    
 <!-- NAVIGATION -->
 	<string name="nav_previous">PRÉCÉDENT</string>
     <string name="nav_next">SUIVANT</string>

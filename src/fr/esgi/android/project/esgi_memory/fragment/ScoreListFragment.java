@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,6 +19,7 @@ import android.widget.ListView;
 import fr.esgi.android.project.esgi_memory.R;
 import fr.esgi.android.project.esgi_memory.ScoreDetailFragmentActivity;
 import fr.esgi.android.project.esgi_memory.business.Score;
+import fr.esgi.android.project.esgi_memory.db.DatabaseContract;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.view.ScoreListItemAdapter;
 
@@ -24,6 +28,7 @@ public class ScoreListFragment extends ListFragment {
 	public static final String TAG ="ScoreListFragment";
 	
 	private int level;
+	private String orderBy;
 	private List<Score> listScore;
 	private DatabaseHandler db;
 
@@ -54,14 +59,52 @@ public class ScoreListFragment extends ListFragment {
 	}
 	
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+	
+	@Override
 	public void onStart() {
 		super.onStart();
 		
-		listScore = db.getAllScoresByLevel(level);
-		db.close();
+		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_POINT;
+		listScore = db.getAllScoresByLevel(level, orderBy);
 		
 		updateListAdapter(listScore);
 	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		db.close();
+	}
+	
+	@Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.list_score, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	//Handle item selection
+    	switch (item.getItemId()) {
+      	case R.id.action_sort_name:
+      		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_USERNAME +","+ DatabaseContract.ScoreBase.COLUMN_NAME_POINT;
+            break;
+      	case R.id.action_sort_points:
+      		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_POINT;
+            break;
+      	default:
+      		return super.onOptionsItemSelected(item);
+    	}
+    	
+    	listScore = db.getAllScoresByLevel(level, orderBy);
+  		updateListAdapter(listScore);
+  		
+    	return true;
+    }   
 	
 	private void updateListAdapter(List<Score> inItems) {
 		ArrayAdapter<Score> arrayAdapter = new ScoreListItemAdapter(getActivity(), R.layout.list_score_row, inItems);

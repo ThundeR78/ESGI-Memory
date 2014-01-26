@@ -130,16 +130,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     
     //Getting All Scores (id, username, date, point only)
-    public List<Score> getAllScoresByLevel(int level) {
+    public List<Score> getAllScoresByLevel(int level, String orderBy) {
        List<Score> scoreList = new ArrayList<Score>();
        if (level == 0)
     	   level = 1;
-       
+       if (orderBy == null || orderBy.length() == 0)
+    	   orderBy = ScoreBase.COLUMN_NAME_POINT;
+    	   
        // Select All Query
        String selectQuery = "SELECT "+ScoreBase.COLUMN_NAME_ID+", "+ScoreBase.COLUMN_NAME_USERNAME+", "+ScoreBase.COLUMN_NAME_DATE+", "+ScoreBase.COLUMN_NAME_POINT+
        		" FROM " + ScoreBase.TABLE_NAME + 
        		" WHERE " + ScoreBase.COLUMN_NAME_LEVEL +" = "+ level +
-       		" ORDER BY "+ ScoreBase.COLUMN_NAME_POINT;
+       		" ORDER BY "+ orderBy;
     
        SQLiteDatabase db = this.getWritableDatabase();
        Cursor cursor = db.rawQuery(selectQuery, null);
