@@ -11,7 +11,7 @@
     <string name="title_score">Score</string>
     
 <!-- BUTTON -->
-    <string name="button_retry">Réessayer</string>
+    <string name="button_retry">Rejouer</string>
     <string name="button_leave">Quitter</string>
     <string name="button_reload">Recommencer</string>
     <string name="button_delete_all_scores">Effacer tous les scores</string>
@@ -67,5 +67,8 @@
 <!-- DIALOG -->
 	<string name="alert_delete_all_title">Suppression des scores</string>
 	<string name="alert_delete_all_message">Es-tu sûr de vouloir tout supprimer ?</string>
+	
+<!-- ERROR -->
+	<string name="error_username">Pseudo incorrect</string>
 	
 </resources>

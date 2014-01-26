@@ -11,6 +11,7 @@ public class Score implements Parcelable {
 	private String username = "";
 	private Date date;
 	private boolean win = false;
+	private boolean timer = false;
 	private int level = 2;
 	private long time = 0;
 	private int move = 0;
@@ -22,10 +23,11 @@ public class Score implements Parcelable {
 	
 	}
 	
-	public Score(String username, Date date, boolean win, int level, long time, int move, int bonus, int point) {
+	public Score(String username, Date date, boolean win, boolean timer, int level, long time, int move, int bonus, int point) {
 		this.username = username;
 		this.date = date;
 		this.win = win;
+		this.setTimer(timer);
 		this.level = level;
 		this.time = time;
 		this.move = move;
@@ -33,7 +35,7 @@ public class Score implements Parcelable {
 		this.point = point;
 	}
 	
-	public Score(int id, String username, Date date, boolean win, int level, long time, int move, int bonus, int point) {
+	public Score(int id, String username, Date date, boolean win, boolean timer, int level, long time, int move, int bonus, int point) {
 		this.id = id;
 		this.username = username;
 		this.date = date;
@@ -117,6 +119,14 @@ public class Score implements Parcelable {
 	public void setPoint(int point) {
 		this.point = point;
 	}
+	
+	public boolean hasTimer() {
+		return timer;
+	}
+
+	public void setTimer(boolean timer) {
+		this.timer = timer;
+	}
 
 	@Override
 	public int describeContents() {
@@ -140,7 +150,7 @@ public class Score implements Parcelable {
 	}
 
 	public void writeToParcel(Parcel dest, int flags) {
-		boolean[] bool = { win };
+		boolean[] bool = { win, timer };
 		dest.writeInt(id);
 		dest.writeString(username);
 		dest.writeLong(date.getTime());
@@ -153,7 +163,7 @@ public class Score implements Parcelable {
 	}
 
 	public void readFromParcel(Parcel in) {
-		boolean[] bool = new boolean[1];
+		boolean[] bool = new boolean[2];
 		id = in.readInt();
 		username = in.readString();
 		date = new Date(in.readLong());
@@ -164,5 +174,7 @@ public class Score implements Parcelable {
 		point = in.readInt();
 		in.readBooleanArray(bool);
 		win = bool[0];
+		timer = bool[1];
 	}
+
 }

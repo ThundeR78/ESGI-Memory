@@ -2,6 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="wrap_content" android:layout_height="wrap_content" >
    
-    <ImageView android:id="@+id/imageView" style="@style/card_view" android:contentDescription=""/>
+    <ImageView android:id="@+id/imageView" style="@style/image_card_view" android:contentDescription=""/>
 
 </FrameLayout>

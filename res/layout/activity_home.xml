@@ -2,9 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activity">
 
-    <ImageView android:id="@+id/img_logo_esgi" android:contentDescription="logo ESGI" android:scaleType="fitXY" android:src="@drawable/logo_esgi"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" 
-		android:layout_gravity="center" />    
+    <ImageView android:id="@+id/img_logo_esgi" style="@style/image_logo"
+        android:contentDescription=""  />    
     
     <Button android:onClick="goPlayGame"
         style="@style/button_home"

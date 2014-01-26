@@ -25,9 +25,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.EditText;
@@ -41,7 +43,7 @@ import fr.esgi.android.project.esgi_memory.util.SoundManager;
 import fr.esgi.android.project.esgi_memory.view.CardView;
 import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
 
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements OnClickListener {
 	
 	//Game
 	private int level;
@@ -50,6 +52,8 @@ public class GameActivity extends Activity {
 	private Score score;
 	private boolean inAnimation = false;
 	private String username;
+	private int timeToReturn = 500;
+	private boolean gameWon = false;
 	
 	//Time
 	private boolean hasTimer = false;
@@ -362,29 +366,40 @@ public class GameActivity extends Activity {
 	private void loadResult(boolean win) {
 		long timeToFinish = 0;
 		String time = "";
+		int points, bonus, pointsTime, pointsMove, bonusTimer = 0, bonusLevel;
 		
+		//Count Bonus Level
+		bonusLevel = (level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 1000 : (level == ESGIMemoryApp.KEY_LEVEL_NORMAL) ? 2000 : 4000;
+				
 		//Count Time
 		if (win) {
-			if (hasTimer)
+			gameWon = true;
+			
+			if (hasTimer) {
 				timeToFinish = timeTotal - (timeInMilliseconds/1000);
-			else		
+				bonusTimer = bonusLevel*2;
+			} else {
 				timeToFinish = SystemClock.elapsedRealtime() - chrono.getBase();
+			}
 			time = FormatValue.millisecondFormat(timeToFinish);
 		} else {
 			time = getResources().getString(R.string.label_times_up);
 		}
 		
+		pointsTime = (int) (90 - timeToFinish/1000);
+		if (pointsTime > 0)
+			pointsTime *= 100;
+		
 		//Get Move
 		String move = getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove);
-		
-		//TODO: Count Bonus Level
-		int bonus = (level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 1000 : (level == ESGIMemoryApp.KEY_LEVEL_NORMAL) ? 2000 : 3000;
+		pointsMove = ((60 - nbMove) > 0) ? (60 - nbMove) * 100 : 0;
 		
 		//TODO: Count points
-		int points = (int) timeToFinish;
+		bonus = bonusTimer + bonusLevel;		
+		points = pointsMove + pointsTime + bonus;
 		
 		//Save new Score
-		score = new Score(username, new Date(), win, level, timeToFinish, nbMove, bonus, points);
+		score = new Score(username, new Date(), win, hasTimer, level, timeToFinish, nbMove, bonus, points);
 
 		//Display Dialog with result
 		displayResult(win, username, time, move, FormatValue.formatBigNumber(bonus), FormatValue.formatBigNumber(points));
@@ -405,36 +420,28 @@ public class GameActivity extends Activity {
 //			.setIcon(android.R.drawable.ic_dialog_alert)
 			.setView(inflater.inflate(R.layout.dialog_game_result, null))
 			.setCancelable(false)
-			.setPositiveButton(res.getString(R.string.button_retry), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialogInterface,int id) {
-					score.setUsername(((EditText) dialog.findViewById(R.id.editUsername)).getText().toString());
-					//Save Score
-					saveScore(score);
-					//Reinit Score
-					refreshUI();
-					//Load new Game
-					loadGame();
-				}
-			})
-			.setNegativeButton(res.getString(R.string.button_leave), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialogInterface,int id) {
-					score.setUsername(((EditText) dialog.findViewById(R.id.editUsername)).getText().toString());
-					//Save Score
-					saveScore(score);
-					//Go Home
-					Intent intent = new Intent(GameActivity.this, HomeActivity.class);
-					startActivity(intent);
-					GameActivity.this.finish();
-				}
-			});
-	 
+			.setPositiveButton(res.getString(R.string.button_retry), null)
+			.setNegativeButton(res.getString(R.string.button_leave), null);
 		//Create alert dialog
 		dialog = builder.create();
+		
+		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+		    @Override
+		    public void onShow(DialogInterface dialogInterface) {
+		    	//Add listener on buttons
+		        Button btnPos = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+		        btnPos.setId(AlertDialog.BUTTON_POSITIVE);
+		        btnPos.setOnClickListener(GameActivity.this);
+		        
+		        Button btnNeg = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+		        btnNeg.setId(AlertDialog.BUTTON_NEGATIVE);
+		        btnNeg.setOnClickListener(GameActivity.this);
+		    }
+		});
+		
 		//Show it
 		dialog.show();
-		
+				
 		//Display score
 		((EditText) dialog.findViewById(R.id.editUsername)).setText(username);
 		((TextView) dialog.findViewById(R.id.text_value_time)).setText(time);
@@ -443,13 +450,45 @@ public class GameActivity extends Activity {
 		((TextView) dialog.findViewById(R.id.text_value_points)).setText(points);
 	}
 	
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == AlertDialog.BUTTON_POSITIVE || v.getId() == AlertDialog.BUTTON_NEGATIVE) {
+			EditText editUsername = (EditText) dialog.findViewById(R.id.editUsername);
+			String user = editUsername.getText().toString().trim();
+			
+			//Check Username
+			if (user != null && user.length() > 0 && user.length() < 20) {
+				score.setUsername(user);
+				//Save Score
+				saveScore(score);
+				
+				//Dismiss once everything is OK.
+	            dialog.dismiss();
+				Log.v("BUTTON", v.getId()+"");
+				if (v.getId() == AlertDialog.BUTTON_POSITIVE) {
+					//Reinit Score
+					refreshUI();
+					//Load new Game
+					loadGame();
+				} else if (v.getId() == AlertDialog.BUTTON_NEGATIVE) {
+					//Go Home
+					Intent intent = new Intent(GameActivity.this, HomeActivity.class);
+					startActivity(intent);
+					GameActivity.this.finish();
+				}
+			} else {
+				editUsername.setError(getResources().getString(R.string.error_username));
+			}
+		}
+	}   
+	
 	//Save Score in Database
 	private void saveScore(Score score) {
-		DatabaseHandler db = new DatabaseHandler(this);
-		db.addScore(score);
-		
-		List<Score> scores = db.getAllScores();
-		Log.d("SCORES", "Nb="+scores.size());
+		//Don't save if loose with a timer
+		if (!hasTimer || (hasTimer && gameWon)) {
+			DatabaseHandler db = new DatabaseHandler(this);
+			db.addScore(score);
+		}
 	}
 	
 	//Refresh interface
@@ -514,12 +553,12 @@ public class GameActivity extends Activity {
 	                	//Compare Resource Id 
 	            		if (firstCardView.getTag() == cardViewClicked.getTag()) {
 	            			//Pair cards
-	            			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
+//	            			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
 	            			nbPairFound++;
 	            			sameCard = true;
 	            		} else {
 	            			//Different cards
-	            			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCardIndex).getTag()+" != "+v.getTag());
+//	            			Log.d("CARD", "DIFFERENT: "+gridview.getChildAt(firstCardIndex).getTag()+" != "+v.getTag());
 	            			sameCard = false;
 	            		}
 	            	}
@@ -528,10 +567,10 @@ public class GameActivity extends Activity {
 	            	Handler handler = new Handler();
 	        		handler.post(runnableTurnCard);
 	        	} else {
-	        		if (firstCardIndex != -1)
-	        			Log.d("CARD", "EXACTLY THE SAME CARD");
+//	        		if (firstCardIndex != -1)
+//	        			Log.d("CARD", "EXACTLY THE SAME CARD");
 	        	}
-	        	Log.d("CARD", "POSITION="+position+" - FIRSTCARD="+firstCardIndex);
+//	        	Log.d("CARD", "POSITION="+position+" - FIRSTCARD="+firstCardIndex);
         	}
         }
     };
@@ -539,7 +578,7 @@ public class GameActivity extends Activity {
     Runnable runnableTurnCard = new Runnable() {
 		@Override
 		public void run() {
-			Log.v("HANDLER", "TURN CARD");
+//			Log.v("HANDLER", "TURN CARD");
 			
 			if (firstCardIndex != -1) {
 				Integer resId = 0;
@@ -559,7 +598,7 @@ public class GameActivity extends Activity {
 			if (secondCardIndex != -1) {
 				//Call animation back
 				Handler handlerReturn = new Handler();
-	    		handlerReturn.postDelayed(runnableReturnCards, 750); 
+	    		handlerReturn.postDelayed(runnableReturnCards, timeToReturn); 
 			} else {
 				inAnimation = false;
 			}
@@ -569,8 +608,7 @@ public class GameActivity extends Activity {
 	Runnable runnableReturnCards = new Runnable() {
 		@Override
 		public void run() {
-			Log.v("HANDLER", "RETURN CARD");
-			
+//			Log.v("HANDLER", "RETURN CARD");
 			if (sameCard) {
 				//Is pair
 //				gridview.getChildAt(firstCardIndex).setVisibility(View.INVISIBLE);
@@ -578,6 +616,7 @@ public class GameActivity extends Activity {
 				
     			soundManager.playSound(SoundManager.SOUND_SAME_CARDS);
     			
+    			//Test if game is finished
     			if (nbPairFound == gridview.getChildCount()/2)
     				gameFinished(true);
 			} else {
@@ -585,8 +624,10 @@ public class GameActivity extends Activity {
 				soundManager.playSound(SoundManager.SOUND_WRONG_CARDS);
 				CardView cardFirst = (CardView) gridview.getChildAt(firstCardIndex).getTag();
 				CardView cardSecond = (CardView) gridview.getChildAt(secondCardIndex).getTag();
+				//Change image to display defaultCard 
 				cardFirst.imageview.setImageResource(cardBackId);
 				cardSecond.imageview.setImageResource(cardBackId);
+				//Change value of isReturned
 				cardFirst.toggleSide();
 				cardSecond.toggleSide();
 			}
@@ -599,3 +640,6 @@ public class GameActivity extends Activity {
 		}
 	};
 }
+
+
+	

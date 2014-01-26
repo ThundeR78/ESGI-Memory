@@ -1,7 +1,10 @@
 package fr.esgi.android.project.esgi_memory;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 public class ESGIMemoryApp extends Application {
 	
@@ -47,6 +50,8 @@ public class ESGIMemoryApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		getDensityDevice(getResources().getDisplayMetrics().densityDpi);
 	}
 
 	@Override
@@ -54,19 +59,21 @@ public class ESGIMemoryApp extends Application {
 		super.onTerminate();
 	}
 	
-	//Get access to the Database
-//	public static SQLiteDatabase getDB(Context context) {
-//		if (null == db) {
-//			DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, DATABASE_NAME, null);
-//			db = helper.getWritableDatabase();
-//		}
-//		return db;
-//	}
-//	
-//	//Recreate Database
-//	public static void recreateDB(Context context) {
-//		DaoMaster.dropAllTables(ESGIMemoryApp.getDB(context), true);
-//		DaoMaster.createAllTables(ESGIMemoryApp.getDB(context), true);
-//	}
+	public static String getLabelLevel(Context context, int level) {
+		int idString = 0;
+		idString = (level == KEY_LEVEL_EASY) ? R.string.level_easy : 
+			(level == KEY_LEVEL_NORMAL) ? R.string.level_normal :
+			(level == KEY_LEVEL_HARD) ? R.string.level_hard : 0;
+		return (idString != 0) ? context.getResources().getString(idString) : "";
+	}
 	
+	public static void getDensityDevice(int dpi) {
+		String density = (dpi == DisplayMetrics.DENSITY_LOW) ? "ldpi" : 
+			(dpi == DisplayMetrics.DENSITY_MEDIUM) ? "mdpi" :
+			(dpi == DisplayMetrics.DENSITY_HIGH) ? "hdpi" :
+			(dpi == DisplayMetrics.DENSITY_XHIGH) ? "xhdpi" :
+			(dpi == DisplayMetrics.DENSITY_XXHIGH) ? "xhdpi" :"xxxhdpi";
+		
+		Log.v("DEVICE", "Density = "+density);
+	}
 }

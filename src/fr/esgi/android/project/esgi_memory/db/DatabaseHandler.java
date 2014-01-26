@@ -21,11 +21,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String SQL_CREATE_SCORES =
         "CREATE TABLE "+ ScoreBase.TABLE_NAME +" (" +
         		ScoreBase.COLUMN_NAME_ID +" INTEGER PRIMARY KEY,"+
-//        		ScoreBase.COLUMN_NAME_ID +" TEXT,"+
         		ScoreBase.COLUMN_NAME_USERNAME +" TEXT,"+
         		ScoreBase.COLUMN_NAME_DATE +" DATETIME DEFAULT CURRENT_TIMESTAMP,"+
         		ScoreBase.COLUMN_NAME_LEVEL +" INTEGER,"+
         		ScoreBase.COLUMN_NAME_TIME +" INTEGER,"+
+        		ScoreBase.COLUMN_NAME_TIMER +" INTEGER,"+
         		ScoreBase.COLUMN_NAME_MOVE +" INTEGER,"+
         		ScoreBase.COLUMN_NAME_WIN +" INTEGER,"+
         		ScoreBase.COLUMN_NAME_BONUS +" INTEGER,"+
@@ -64,6 +64,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(ScoreBase.COLUMN_NAME_USERNAME, score.getUsername());
         values.put(ScoreBase.COLUMN_NAME_DATE, score.getDate().getTime());
         values.put(ScoreBase.COLUMN_NAME_LEVEL, score.getLevel());
+        values.put(ScoreBase.COLUMN_NAME_TIMER, score.hasTimer());
         values.put(ScoreBase.COLUMN_NAME_TIME, score.getTime());
         values.put(ScoreBase.COLUMN_NAME_MOVE, score.getMove());
         values.put(ScoreBase.COLUMN_NAME_WIN, score.isWin());
@@ -81,7 +82,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      
         String[] arrayColumns = new String[] { ScoreBase.COLUMN_NAME_ID,
         		ScoreBase.COLUMN_NAME_USERNAME, ScoreBase.COLUMN_NAME_DATE, ScoreBase.COLUMN_NAME_WIN,
-        		ScoreBase.COLUMN_NAME_LEVEL, ScoreBase.COLUMN_NAME_TIME, ScoreBase.COLUMN_NAME_MOVE, 
+        		ScoreBase.COLUMN_NAME_LEVEL, ScoreBase.COLUMN_NAME_TIMER, ScoreBase.COLUMN_NAME_TIME, ScoreBase.COLUMN_NAME_MOVE, 
         		ScoreBase.COLUMN_NAME_BONUS, ScoreBase.COLUMN_NAME_POINT };
         String selection = ScoreBase.COLUMN_NAME_ID + "=?";
         String[] arrayArguments = new String[] { String.valueOf(id) };
@@ -94,7 +95,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //Convert result in object Score
         Score score = new Score(cursor.getInt(0),
                 cursor.getString(1), new Date(cursor.getLong(2)), (cursor.getInt(3)==1) ? true : false, 
-                cursor.getInt(4), cursor.getLong(5), cursor.getInt(6), cursor.getInt(7), cursor.getInt(8));
+                (cursor.getInt(5)==1) ? true : false, cursor.getInt(4), cursor.getLong(5), 
+                cursor.getInt(6), cursor.getInt(7), cursor.getInt(8));
         
         return score;
     }
@@ -179,6 +181,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(ScoreBase.COLUMN_NAME_USERNAME, score.getUsername());
         values.put(ScoreBase.COLUMN_NAME_DATE, score.getDate().getTime());
         values.put(ScoreBase.COLUMN_NAME_LEVEL, score.getLevel());
+        values.put(ScoreBase.COLUMN_NAME_TIME, score.hasTimer());
         values.put(ScoreBase.COLUMN_NAME_TIME, score.getTime());
         values.put(ScoreBase.COLUMN_NAME_MOVE, score.getMove());
         values.put(ScoreBase.COLUMN_NAME_WIN, score.isWin());

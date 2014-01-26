@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import fr.esgi.android.project.esgi_memory.ESGIMemoryApp;
 import fr.esgi.android.project.esgi_memory.R;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
@@ -21,6 +23,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	private Score score;
 	
 	private EditText editUsername;
+	private CheckBox checkTimer;
 	private TextView textDate, textLevel, textTime, textMove, textBonus, textPoints;
 	private Button buttonDelete, buttonUpdate;
 	
@@ -35,6 +38,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 		View contentView = inflater.inflate(R.layout.fragment_score_detail, container, false);
 		
 		editUsername = (EditText) contentView.findViewById(R.id.username);
+		checkTimer = (CheckBox) contentView.findViewById(R.id.timer);
 		textDate = (TextView) contentView.findViewById(R.id.date);
 		textLevel = (TextView) contentView.findViewById(R.id.level);
 		textTime = (TextView) contentView.findViewById(R.id.time);
@@ -64,8 +68,9 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 		if (inItem != null && inItem.getDate() != null && this.isAdded()) {
 			editUsername.setText(inItem.getUsername());
 			editUsername.setSelection(editUsername.getText().length());
+			checkTimer.setChecked(inItem.hasTimer());
 			textDate.setText(FormatValue.datetimeLabelFormat2.format(inItem.getDate()));
-			textLevel.setText(inItem.getLevel()+"");
+			textLevel.setText(ESGIMemoryApp.getLabelLevel(getActivity(), inItem.getLevel()));
 			textTime.setText(FormatValue.millisecondFormat(inItem.getTime()));
 			textMove.setText(inItem.getMove()+"");
 			textBonus.setText(FormatValue.formatBigNumber(inItem.getBonus()));

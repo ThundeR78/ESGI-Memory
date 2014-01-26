@@ -14,6 +14,7 @@ public final class DatabaseContract {
         public static final String COLUMN_NAME_USERNAME = "username";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_LEVEL = "level";
+        public static final String COLUMN_NAME_TIMER = "timer";
         public static final String COLUMN_NAME_TIME = "time";
         public static final String COLUMN_NAME_MOVE = "move";
         public static final String COLUMN_NAME_WIN = "win";

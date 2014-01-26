@@ -18,6 +18,10 @@
 		        <TextView android:id="@+id/level" style="@style/table_column2" /> 
 		    </TableRow> 
 		    
+		    <TableRow style="@style/table_row"> 
+		        <TextView android:text="@string/label_timer" style="@style/table_column1" /> 
+		        <CheckBox android:id="@+id/timer" style="@style/table_column2" /> 
+		    </TableRow> 
 		    
 		    <TableRow style="@style/table_row"> 
 		        <TextView android:text="@string/label_time" style="@style/table_column1" /> 

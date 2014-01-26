@@ -23,19 +23,31 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
     
-    <style name="card_view">
+    
+<!-- IMAGE -->
+	<style name="image_logo">
+		<item name="android:scaleType">fitCenter</item>
+		<item name="android:src">@drawable/logo_esgi</item>
+		<item name="android:layout_width">wrap_content</item> 
+		<item name="android:layout_height">0dp</item> 
+		<item name="android:layout_weight">2</item>
+		<item name="android:layout_gravity">center</item>
+	</style>
+	
+    <style name="image_card_view">
         <item name="android:layout_width">@dimen/card_size</item>
         <item name="android:layout_height">@dimen/card_size</item>
 		<item name="android:scaleType">fitXY</item>
         <item name="android:background">@color/white</item>
         <item name="android:padding">10dp</item>
+        <item name="android:adjustViewBounds">true</item>
     </style>
     
 <!-- BUTTON -->
     <style name="button_home">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-<!-- 	    <item name="android:layout_weight">0.5</item> -->
+        <item name="android:layout_height">0dp</item>
+	    <item name="android:layout_weight">1</item>
 		<item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/black</item>
