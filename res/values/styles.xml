@@ -1,10 +1,10 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 <!-- GENERAL -->
-	<style name="scrollview">
+    <style name="scrollview_activity">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/activity_background</item>
     </style>
     
     <style name="activity">
@@ -16,6 +16,12 @@
 	    <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
 	    <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
 	    <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+    </style>
+    
+	<style name="scrollview">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
     </style>
     
     <style name="wrap_content">
@@ -208,8 +214,8 @@
         <item name="android:layout_centerInParent">true</item>
         <item name="android:numColumns">auto_fit</item>
         <item name="android:columnWidth">@dimen/gridview_column_width</item>
-		<item name="android:horizontalSpacing">@dimen/gridview_column_spacing</item>
-		<item name="android:verticalSpacing">5dp</item>
+		<item name="android:horizontalSpacing">@dimen/gridview_spacing</item>
+		<item name="android:verticalSpacing">@dimen/gridview_spacing</item>
 		<item name="android:stretchMode">spacingWidthUniform</item>
 	</style>
 	
