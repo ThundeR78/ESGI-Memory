@@ -52,7 +52,7 @@ public class GameActivity extends Activity implements OnClickListener {
 	private Score score;
 	private boolean inAnimation = false;
 	private String username;
-	private int timeToReturn = 500;
+	private final int timeToReturn = 500;
 	private boolean gameWon = false;
 	
 	//Time
@@ -77,7 +77,7 @@ public class GameActivity extends Activity implements OnClickListener {
 	private Chronometer chrono;
 	private CountDownTimer countdownTimer;
 	private AlertDialog dialog;
-	private MediaPlayer mediaPlayer;
+//	private MediaPlayer mediaPlayer;
 	
 	//Sound
 	private boolean hasSound = true;
@@ -173,6 +173,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		outState.putInt(ESGIMemoryApp.KEY_MOVE, nbMove);
 		outState.putBoolean(ESGIMemoryApp.KEY_GAME_FINISHED, isGameFinished);
 		outState.putBoolean(ESGIMemoryApp.KEY_HAS_SOUND, hasSound);
+		outState.putBoolean(ESGIMemoryApp.KEY_GAME_WON, gameWon);
 		//Time
 		outState.putBoolean(ESGIMemoryApp.KEY_HAS_TIMER, hasTimer);
 		outState.putInt(ESGIMemoryApp.KEY_TIME_TOTAL, timeTotal);
@@ -196,6 +197,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		nbMove = savedInstanceState.getInt(ESGIMemoryApp.KEY_MOVE, 0);
 		isGameFinished = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_GAME_FINISHED, false);
 		hasSound = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_HAS_SOUND, false);
+		gameWon = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_GAME_WON, false);
 		//Time
 		hasTimer = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_HAS_TIMER, false);
 		timeTotal = savedInstanceState.getInt(ESGIMemoryApp.KEY_TIME_TOTAL, ESGIMemoryApp.TIMER_NORMAL);
@@ -261,9 +263,9 @@ public class GameActivity extends Activity implements OnClickListener {
 	//Load Game
 	private void loadGame() {
 		//Shuffle List imagesId
-		Log.v("BEFORE SHUFFLE", listImageIDs.toString());
+//		Log.v("BEFORE SHUFFLE", listImageIDs.toString());
 		Collections.shuffle(listImageIDs); 
-		Log.v("AFTER SHUFFLE", listImageIDs.toString());
+//		Log.v("AFTER SHUFFLE", listImageIDs.toString());
 		
 		soundManager.playSound(SoundManager.SOUND_DEAL_CARDS);
 		
@@ -274,6 +276,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		nbPairFound = 0;
 		blink = false;
 		score = null;
+		txtTimer.setTextAppearance(this, R.style.text_normal);
 		
 		//TODO: AlertDialog Ready?
 	}
@@ -366,14 +369,18 @@ public class GameActivity extends Activity implements OnClickListener {
 	private void loadResult(boolean win) {
 		long timeToFinish = 0;
 		String time = "";
-		int points, bonus, pointsTime, pointsMove, bonusTimer = 0, bonusLevel;
+		int points = 0, bonus = 0, pointsTime = 0, pointsMove = 0, bonusTimer = 0, bonusLevel = 0;
 		
-		//Count Bonus Level
-		bonusLevel = (level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 1000 : (level == ESGIMemoryApp.KEY_LEVEL_NORMAL) ? 2000 : 4000;
-				
+		//Get Move
+		String move = getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove);
+		pointsMove = ((60 - nbMove) > 0) ? (60 - nbMove) * 100 : 0;
+			
 		//Count Time
 		if (win) {
 			gameWon = true;
+			
+			//Count Bonus Level
+			bonusLevel = (level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 1000 : (level == ESGIMemoryApp.KEY_LEVEL_NORMAL) ? 2000 : 4000;
 			
 			if (hasTimer) {
 				timeToFinish = timeTotal - (timeInMilliseconds/1000);
@@ -382,21 +389,17 @@ public class GameActivity extends Activity implements OnClickListener {
 				timeToFinish = SystemClock.elapsedRealtime() - chrono.getBase();
 			}
 			time = FormatValue.millisecondFormat(timeToFinish);
+		
+			pointsTime = (int) (90 - timeToFinish/1000);
+			if (pointsTime > 0)
+				pointsTime *= 100;
+
+			//Count points
+			bonus = bonusTimer + bonusLevel;		
+			points = pointsMove + pointsTime + bonus;
 		} else {
 			time = getResources().getString(R.string.label_times_up);
 		}
-		
-		pointsTime = (int) (90 - timeToFinish/1000);
-		if (pointsTime > 0)
-			pointsTime *= 100;
-		
-		//Get Move
-		String move = getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove);
-		pointsMove = ((60 - nbMove) > 0) ? (60 - nbMove) * 100 : 0;
-		
-		//TODO: Count points
-		bonus = bonusTimer + bonusLevel;		
-		points = pointsMove + pointsTime + bonus;
 		
 		//Save new Score
 		score = new Score(username, new Date(), win, hasTimer, level, timeToFinish, nbMove, bonus, points);
@@ -455,18 +458,21 @@ public class GameActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		//Click on a result dialog button
 		if (v.getId() == AlertDialog.BUTTON_POSITIVE || v.getId() == AlertDialog.BUTTON_NEGATIVE) {
+			
 			EditText editUsername = (EditText) dialog.findViewById(R.id.editUsername);
 			String user = editUsername.getText().toString().trim();
 			
 			//Check Username
-			if (user != null && user.length() > 0 && user.length() < 20) {
-				score.setUsername(user);
-				//Save Score
-				saveScore(score);
+			if (!gameWon || (user != null && user.length() > 0 && user.length() < 20)) {
+				if (gameWon) {
+					score.setUsername(user);
+					//Save Score
+					saveScore(score);
+				}
 				
 				//Dismiss once everything is OK.
 	            dialog.dismiss();
-				Log.v("BUTTON", v.getId()+"");
+
 				if (v.getId() == AlertDialog.BUTTON_POSITIVE) {
 					//Reinit Score
 					refreshUI();

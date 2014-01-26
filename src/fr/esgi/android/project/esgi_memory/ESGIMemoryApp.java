@@ -18,25 +18,26 @@ public class ESGIMemoryApp extends Application {
 	public static final int TIMER_HARD = 60;
 	
 	//KEY INTENT
-	public static final String KEY_LEVEL = "KEY_LEVEL";
+	public static final String KEY_LEVEL = "LEVEL";
 	public static final int KEY_LEVEL_EASY = 1;
 	public static final int KEY_LEVEL_NORMAL = 2;
 	public static final int KEY_LEVEL_HARD = 3;
-	public static final String KEY_TIMER = "KEY_TIMER";
-	public static final String KEY_MOVE = "KEY_MOVE";
-	public static final String KEY_GAME_FINISHED = "KEY_GAME_FINISHED";
-	public static final String KEY_HAS_TIMER = "KEY_HAS_TIMER";
-	public static final String KEY_TIME_TOTAL = "KEY_TIME_TOTAL";
-	public static final String KEY_TIME_MS = "KEY_DELAY_TICK";
-	public static final String KEY_DELAY_TICK = "KEY_DELAY_TICK";
-	public static final String KEY_TIME_BLINK_MS = "KEY_TIME_BLINK_MS";
-	public static final String KEY_BLINK = "KEY_BLINK";
-	public static final String KEY_LIST_IMAGEID = "KEY_LIST_IMAGEID";
-	public static final String KEY_PAIR_FOUND = "KEY_PAIR_FOUND";
-	public static final String KEY_FIRST_CARD = "KEY_FIRST_CARD";
-	public static final String KEY_IN_ANIMATION = "KEY_IN_ANIMATION";
-	public static final String KEY_SAME_CARD = "KEY_SAME_CARD";
-	public static final String KEY_HAS_SOUND = "KEY_HAS_SOUND";
+	public static final String KEY_TIMER = "TIMER";
+	public static final String KEY_MOVE = "MOVE";
+	public static final String KEY_GAME_FINISHED = "GAME_FINISHED";
+	public static final String KEY_HAS_TIMER = "HAS_TIMER";
+	public static final String KEY_TIME_TOTAL = "TIME_TOTAL";
+	public static final String KEY_TIME_MS = "DELAY_TICK";
+	public static final String KEY_DELAY_TICK = "DELAY_TICK";
+	public static final String KEY_TIME_BLINK_MS = "TIME_BLINK_MS";
+	public static final String KEY_BLINK = "BLINK";
+	public static final String KEY_LIST_IMAGEID = "LIST_IMAGEID";
+	public static final String KEY_PAIR_FOUND = "PAIR_FOUND";
+	public static final String KEY_FIRST_CARD = "FIRST_CARD";
+	public static final String KEY_IN_ANIMATION = "IN_ANIMATION";
+	public static final String KEY_SAME_CARD = "SAME_CARD";
+	public static final String KEY_HAS_SOUND = "HAS_SOUND";
+	public static final String KEY_GAME_WON = "GAME_WON";
 	
 	//KEY PREFERENCES
 	public static final String PREFS_APP = "ESGI_MEMORY_PREFERENCES";
