@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="19" />
+    <supports-screens android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:anyDensity="true" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LevelActivity" android:label="@string/title_level" android:screenOrientation="unspecified" android:configChanges="orientation" /> 
-        <activity android:name=".GameActivity" android:screenOrientation="unspecified" android:configChanges="orientation" />
+        <activity android:name=".GameActivity" android:screenOrientation="unspecified" android:configChanges="orientation|screenSize" />
         <activity android:name=".SettingsActivity" android:label="@string/title_settings" android:screenOrientation="unspecified" android:configChanges="orientation" />
         <activity android:name=".ScoreListFragmentActivity" android:label="@string/title_scores" android:screenOrientation="unspecified" android:configChanges="orientation" />
         <activity android:name=".ScoreDetailFragmentActivity" android:label="@string/title_score" android:screenOrientation="unspecified" android:configChanges="orientation" /> 

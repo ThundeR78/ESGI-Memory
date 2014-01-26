@@ -9,13 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
  
-public class ImageAdapter extends BaseAdapter {
+public class CardAdapter extends BaseAdapter {
  
     private Context context;
     private Integer[] images;
     private Integer defaultCard;
  
-    public ImageAdapter(Context mContext, Integer[] images, Integer cardBackId) {
+    public CardAdapter(Context mContext, Integer[] images, Integer cardBackId) {
     	super();
         this.context = mContext;
         this.images = images;

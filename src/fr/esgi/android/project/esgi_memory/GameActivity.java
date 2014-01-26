@@ -10,12 +10,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -23,10 +24,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -41,9 +40,10 @@ import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.util.FormatValue;
 import fr.esgi.android.project.esgi_memory.util.SoundManager;
 import fr.esgi.android.project.esgi_memory.view.CardView;
-import fr.esgi.android.project.esgi_memory.view.ImageAdapter;
+import fr.esgi.android.project.esgi_memory.view.CardAdapter;
 
 public class GameActivity extends Activity implements OnClickListener {
+	private static final String TAG = "GameActivity";
 	
 	//Game
 	private int level;
@@ -116,7 +116,25 @@ public class GameActivity extends Activity implements OnClickListener {
 
 		Log.i(ESGIMemoryApp.KEY_LEVEL, "Level= "+level);
 		Log.i(ESGIMemoryApp.KEY_TIMER, "Timer= "+timeTotal);
+		
+//		sResultsArr = (ArrayList<SearchItems>) getLastNonConfigurationInstance();
+//	    if(sResultArr == null) {
+//	        sResultsArray = new ArrayList<SearchItems>();  // or some other initialization
+//	    }
+
+		if (savedInstanceState != null) {
+			Parcelable state = savedInstanceState.getParcelable("state");
+			if (state != null) {
+				gridview.onRestoreInstanceState(state);
+				Log.d(this.getClass().getName(), "state restored!");                
+			}
+		}
 	}
+	
+//	@Override
+//	public Object onRetainNonConfigurationInstance() {
+//		return gridview.getAdapter().getItems();
+//	}
 	
 	@Override
 	protected void onStart() {
@@ -166,6 +184,14 @@ public class GameActivity extends Activity implements OnClickListener {
 	}
 	
 	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.v(TAG, "Change Config = "+newConfig.orientation);
+		
+		orientationGridView(newConfig.orientation);
+	}
+	
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		//Game
@@ -187,6 +213,9 @@ public class GameActivity extends Activity implements OnClickListener {
 		outState.putInt(ESGIMemoryApp.KEY_TIME_TOTAL, firstCardIndex);
 		outState.putBoolean(ESGIMemoryApp.KEY_IN_ANIMATION, inAnimation);
 		outState.putBoolean(ESGIMemoryApp.KEY_SAME_CARD, sameCard);
+		
+		Parcelable state = gridview.onSaveInstanceState();
+	    outState.putParcelable("state", state);
 	}
 	
 	@Override
@@ -216,8 +245,9 @@ public class GameActivity extends Activity implements OnClickListener {
 	//Initialize GridView
 	private void initGridView() {
 		//Init GridView columns
-		gridview.setNumColumns((level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 3 : (level == ESGIMemoryApp.KEY_LEVEL_HARD) ? 4 : 3);
-		
+		orientationGridView(getResources().getConfiguration().orientation);
+
+		gridview.setSaveEnabled(true);
 		//Avoid Scroll
 //		gridview.setOnTouchListener(new OnTouchListener(){
 //		    @Override
@@ -231,11 +261,20 @@ public class GameActivity extends Activity implements OnClickListener {
 		gridview.setOnItemClickListener(onGridViewItemClickListener);
 	}
 	
+	//Change number of column with orientation
+	private void orientationGridView(int orientation) {
+		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			gridview.setNumColumns((level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 3 : (level == ESGIMemoryApp.KEY_LEVEL_HARD) ? 4 : 3);
+	    } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+	    	gridview.setNumColumns((level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 4 : (level == ESGIMemoryApp.KEY_LEVEL_HARD) ? 7 : 6);
+	    } 
+	}
+	
 	//Load GridView
 	private void loadGridView() {
 		//Get images
 		Integer[] array = listImageIDs.toArray(new Integer[listImageIDs.size()]);
-		gridview.setAdapter(new ImageAdapter(this, array, cardBackId));
+		gridview.setAdapter(new CardAdapter(this, array, cardBackId));
 	}
 	
 	//Initialize Game
