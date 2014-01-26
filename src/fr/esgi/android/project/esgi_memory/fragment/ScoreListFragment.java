@@ -25,6 +25,7 @@ public class ScoreListFragment extends ListFragment {
 	
 	private int level;
 	private List<Score> listScore;
+	private DatabaseHandler db;
 
 	public ScoreListFragment() {
 		super();
@@ -38,10 +39,16 @@ public class ScoreListFragment extends ListFragment {
 	}
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		View rootView = inflater.inflate(R.layout.fragment_score_list, container, false);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		db = new DatabaseHandler(getActivity());
+	}
 	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_score_list, container, false);
+		
 		return rootView;
 	}
 	
@@ -49,8 +56,8 @@ public class ScoreListFragment extends ListFragment {
 	public void onStart() {
 		super.onStart();
 		
-		DatabaseHandler db = new DatabaseHandler(getActivity());
 		listScore = db.getAllScoresByLevel(level);
+		db.close();
 		
 		updateListAdapter(listScore);
 	}

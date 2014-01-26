@@ -63,6 +63,12 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 		
 		displayItem(score);
 	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		db.close();
+	}
 
 	protected void displayItem(Score inItem) {
 		if (inItem != null && inItem.getDate() != null && this.isAdded()) {
@@ -85,6 +91,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	public void deleteScore() {
 		if (getActivity() != null && this.isAdded() && score != null && score.getId() >0) {
 			db.deleteScore(score);
+			db.close();
 			
 			getActivity().finish();
 		}

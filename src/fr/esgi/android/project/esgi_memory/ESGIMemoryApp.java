@@ -1,10 +1,14 @@
 package fr.esgi.android.project.esgi_memory;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 
 public class ESGIMemoryApp extends Application {
 	
@@ -66,6 +70,13 @@ public class ESGIMemoryApp extends Application {
 			(level == KEY_LEVEL_NORMAL) ? R.string.level_normal :
 			(level == KEY_LEVEL_HARD) ? R.string.level_hard : 0;
 		return (idString != 0) ? context.getResources().getString(idString) : "";
+	}
+	
+	public static void getScreenSize(Context ctx) {
+		WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
+		Display display = wm.getDefaultDisplay();
+		Point size = new Point();
+		Log.v("DEVICE", "Screen size = "+display.getWidth()+"x"+display.getHeight());
 	}
 	
 	public static void getDensityDevice(int dpi) {

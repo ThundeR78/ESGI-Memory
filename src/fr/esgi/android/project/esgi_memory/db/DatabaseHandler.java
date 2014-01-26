@@ -98,6 +98,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 (cursor.getInt(4)==1) ? true : false, cursor.getInt(5), cursor.getLong(6), 
                 cursor.getInt(7), cursor.getInt(8), cursor.getInt(9));
         
+        cursor.close();
+        db.close();
+        
         return score;
     }
     
@@ -110,7 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
        SQLiteDatabase db = this.getWritableDatabase();
        Cursor cursor = db.rawQuery(selectQuery, null);
-    
+       
        //Looping through all rows and adding to list
        if (cursor.moveToFirst()) {
            do {
@@ -123,7 +126,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                scoreList.add(score);
            } while (cursor.moveToNext());
        }
-    
+       cursor.close();
+       db.close();
+       
        // return score list
        return scoreList;
     }
@@ -142,7 +147,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
        SQLiteDatabase db = this.getWritableDatabase();
        Cursor cursor = db.rawQuery(selectQuery, null);
-    
+      
        //Looping through all rows and adding to list
        if (cursor.moveToFirst()) {
            do {
@@ -156,7 +161,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                scoreList.add(score);
            } while (cursor.moveToNext());
        }
-    
+       cursor.close();
+       db.close();
+       
        // return score list
        return scoreList;
     }
@@ -166,8 +173,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + ScoreBase.TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
- 
+        db.close();
+        
         //Return count
         return cursor.getCount();
     }

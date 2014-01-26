@@ -219,14 +219,14 @@ public class GameActivity extends Activity implements OnClickListener {
 		gridview.setNumColumns((level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 3 : (level == ESGIMemoryApp.KEY_LEVEL_HARD) ? 4 : 3);
 		
 		//Avoid Scroll
-		gridview.setOnTouchListener(new OnTouchListener(){
-		    @Override
-		    public boolean onTouch(View v, MotionEvent event) {
-		        if(event.getAction() == MotionEvent.ACTION_MOVE)
-		            return true;
-		        return false;
-		    }
-		});
+//		gridview.setOnTouchListener(new OnTouchListener(){
+//		    @Override
+//		    public boolean onTouch(View v, MotionEvent event) {
+//		        if (event.getAction() == MotionEvent.ACTION_MOVE)
+//		            return true;
+//		        return false;
+//		    }
+//		});
 		//Get Click Listener
 		gridview.setOnItemClickListener(onGridViewItemClickListener);
 	}
@@ -493,9 +493,10 @@ public class GameActivity extends Activity implements OnClickListener {
 	//Save Score in Database
 	private void saveScore(Score score) {
 		//Don't save if loose with a timer
-		if (!hasTimer || (hasTimer && gameWon)) {
+		if (gameWon) {
 			DatabaseHandler db = new DatabaseHandler(this);
 			db.addScore(score);
+			db.close();
 		}
 	}
 	

@@ -19,6 +19,7 @@
     <dimen name="text_26">18sp</dimen> <!-- 26 -->
     <dimen name="text_28">20sp</dimen> <!-- 28 -->
     <dimen name="text_30">22sp</dimen> <!-- 30 -->
+    <dimen name="text_32">24sp</dimen> <!-- 32 -->
     
     <dimen name="navigation_height">40dp</dimen> 
     <dimen name="navigation_arrow_margin">15dp</dimen>
@@ -27,5 +28,9 @@
     <dimen name="list_score_row_column_padding_vertical">5dp</dimen>
     <dimen name="list_score_row_column_padding_horizontal">10dp</dimen>
     
+    <dimen name="game_infos_margin">10dp</dimen>
+    <dimen name="gridview_column_width">100dp</dimen>
+    <dimen name="gridview_column_spacing">5dp</dimen>
     <dimen name="card_size">100dp</dimen>
+    <dimen name="card_padding">10dp</dimen>
 </resources>
