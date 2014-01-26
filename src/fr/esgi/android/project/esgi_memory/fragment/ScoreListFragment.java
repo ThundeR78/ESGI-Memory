@@ -91,6 +91,7 @@ public class ScoreListFragment extends ListFragment {
     	//Handle item selection
     	switch (item.getItemId()) {
       	case R.id.action_sort_name:
+      		
       		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_USERNAME +","+ DatabaseContract.ScoreBase.COLUMN_NAME_POINT;
             break;
       	case R.id.action_sort_points:
@@ -99,6 +100,8 @@ public class ScoreListFragment extends ListFragment {
       	default:
       		return super.onOptionsItemSelected(item);
     	}
+    	
+    	item.setChecked(!item.isChecked());
     	
     	listScore = db.getAllScoresByLevel(level, orderBy);
   		updateListAdapter(listScore);
