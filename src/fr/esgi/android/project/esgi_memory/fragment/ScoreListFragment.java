@@ -42,6 +42,7 @@ public class ScoreListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		setRetainInstance(true);
 		db = new DatabaseHandler(getActivity());
 	}
 	

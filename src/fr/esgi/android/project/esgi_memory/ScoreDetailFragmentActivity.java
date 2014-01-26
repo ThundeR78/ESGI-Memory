@@ -31,7 +31,6 @@ public class ScoreDetailFragmentActivity extends FragmentActivity {
 	protected Score currentItem;
 	protected int currentIndex;
 
-	protected TextView title;
 	protected Button navigation_previous;
 	protected Button navigation_next;
 	protected ViewPager pager; 

@@ -49,10 +49,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_SCORES);
         onCreate(db);
     }	
-	@Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
-    }
     
     /* SCORE */
 	//Adding new score

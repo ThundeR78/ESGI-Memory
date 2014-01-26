@@ -83,8 +83,7 @@ public class ESGIMemoryApp extends Application {
 		String density = (dpi == DisplayMetrics.DENSITY_LOW) ? "ldpi" : 
 			(dpi == DisplayMetrics.DENSITY_MEDIUM) ? "mdpi" :
 			(dpi == DisplayMetrics.DENSITY_HIGH) ? "hdpi" :
-			(dpi == DisplayMetrics.DENSITY_XHIGH) ? "xhdpi" :
-			(dpi == DisplayMetrics.DENSITY_XXHIGH) ? "xhdpi" :"xxxhdpi";
+			(dpi == DisplayMetrics.DENSITY_XHIGH) ? "xhdpi" : "xxhdpi";
 		
 		Log.v("DEVICE", "Density = "+density);
 	}

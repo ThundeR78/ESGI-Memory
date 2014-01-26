@@ -6,7 +6,7 @@
     -->
 
     <!-- Application theme -->
-    <style name="Theme.Memory" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="Theme.Memory" parent="@android:style/Theme.Holo.Light.DarkActionBar">
 	    <item name="android:actionBarStyle">@style/Theme.Memory.ActionBarStyle</item>
 	</style>
 	
@@ -25,5 +25,7 @@
 		<item name="android:textSize">@dimen/text_30</item>
 		<item name="android:textStyle">bold</item>
 	</style>
+	
+	
 	
 </resources>
