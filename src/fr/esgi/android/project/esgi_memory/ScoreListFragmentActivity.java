@@ -1,15 +1,15 @@
 package fr.esgi.android.project.esgi_memory;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import fr.esgi.android.project.esgi_memory.util.MyTabFactory;
 import fr.esgi.android.project.esgi_memory.view.TabsPagerAdapter;
 
-public class ScoreListFragmentActivity extends FragmentActivity implements OnTabChangeListener, OnPageChangeListener {
+public class ScoreListFragmentActivity extends ActionBarActivity implements OnTabChangeListener, OnPageChangeListener {
 
 	private TabsPagerAdapter mAdapter;
     private ViewPager mViewPager;
@@ -20,6 +20,8 @@ public class ScoreListFragmentActivity extends FragmentActivity implements OnTab
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_list);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 
         // Tab Initialization

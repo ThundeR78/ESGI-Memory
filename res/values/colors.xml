@@ -29,9 +29,11 @@
 	<color name="violet_light">#AA66CC</color>
 	<color name="violet_dark">#9933CC</color>
 	
-	<color name="navbar_menu_button">#2F353B</color>
-	<color name="navbar_background">@color/orange_dark</color>
-	<color name="navbar_separator">#8F8F8F</color>
+	
+	<color name="actionbar_background">@color/orange_dark</color>
+	<color name="actionbar_menu_button">#2F353B</color>
+	<color name="actionbar_separator">#8F8F8F</color>
+	<color name="actionbar_text">@color/black</color>
 	
 	<color name="navigation_pressed">#3286BA</color>
 	<color name="navigation_disabled">#FBFBFB</color>

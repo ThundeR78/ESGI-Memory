@@ -2,11 +2,13 @@ package fr.esgi.android.project.esgi_memory;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.CheckBox;
 
-public class LevelActivity extends Activity {
+public class LevelActivity extends ActionBarActivity {
 	
 	public static final String TAG = "LevelActivity";
 	
@@ -16,6 +18,8 @@ public class LevelActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_level);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		checkboxTimer = (CheckBox) findViewById(R.id.checkboxTimer);
 	}

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +18,8 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,10 +40,10 @@ import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.util.FormatValue;
 import fr.esgi.android.project.esgi_memory.util.SoundManager;
-import fr.esgi.android.project.esgi_memory.view.CardView;
 import fr.esgi.android.project.esgi_memory.view.CardAdapter;
+import fr.esgi.android.project.esgi_memory.view.CardView;
 
-public class GameActivity extends Activity implements OnClickListener {
+public class GameActivity extends ActionBarActivity implements OnClickListener {
 	private static final String TAG = "GameActivity";
 	
 	//Game
@@ -87,6 +88,8 @@ public class GameActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		
@@ -168,16 +171,22 @@ public class GameActivity extends Activity implements OnClickListener {
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.game_menu, menu);
-	    return true;
+	    return super.onCreateOptionsMenu(menu);
 	} 
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.v(TAG, item.getItemId()+"");
 		switch (item.getItemId()) {
 	    case R.id.action_refresh:
+	    	//Stop and load a new game
 	    	stopTime();
 	    	refreshUI();
 	    	loadGame();
+	    	break;
+	    case android.R.id.home: 
+	    	Log.v(TAG, "Home");
+	    	NavUtils.navigateUpFromSameTask(this);
 	    	break;
 		}
 	    return true;

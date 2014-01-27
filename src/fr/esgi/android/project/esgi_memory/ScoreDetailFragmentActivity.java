@@ -6,19 +6,18 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.fragment.ScoreDetailFragment;
 import fr.esgi.android.project.esgi_memory.view.MyPagerAdapter;
 
-public class ScoreDetailFragmentActivity extends FragmentActivity {
+public class ScoreDetailFragmentActivity extends ActionBarActivity {
 	
 	private static final String TAG = "DetailFragmentsSlider";
 
@@ -42,7 +41,7 @@ public class ScoreDetailFragmentActivity extends FragmentActivity {
 
 		setContentView(R.layout.activity_score_detail);
 		
-//		getActionBar().setDisplayHomeAsUpEnabled(true);
+//		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		//Get values intent
 		final Intent intent = getIntent();
