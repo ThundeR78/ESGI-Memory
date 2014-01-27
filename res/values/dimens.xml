@@ -32,5 +32,5 @@
     <dimen name="gridview_column_width">100dp</dimen>
     <dimen name="gridview_spacing">5dp</dimen>
     <dimen name="card_size">100dp</dimen>
-    <dimen name="card_padding">10dp</dimen>
+    <dimen name="card_padding">4dp</dimen>
 </resources>

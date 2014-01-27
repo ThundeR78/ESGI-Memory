@@ -1,5 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:background="@color/blue"
+    xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="wrap_content" android:layout_height="wrap_content" >
    
     <ImageView android:id="@+id/imageView" style="@style/image_card_view" android:contentDescription=""/>

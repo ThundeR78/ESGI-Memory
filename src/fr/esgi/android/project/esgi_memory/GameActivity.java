@@ -68,7 +68,7 @@ public class GameActivity extends Activity implements OnClickListener {
 	private CardView cardViewClicked;
 	private int nbPairFound = 0;
 	private int firstCardIndex = -1, secondCardIndex = -1; //index of cards selected
-	private final Integer cardBackId = R.drawable.ic_launcher;
+	private final Integer cardBackId = R.drawable.card_back;
 	private boolean sameCard = false;
 	
 	//Components

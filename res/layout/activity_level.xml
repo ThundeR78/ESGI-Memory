@@ -32,6 +32,7 @@
         <TextView
             android:id="@+id/textTimer"
             android:text="@string/label_timer" 
+            android:textSize="@dimen/text_24"
             style="@style/label_left" />
 
         <CheckBox
