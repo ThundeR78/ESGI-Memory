@@ -156,6 +156,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_24</item>
         <item name="android:paddingLeft">@dimen/list_score_row_column_padding_horizontal</item>
         <item name="android:paddingRight">@dimen/list_score_row_column_padding_horizontal</item>
         <item name="android:paddingTop">@dimen/list_score_row_column_padding_vertical</item>
