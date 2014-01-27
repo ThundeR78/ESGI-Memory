@@ -521,8 +521,8 @@ public class GameActivity extends Activity implements OnClickListener {
 				} else if (v.getId() == AlertDialog.BUTTON_NEGATIVE) {
 					//Go Home
 					Intent intent = new Intent(GameActivity.this, HomeActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);	// This flag ensures all activities on top of GameActivity are cleared
 					startActivity(intent);
-					GameActivity.this.finish();
 				}
 			} else {
 				editUsername.setError(getResources().getString(R.string.error_username));
