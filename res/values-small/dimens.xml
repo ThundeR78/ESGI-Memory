@@ -5,8 +5,8 @@
     
     <dimen name="game_infos_margin">2dp</dimen>
     <dimen name="gridview_column_width">@dimen/card_size</dimen>
-    <dimen name="gridview_spacing">2dp</dimen>
-    <dimen name="card_size">46dp</dimen>
+    <dimen name="gridview_spacing">1dp</dimen>
+    <dimen name="card_size">45dp</dimen>
     <dimen name="card_padding">1dp</dimen>
 	
     <dimen name="text_24">12sp</dimen> <!-- 24 -->

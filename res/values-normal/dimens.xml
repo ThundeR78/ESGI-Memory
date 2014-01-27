@@ -3,10 +3,10 @@
     <dimen name="activity_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">8dp</dimen>
     
-    <dimen name="game_infos_margin">4dp</dimen>
+    <dimen name="game_infos_margin">2dp</dimen>
     <dimen name="gridview_column_width">@dimen/card_size</dimen>
-    <dimen name="gridview_spacing">4dp</dimen>
-    <dimen name="card_size">56dp</dimen>
+    <dimen name="gridview_spacing">2dp</dimen>
+    <dimen name="card_size">50dp</dimen>
     <dimen name="card_padding">2dp</dimen>
 	
     <dimen name="text_24">14sp</dimen> <!-- 24 -->
