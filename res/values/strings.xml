@@ -43,7 +43,7 @@
     <string name="label_username">Pseudo :</string>
     <string name="label_date">Date :</string>
 	<string name="label_chrono">Chronomètre :</string>
-	<string name="label_timer">Minuteur :</string>
+	<string name="label_timer">Avec un minuteur :</string>
 	<string name="label_time">Temps :</string>
 	<string name="label_move">Nombre de coup :</string>
     <string name="label_sound">Son :</string>

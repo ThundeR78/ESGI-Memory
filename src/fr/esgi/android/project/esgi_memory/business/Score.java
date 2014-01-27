@@ -27,7 +27,7 @@ public class Score implements Parcelable {
 		this.username = username;
 		this.date = date;
 		this.win = win;
-		this.setTimer(timer);
+		this.timer = timer;
 		this.level = level;
 		this.time = time;
 		this.move = move;
@@ -40,6 +40,7 @@ public class Score implements Parcelable {
 		this.username = username;
 		this.date = date;
 		this.win = win;
+		this.timer = timer;
 		this.level = level;
 		this.time = time;
 		this.move = move;

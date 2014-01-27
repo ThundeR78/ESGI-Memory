@@ -421,8 +421,9 @@ public class GameActivity extends Activity implements OnClickListener {
 			//Count Bonus Level
 			bonusLevel = (level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 1000 : (level == ESGIMemoryApp.KEY_LEVEL_NORMAL) ? 2000 : 4000;
 			
+			//TODO: bug 0 time with timer
 			if (hasTimer) {
-				timeToFinish = timeTotal - (timeInMilliseconds/1000);
+				timeToFinish = (timeTotal*1000) - timeInMilliseconds;
 				bonusTimer = bonusLevel*2;
 			} else {
 				timeToFinish = SystemClock.elapsedRealtime() - chrono.getBase();

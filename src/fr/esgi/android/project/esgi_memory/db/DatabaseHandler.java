@@ -186,7 +186,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(ScoreBase.COLUMN_NAME_USERNAME, score.getUsername());
         values.put(ScoreBase.COLUMN_NAME_DATE, score.getDate().getTime());
         values.put(ScoreBase.COLUMN_NAME_LEVEL, score.getLevel());
-        values.put(ScoreBase.COLUMN_NAME_TIME, score.hasTimer());
+        values.put(ScoreBase.COLUMN_NAME_TIMER, score.hasTimer());
         values.put(ScoreBase.COLUMN_NAME_TIME, score.getTime());
         values.put(ScoreBase.COLUMN_NAME_MOVE, score.getMove());
         values.put(ScoreBase.COLUMN_NAME_WIN, score.isWin());

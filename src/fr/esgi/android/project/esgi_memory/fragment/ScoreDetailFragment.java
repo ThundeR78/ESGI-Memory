@@ -2,6 +2,7 @@ package fr.esgi.android.project.esgi_memory.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -75,6 +76,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 		if (inItem != null && inItem.getDate() != null && this.isAdded()) {
 			editUsername.setText(inItem.getUsername());
 			editUsername.setSelection(editUsername.getText().length());
+			Log.v(TAG, ""+inItem.hasTimer());
 			checkTimer.setChecked(inItem.hasTimer());
 			textDate.setText(FormatValue.datetimeLabelFormat2.format(inItem.getDate()));
 			textLevel.setText(ESGIMemoryApp.getLabelLevel(getActivity(), inItem.getLevel()));
