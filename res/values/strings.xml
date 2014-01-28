@@ -20,7 +20,7 @@
     
 <!-- ACTION -->
 	<string name="action_sort_name">Trier par nom</string>
-	<string name="action_sort_points">Trier par points</string>
+	<string name="action_sort_points">Trier par score</string>
     
 <!-- NAVIGATION -->
 	<string name="nav_previous">PRÉCÉDENT</string>

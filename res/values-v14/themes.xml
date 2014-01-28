@@ -5,6 +5,7 @@
 	
 	<style name="Theme.Memory" parent="@style/Theme.AppCompat.Light.DarkActionBar">
 	    <item name="android:actionBarStyle">@style/Theme.Memory.ActionBarStyle</item>
+<!-- 	    <item name="android:alertDialogStyle">@style/CustomDialogTheme</item> -->
 	</style>
 	
 	<!-- style for ActionBar -->
@@ -15,12 +16,24 @@
 	    
 		<item name="android:titleTextStyle">@style/Theme.Memory.ActionBar.TitleTextStyle</item>
 	</style>
-	
 	<!-- style for Title ActionBar -->
 	<style name="Theme.Memory.ActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
 		<item name="android:textColor">@color/actionbar_text</item>
 		<item name="android:textSize">@dimen/text_30</item>
 		<item name="android:textStyle">bold</item>
 	</style>
+	
+<!-- 	<style name="CustomDialogTheme" parent="@style/Theme.AppCompat.CompactMenu.Dialog"> -->
+<!-- 	    <item name="android:bottomBright">@color/white</item> -->
+<!-- 	    <item name="android:bottomDark">@color/white</item> -->
+<!-- 	    <item name="android:bottomMedium">@color/white</item> -->
+<!-- 	    <item name="android:centerBright">@color/activity_background</item> -->
+<!-- 	    <item name="android:centerDark">@color/activity_background</item> -->
+<!-- 	    <item name="android:centerMedium">@color/white</item> -->
+<!-- 	    <item name="android:fullBright">@color/actionbar_background</item> -->
+<!-- 	    <item name="android:fullDark">@color/actionbar_background</item> -->
+<!-- 	    <item name="android:topBright">@color/actionbar_background</item> -->
+<!-- 	    <item name="android:topDark">@color/actionbar_background</item> -->
+<!-- 	</style> -->
 	
 </resources>

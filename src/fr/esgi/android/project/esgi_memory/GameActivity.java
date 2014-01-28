@@ -176,7 +176,6 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.v(TAG, item.getItemId()+"");
 		switch (item.getItemId()) {
 	    case R.id.action_refresh:
 	    	//Stop and load a new game
@@ -185,7 +184,6 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	    	loadGame();
 	    	break;
 	    case android.R.id.home: 
-	    	Log.v(TAG, "Home");
 	    	NavUtils.navigateUpFromSameTask(this);
 	    	break;
 		}
@@ -466,10 +464,10 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 			Toast.makeText(this, "BRAVO, tu as finis en "+time+" et "+move+" !", Toast.LENGTH_LONG).show();
 		else
 			Toast.makeText(this, "P'TITE CAISSE !", Toast.LENGTH_LONG).show();
+		View titleView = inflater.inflate(R.layout.dialog_title, null);
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(res.getString(win ? R.string.dialog_title_win : R.string.dialog_title_loose))
-//			.setIcon(android.R.drawable.ic_dialog_alert)
+		builder.setCustomTitle(titleView)
 			.setView(inflater.inflate(R.layout.dialog_game_result, null))
 			.setCancelable(false)
 			.setPositiveButton(res.getString(R.string.button_retry), null)
@@ -483,10 +481,12 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		    public void onShow(DialogInterface dialogInterface) {
 		    	//Add listener on buttons
 		        Button btnPos = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+		        btnPos.setBackgroundResource(R.color.actionbar_background);
 		        btnPos.setId(AlertDialog.BUTTON_POSITIVE);
 		        btnPos.setOnClickListener(GameActivity.this);
 		        
 		        Button btnNeg = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+		        btnNeg.setBackgroundResource(R.color.actionbar_background);
 		        btnNeg.setId(AlertDialog.BUTTON_NEGATIVE);
 		        btnNeg.setOnClickListener(GameActivity.this);
 		    }
@@ -496,6 +496,8 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		dialog.show();
 				
 		//Display score
+		((TextView) dialog.findViewById(R.id.dialog_title)).setText(res.getString(win ? R.string.dialog_title_win : R.string.dialog_title_loose));
+		
 		((EditText) dialog.findViewById(R.id.editUsername)).setText(username);
 		((TextView) dialog.findViewById(R.id.text_value_time)).setText(time);
 		((TextView) dialog.findViewById(R.id.text_value_move)).setText(move);
