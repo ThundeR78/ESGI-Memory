@@ -1,10 +1,7 @@
 package fr.esgi.android.project.esgi_memory;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -35,7 +32,7 @@ public class ESGIMemoryApp extends Application {
 	public static final String KEY_DELAY_TICK = "DELAY_TICK";
 	public static final String KEY_TIME_BLINK_MS = "TIME_BLINK_MS";
 	public static final String KEY_BLINK = "BLINK";
-	public static final String KEY_LIST_IMAGEID = "LIST_IMAGEID";
+	public static final String KEY_LIST_CARD = "LIST_CARD";
 	public static final String KEY_PAIR_FOUND = "PAIR_FOUND";
 	public static final String KEY_FIRST_CARD = "FIRST_CARD";
 	public static final String KEY_IN_ANIMATION = "IN_ANIMATION";
@@ -50,8 +47,6 @@ public class ESGIMemoryApp extends Application {
 	public static final String PREF_LEVEL = "PREF_LEVEL";
 	public static final String PREF_TIMER = "PREF_TIMER";
 	
-	private static SQLiteDatabase db;
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -75,7 +70,6 @@ public class ESGIMemoryApp extends Application {
 	public static void getScreenSize(Context ctx) {
 		WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
-		Point size = new Point();
 		Log.v("DEVICE", "Screen size = "+display.getWidth()+"x"+display.getHeight());
 	}
 	

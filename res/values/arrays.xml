@@ -27,7 +27,7 @@
     <array name="images_normal">
         <item>@drawable/logo_apple</item>
         <item>@drawable/logo_firefox</item>
-        <item>@drawable/logo_bada</item>
+        <item>@drawable/logo_reseau_ges</item>
         <item>@drawable/logo_blackberry</item>
         <item>@drawable/logo_tizen</item>
         <item>@drawable/photo_denier</item>

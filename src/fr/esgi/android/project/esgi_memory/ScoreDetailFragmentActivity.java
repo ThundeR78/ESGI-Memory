@@ -41,7 +41,7 @@ public class ScoreDetailFragmentActivity extends ActionBarActivity {
 
 		setContentView(R.layout.activity_score_detail);
 		
-//		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		//Get values intent
 		final Intent intent = getIntent();

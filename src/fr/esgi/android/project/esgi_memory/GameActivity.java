@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+import fr.esgi.android.project.esgi_memory.business.Card;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
 import fr.esgi.android.project.esgi_memory.util.FormatValue;
@@ -65,8 +66,9 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	private boolean blink = false; 	//Controls the blinking, on and off
 	
 	//Card
-	private List<Integer> listImageIDs = new ArrayList<Integer>();
-	private CardView cardViewClicked;
+	private List<Card> listCard = new ArrayList<Card>();
+	private CardView firstCardView, cardViewClicked;
+	private Card cardClicked;
 	private int nbPairFound = 0;
 	private int firstCardIndex = -1, secondCardIndex = -1; //index of cards selected
 	private final Integer cardBackId = R.drawable.card_back;
@@ -168,7 +170,13 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	}
 	
 	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		//Add menu on the top right
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.game_menu, menu);
 	    return super.onCreateOptionsMenu(menu);
@@ -192,10 +200,17 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
 		Log.v(TAG, "Change Config = "+newConfig.orientation);
 		
 		orientationGridView(newConfig.orientation);
+		
+//		loadGridView();		
+//		for (int i=0; i<gridview.getChildCount() ;i++) {
+//			CardView cv = (CardView) gridview.getChildAt(i).getTag();
+//			Card c = (Card) cv.getTag();
+//			cv.imageview.setImageResource((c.isReturned) ? c.imageId : cardBackId);
+//		}
+		super.onConfigurationChanged(newConfig);
 	}
 	
 	@Override
@@ -211,15 +226,13 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		outState.putBoolean(ESGIMemoryApp.KEY_HAS_TIMER, hasTimer);
 		outState.putInt(ESGIMemoryApp.KEY_TIME_TOTAL, timeTotal);
 		outState.putLong(ESGIMemoryApp.KEY_TIME_MS, timeInMilliseconds);
-//		outState.putInt(ESGIMemoryApp.KEY_DELAY_TICK, delayBetweenEachTick);
-//		outState.putLong(ESGIMemoryApp.KEY_TIME_BLINK_MS, timeBlinkInMilliseconds);
 		outState.putBoolean(ESGIMemoryApp.KEY_BLINK, blink);
 		//Card
-		outState.putIntegerArrayList(ESGIMemoryApp.KEY_LIST_IMAGEID, (ArrayList<Integer>) listImageIDs);
 		outState.putInt(ESGIMemoryApp.KEY_PAIR_FOUND, nbPairFound);
 		outState.putInt(ESGIMemoryApp.KEY_TIME_TOTAL, firstCardIndex);
 		outState.putBoolean(ESGIMemoryApp.KEY_IN_ANIMATION, inAnimation);
 		outState.putBoolean(ESGIMemoryApp.KEY_SAME_CARD, sameCard);
+		outState.putParcelableArrayList(ESGIMemoryApp.KEY_LIST_CARD, (ArrayList<Card>) listCard);
 		
 		Parcelable state = gridview.onSaveInstanceState();
 	    outState.putParcelable("state", state);
@@ -238,15 +251,13 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		hasTimer = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_HAS_TIMER, false);
 		timeTotal = savedInstanceState.getInt(ESGIMemoryApp.KEY_TIME_TOTAL, ESGIMemoryApp.TIMER_NORMAL);
 		timeInMilliseconds = savedInstanceState.getLong(ESGIMemoryApp.KEY_TIME_MS, 0);
-//		delayBetweenEachTick = savedInstanceState.getInt(ESGIMemoryApp.KEY_DELAY_TICK, 500);
-//		timeBlinkInMilliseconds = savedInstanceState.getLong(ESGIMemoryApp.KEY_TIME_BLINK_MS, 10000);
 		blink = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_BLINK, false);
 		//Card
-		listImageIDs = savedInstanceState.getIntegerArrayList(ESGIMemoryApp.KEY_LIST_IMAGEID);
 		nbPairFound = savedInstanceState.getInt(ESGIMemoryApp.KEY_PAIR_FOUND, 0);
 		firstCardIndex = savedInstanceState.getInt(ESGIMemoryApp.KEY_TIME_TOTAL, -1);
 		inAnimation = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_IN_ANIMATION, false);
 		sameCard = savedInstanceState.getBoolean(ESGIMemoryApp.KEY_SAME_CARD, false);
+		listCard = savedInstanceState.getParcelableArrayList(ESGIMemoryApp.KEY_LIST_CARD);
 	}
 	
 	//Initialize GridView
@@ -280,7 +291,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	//Load GridView
 	private void loadGridView() {
 		//Get images
-		Integer[] array = listImageIDs.toArray(new Integer[listImageIDs.size()]);
+		Card[] array = listCard.toArray(new Card[listCard.size()]);
 		gridview.setAdapter(new CardAdapter(this, array, cardBackId));
 	}
 	
@@ -297,9 +308,9 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 					
 		//Transfer array imagesId into List
 		for (int i=0; i<images.length() ;i++) 
-			listImageIDs.add(images.getResourceId(i, 0));
+			listCard.add(new Card(images.getResourceId(i, 0)));
 		//Add pair of each imageId
-		listImageIDs.addAll(listImageIDs);
+		listCard.addAll(listCard);
 		
 		initGridView();
 		initTime();
@@ -308,10 +319,8 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	
 	//Load Game
 	private void loadGame() {
-		//Shuffle List imagesId
-//		Log.v("BEFORE SHUFFLE", listImageIDs.toString());
-		Collections.shuffle(listImageIDs); 
-//		Log.v("AFTER SHUFFLE", listImageIDs.toString());
+		//Shuffle List Card
+		Collections.shuffle(listCard);
 		
 		soundManager.playSound(SoundManager.SOUND_DEAL_CARDS);
 		
@@ -344,6 +353,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		}
 	}
 	
+	//Load Time
 	private void loadTime() {
 		timeInMilliseconds = (hasTimer) ? timeTotal * 1000 : 0;
 		
@@ -428,7 +438,6 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 			//Count Bonus Level
 			bonusLevel = (level == ESGIMemoryApp.KEY_LEVEL_EASY) ? 1000 : (level == ESGIMemoryApp.KEY_LEVEL_NORMAL) ? 2000 : 4000;
 			
-			//TODO: bug 0 time with timer
 			if (hasTimer) {
 				timeToFinish = (timeTotal*1000) - timeInMilliseconds;
 				bonusTimer = bonusLevel*2;
@@ -464,15 +473,14 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 			Toast.makeText(this, "BRAVO, tu as finis en "+time+" et "+move+" !", Toast.LENGTH_LONG).show();
 		else
 			Toast.makeText(this, "P'TITE CAISSE !", Toast.LENGTH_LONG).show();
-		View titleView = inflater.inflate(R.layout.dialog_title, null);
-		
+
+		//Create alert dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setCustomTitle(titleView)
+		builder.setCustomTitle(inflater.inflate(R.layout.dialog_game_title, null))
 			.setView(inflater.inflate(R.layout.dialog_game_result, null))
 			.setCancelable(false)
 			.setPositiveButton(res.getString(R.string.button_retry), null)
 			.setNegativeButton(res.getString(R.string.button_leave), null);
-		//Create alert dialog
 		dialog = builder.create();
 		
 		//Override show method to decide when I want to hide dialog
@@ -497,7 +505,6 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 				
 		//Display score
 		((TextView) dialog.findViewById(R.id.dialog_title)).setText(res.getString(win ? R.string.dialog_title_win : R.string.dialog_title_loose));
-		
 		((EditText) dialog.findViewById(R.id.editUsername)).setText(username);
 		((TextView) dialog.findViewById(R.id.text_value_time)).setText(time);
 		((TextView) dialog.findViewById(R.id.text_value_move)).setText(move);
@@ -592,9 +599,10 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
         	if (!inAnimation) {
 	        	cardViewClicked = (CardView) v.getTag();
+	        	cardClicked = (Card) cardViewClicked.getTag();
 	        	
 	        	//Second click on the same card or card since found 
-	        	if (position == firstCardIndex || cardViewClicked.isReturned())
+	        	if (position == firstCardIndex)
 	        		return;
 	        	
 	        	//If first card not clicked or second card different to the first 
@@ -605,13 +613,16 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	            	if (firstCardIndex == -1) {
 	            		firstCardIndex = position;
 	            	} else {
+	            		//Second card clicked
+	            		//Change info values
 	            		nbMove++;
 	                	txtMove.setText(getResources().getQuantityString(R.plurals.numberMove, nbMove, nbMove));
 	                	secondCardIndex = position;
 	                	
-	                	CardView firstCardView = (CardView) gridview.getChildAt(firstCardIndex).getTag();
+	                	firstCardView = (CardView) gridview.getChildAt(firstCardIndex).getTag();
 	                	//Compare Resource Id 
-	            		if (firstCardView.getTag() == cardViewClicked.getTag()) {
+	                	int firstCardimageId = ((Card) firstCardView.getTag()).imageId;
+	            		if (firstCardimageId == cardClicked.imageId) {
 	            			//Pair cards
 //	            			Log.d("CARD", "SAME: "+gridview.getChildAt(firstCardIndex).getTag()+" = "+v.getTag());
 	            			nbPairFound++;
@@ -639,24 +650,14 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		@Override
 		public void run() {
 //			Log.v("HANDLER", "TURN CARD");
+			soundManager.playSound(SoundManager.SOUND_TURN_CARD);
 			
-			if (firstCardIndex != -1) {
-				Integer resId = 0;
-				if (secondCardIndex == -1) {
-					//First card selected
-					resId = (Integer) gridview.getItemAtPosition(firstCardIndex);
-				} else {
-					//Second card selected
-					resId = (Integer) gridview.getItemAtPosition(secondCardIndex);
-				}
-				
-				soundManager.playSound(SoundManager.SOUND_TURN_CARD);
-				cardViewClicked.imageview.setImageResource(resId);
-				cardViewClicked.toggleSide();
-			}
+			//Change card clicked
+			cardViewClicked.imageview.setImageResource(cardClicked.imageId);
+			cardClicked.toggleSide();
 			
 			if (secondCardIndex != -1) {
-				//Call animation back
+				//Call animation back with time delay
 				Handler handlerReturn = new Handler();
 	    		handlerReturn.postDelayed(runnableReturnCards, timeToReturn); 
 			} else {
@@ -682,19 +683,21 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 			} else {
 				//Not the same
 				soundManager.playSound(SoundManager.SOUND_WRONG_CARDS);
-				CardView cardFirst = (CardView) gridview.getChildAt(firstCardIndex).getTag();
-				CardView cardSecond = (CardView) gridview.getChildAt(secondCardIndex).getTag();
+//				CardView cardFirst = (CardView) gridview.getChildAt(firstCardIndex).getTag();
+//				CardView cardSecond = (CardView) gridview.getChildAt(secondCardIndex).getTag();
 				//Change image to display defaultCard 
-				cardFirst.imageview.setImageResource(cardBackId);
-				cardSecond.imageview.setImageResource(cardBackId);
+				firstCardView.imageview.setImageResource(cardBackId);
+				cardViewClicked.imageview.setImageResource(cardBackId);
 				//Change value of isReturned
-				cardFirst.toggleSide();
-				cardSecond.toggleSide();
+				((Card)firstCardView.getTag()).toggleSide();
+				cardClicked.toggleSide();
 			}
 			
             firstCardIndex = -1;
 			secondCardIndex = -1;
+			firstCardView = null;
 			cardViewClicked = null;
+			cardClicked = null;
 			sameCard = false;
 			inAnimation = false;
 		}
