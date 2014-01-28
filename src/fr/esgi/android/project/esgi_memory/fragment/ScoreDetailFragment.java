@@ -32,6 +32,8 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//Keep fragment with values after orientation changed
 		setRetainInstance(true);
 	}
 	
@@ -39,6 +41,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View contentView = inflater.inflate(R.layout.fragment_score_detail, container, false);
 		
+		//Bind layout elements
 		editUsername = (EditText) contentView.findViewById(R.id.username);
 		checkTimer = (CheckBox) contentView.findViewById(R.id.timer);
 		textDate = (TextView) contentView.findViewById(R.id.date);
@@ -60,6 +63,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	public void onStart() {
 		super.onStart();
 		
+		//Get Score with all values
 		db = new DatabaseHandler(getActivity());
 		score = db.getScore(score.getId());
 		
@@ -74,9 +78,9 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 
 	protected void displayItem(Score inItem) {
 		if (inItem != null && inItem.getDate() != null && this.isAdded()) {
+			//Fill elements with values
 			editUsername.setText(inItem.getUsername());
 			editUsername.setSelection(editUsername.getText().length());
-			Log.v(TAG, ""+inItem.hasTimer());
 			checkTimer.setChecked(inItem.hasTimer());
 			textDate.setText(FormatValue.datetimeLabelFormat2.format(inItem.getDate()));
 			textLevel.setText(ESGIMemoryApp.getLabelLevel(getActivity(), inItem.getLevel()));
@@ -93,6 +97,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	
 	public void deleteScore() {
 		if (getActivity() != null && this.isAdded() && score != null && score.getId() >0) {
+			//Delete Score
 			db.deleteScore(score);
 			db.close();
 			
@@ -102,6 +107,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 	
 	public void updateScore() {
 		if (getActivity() != null && this.isAdded() && score != null && score.getId() >0) {
+			//Update Score
 			score.setUsername(editUsername.getText().toString());
 			db.updateScore(score);
 			
@@ -111,6 +117,7 @@ public class ScoreDetailFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		//Handle click button
 		if (v.getId() == R.id.buttonDelete) {
 			deleteScore();
 		} else if (v.getId() == R.id.buttonUpdate) {
