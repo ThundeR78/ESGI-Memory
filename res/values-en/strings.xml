@@ -2,12 +2,77 @@
 <resources>
 
     <string name="app_name">ESGI-Memory</string>
-    
-	<!-- Title -->
+        
+<!-- TITLE -->
 	<string name="title_home">ESGI Memory</string>
 	<string name="title_level">Level</string>
     <string name="title_settings">Settings</string>
     <string name="title_scores">Scores</string>
+    <string name="title_score">Score</string>
     
-
+<!-- BUTTON -->
+    <string name="button_retry">Replay</string>
+    <string name="button_leave">Exit</string>
+    <string name="button_reload">Restart</string>
+    <string name="button_delete_all_scores">Clear Scores</string>
+    <string name="button_delete_score">Delete</string>
+    <string name="button_update_score">Update</string>
+    
+<!-- ACTION -->
+	<string name="action_sort_name">Sort by name</string>
+	<string name="action_sort_points">Sort by scores</string>
+    
+<!-- NAVIGATION -->
+	<string name="nav_previous">PREVIOUS</string>
+    <string name="nav_next">NEXT</string>
+    
+<!-- HOME -->
+    <string name="home_button_play">Play</string>
+	<string name="home_button_quick_game">Quick Play</string>
+    <string name="home_button_scores">Scores</string>
+    <string name="home_button_settings">Settings</string>
+    
+<!-- LEVEL -->
+    <string name="level_easy">Easy</string>
+    <string name="level_normal">Normal</string>
+    <string name="level_hard">Hard</string>
+    
+<!-- LABEL -->
+    <string name="label_title_general">General</string>
+	<string name="label_title_quickgame">Quick Play</string>
+    <string name="label_username">Nickname :</string>
+    <string name="label_date">Date :</string>
+	<string name="label_chrono">Timer :</string>
+	<string name="label_timer">With timer :</string>
+	<string name="label_time">Time :</string>
+	<string name="label_move">Hits number :</string>
+    <string name="label_sound">Sound :</string>
+    <string name="label_level">Difficulty :</string>
+    <string name="label_bonus">Extra Difficulty :</string>
+    <string name="label_points">Points :</string>
+    <string name="label_times_up">Elapsed time</string>
+    <string name="label_equal">=</string>
+    
+<!-- RESULT -->
+	<string name="init_value_time">0 sec</string>
+	<string name="init_value_move">0 hit</string>
+	<string name="dialog_title_win">Congrats !</string>
+    <string name="dialog_title_loose">Fucking noob !</string>
+    <plurals name="numberMove">
+        <item quantity="zero">0 hit</item>
+        <item quantity="one">1 hit</item>
+        <item quantity="other">%d hits</item>
+    </plurals>
+    
+<!-- LISTVIEW -->
+    <string name="column_username">Nickname</string>
+	<string name="column_score">Score</string>
+	
+<!-- DIALOG -->
+	<string name="alert_delete_all_title">Clear scores</string>
+	<string name="alert_delete_all_message">Are you sure to delete all ?</string>
+	
+<!-- ERROR -->
+	<string name="error_username">Wrong nickname</string>
+	
 </resources>
