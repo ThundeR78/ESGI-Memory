@@ -12,6 +12,8 @@ public class HomeActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
+		//Infos about device
+		ESGIMemoryApp.getDensityDevice(getResources().getDisplayMetrics().densityDpi);
 		ESGIMemoryApp.getScreenSize(this);
 	}
 

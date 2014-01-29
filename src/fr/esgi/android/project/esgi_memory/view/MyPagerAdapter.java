@@ -24,22 +24,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 		return this.fragments.get(position);
 	}
 	
-	// public Fragment getPreviousItem() {
-	// int position = this.getItemPosition(this);
-	// if (position > 0)
-	// return (Fragment) this.fragments.get(position-1);
-	// else
-	// return getItem(position);
-	// }
-	
-	// public Fragment getNextItem() {
-	// int position = this.getItemPosition(this);
-	// if (position < getCount()-1)
-	// return (Fragment) this.fragments.get(position+1);
-	// else
-	// return getItem(position);
-	// }
-	
 	@Override
 	public int getCount() {
 		return this.fragments.size();
@@ -48,29 +32,4 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 	public List<Fragment> getFragments() {
 		return fragments;
 	}
-	
-	// @Override
-	// public void startUpdate(ViewGroup container) {
-	// Log.v(TAG, "startUpdate");
-	// super.startUpdate(container);
-	// }
-	//
-	// @Override
-	// public void finishUpdate(ViewGroup container) {
-	// Log.v(TAG, "finishUpdate");
-	// super.finishUpdate(container);
-	// }
-	//
-	//
-	// @Override
-	// public Object instantiateItem(ViewGroup container, int position) {
-	// Log.v(TAG, "instantiateItem position: "+position);
-	// return super.instantiateItem(container, position);
-	// }
-	//
-	// @Override
-	// public void destroyItem(ViewGroup container, int position, Object object) {
-	// Log.v(TAG, "destroyItem position: "+position);
-	// super.destroyItem(container, position, object);
-	// }
 }

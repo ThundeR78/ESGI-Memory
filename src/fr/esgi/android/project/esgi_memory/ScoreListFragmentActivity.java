@@ -30,7 +30,7 @@ public class ScoreListFragmentActivity extends ActionBarActivity implements OnTa
         // Fragments and ViewPager Initialization
        
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOnPageChangeListener(ScoreListFragmentActivity.this);
+        mViewPager.setOnPageChangeListener(this);
     }
 
     // Method to add a TabHost

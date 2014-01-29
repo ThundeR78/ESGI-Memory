@@ -36,6 +36,9 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.testflightapp.lib.TestFlight;
+
 import fr.esgi.android.project.esgi_memory.business.Card;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
@@ -555,6 +558,8 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 			DatabaseHandler db = new DatabaseHandler(this);
 			db.addScore(score);
 			db.close();
+			
+			TestFlight.passCheckpoint("Save new score : "+score.getUsername()+" "+score.getPoint()+" "+score.getDate().toString());
 		}
 	}
 	

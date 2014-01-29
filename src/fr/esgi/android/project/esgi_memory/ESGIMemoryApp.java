@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.testflightapp.lib.TestFlight;
+
 public class ESGIMemoryApp extends Application {
 	
 	private static final String TAG = "ESGIMemoryApp";
@@ -51,7 +53,8 @@ public class ESGIMemoryApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		
-		getDensityDevice(getResources().getDisplayMetrics().densityDpi);
+		//Initialize TestFlight with your app token.
+        TestFlight.takeOff(this, "1d4ee26f-3939-4f06-aa92-60f567e43898");
 	}
 
 	@Override

@@ -20,6 +20,7 @@ public class SettingsActivity extends PreferenceActivity {
     }
 	
 	public void DeleteAllScore(View v) {
+		//Create alert dialog to confirm
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setTitle(R.string.alert_delete_all_title);
 	    builder.setMessage(R.string.alert_delete_all_message);
@@ -36,7 +37,6 @@ public class SettingsActivity extends PreferenceActivity {
 	    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 	        @Override
 	        public void onClick(DialogInterface dialog, int which) {
-	            
 	            dialog.dismiss();
 	        }
 	    });
