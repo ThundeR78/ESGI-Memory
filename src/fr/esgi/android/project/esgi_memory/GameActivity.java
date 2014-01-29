@@ -65,7 +65,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	private boolean blink = false; 	//Controls the blinking, on and off
 	
 	//Card
-	private List<Card> listCard = new ArrayList<Card>();
+	private List<Card> listCard;
 	private CardView firstCardView, cardViewClicked;
 	private Card cardClicked;
 	private int nbPairFound = 0;
@@ -204,7 +204,8 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		
 		orientationGridView(newConfig.orientation);
 		
-//		loadGridView();		
+		loadGridView();		
+		
 //		for (int i=0; i<gridview.getChildCount() ;i++) {
 //			CardView cv = (CardView) gridview.getChildAt(i).getTag();
 //			Card c = (Card) cv.getTag();
@@ -659,9 +660,12 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 			if (firstCardIndex != -1) {
 				cardViewClicked.imageview.setImageResource(cardClicked.imageId);
 				cardClicked.toggleSide();
+//				listCard.get(firstCardIndex).isReturned = ((Card)((CardView) gridview.getChildAt(firstCardIndex).getTag()).getTag()).isReturned;
 			}
 			
 			if (secondCardIndex != -1) {
+//				listCard.get(secondCardIndex).isReturned = ((Card)((CardView) gridview.getChildAt(secondCardIndex).getTag()).getTag()).isReturned;
+				
 				//Call animation back with time delay
 				Handler handlerReturn = new Handler();
 	    		handlerReturn.postDelayed(runnableReturnCards, timeToReturn); 

@@ -68,7 +68,7 @@ public class ScoreListFragment extends ListFragment {
 	public void onStart() {
 		super.onStart();
 		
-		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_POINT;
+		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_POINT +" DESC";
 		listScore = db.getAllScoresByLevel(level, orderBy);
 		
 		updateListAdapter(listScore);
@@ -91,11 +91,10 @@ public class ScoreListFragment extends ListFragment {
     	//Handle item selection
     	switch (item.getItemId()) {
       	case R.id.action_sort_name:
-      		
-      		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_USERNAME +","+ DatabaseContract.ScoreBase.COLUMN_NAME_POINT;
+      		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_USERNAME +","+ DatabaseContract.ScoreBase.COLUMN_NAME_POINT +" DESC";
             break;
       	case R.id.action_sort_points:
-      		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_POINT;
+      		orderBy = DatabaseContract.ScoreBase.COLUMN_NAME_POINT+ " DESC";
             break;
       	default:
       		return super.onOptionsItemSelected(item);

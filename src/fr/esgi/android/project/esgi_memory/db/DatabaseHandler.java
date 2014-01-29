@@ -135,7 +135,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        if (level == 0)
     	   level = 1;
        if (orderBy == null || orderBy.length() == 0)
-    	   orderBy = ScoreBase.COLUMN_NAME_POINT;
+    	   orderBy = ScoreBase.COLUMN_NAME_POINT +" DESC";
     	   
        // Select All Query
        String selectQuery = "SELECT "+ScoreBase.COLUMN_NAME_ID+", "+ScoreBase.COLUMN_NAME_USERNAME+", "+ScoreBase.COLUMN_NAME_DATE+", "+ScoreBase.COLUMN_NAME_POINT+
