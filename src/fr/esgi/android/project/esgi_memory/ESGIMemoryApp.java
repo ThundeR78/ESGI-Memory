@@ -54,7 +54,7 @@ public class ESGIMemoryApp extends Application {
 		super.onCreate();
 		
 		//Initialize TestFlight with your app token.
-        TestFlight.takeOff(this, "1d4ee26f-3939-4f06-aa92-60f567e43898");
+//        TestFlight.takeOff(this, "1d4ee26f-3939-4f06-aa92-60f567e43898");
 	}
 
 	@Override

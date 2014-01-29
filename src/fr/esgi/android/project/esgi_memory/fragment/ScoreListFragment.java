@@ -110,6 +110,7 @@ public class ScoreListFragment extends ListFragment {
     }   
 	
 	private void updateListAdapter(List<Score> inItems) {
+		//Fill Listview with new adapter
 		ArrayAdapter<Score> arrayAdapter = new ScoreListItemAdapter(getActivity(), R.layout.list_score_row, inItems);
 		getListView().setAdapter(arrayAdapter);
 	}
@@ -118,6 +119,7 @@ public class ScoreListFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		
+		//Start Score detail activity with parameters
 		Intent intent = new Intent(getActivity(), ScoreDetailFragmentActivity.class);
 		intent.putParcelableArrayListExtra(ScoreDetailFragmentActivity.ITEM_LIST_KEY, new ArrayList<Score>(listScore));
 		intent.putExtra(ScoreDetailFragmentActivity.STARTING_PAGE_NUMBER_KEY, position);

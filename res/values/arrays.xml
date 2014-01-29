@@ -52,6 +52,6 @@
         <item>@drawable/logo_eiml</item>
         <item>@drawable/logo_ican</item>
         <item>@drawable/logo_reseau_ges</item>
-        <item>@drawable/logo_ppa</item>
+        <item>@drawable/logo_bada</item>
     </array>
 </resources>

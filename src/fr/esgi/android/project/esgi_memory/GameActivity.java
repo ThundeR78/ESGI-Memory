@@ -130,13 +130,13 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 //	        sResultsArray = new ArrayList<SearchItems>();  // or some other initialization
 //	    }
 
-		if (savedInstanceState != null) {
-			Parcelable state = savedInstanceState.getParcelable("state");
-			if (state != null) {
-				gridview.onRestoreInstanceState(state);
-				Log.d(this.getClass().getName(), "state restored!");                
-			}
-		}
+//		if (savedInstanceState != null) {
+//			Parcelable state = savedInstanceState.getParcelable("state");
+//			if (state != null) {
+//				gridview.onRestoreInstanceState(state);
+//				Log.d(this.getClass().getName(), "state restored!");                
+//			}
+//		}
 	}
 	
 //	@Override
@@ -237,8 +237,8 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		outState.putBoolean(ESGIMemoryApp.KEY_SAME_CARD, sameCard);
 		outState.putParcelableArrayList(ESGIMemoryApp.KEY_LIST_CARD, (ArrayList<Card>) listCard);
 		
-		Parcelable state = gridview.onSaveInstanceState();
-	    outState.putParcelable("state", state);
+//		Parcelable state = gridview.onSaveInstanceState();
+//	    outState.putParcelable("state", state);
 	}
 	
 	@Override
@@ -268,7 +268,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		//Init GridView columns
 		orientationGridView(getResources().getConfiguration().orientation);
 
-		gridview.setSaveEnabled(true);
+//		gridview.setSaveEnabled(true);
 		//Avoid Scroll
 //		gridview.setOnTouchListener(new OnTouchListener(){
 //		    @Override
@@ -559,7 +559,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 			db.addScore(score);
 			db.close();
 			
-			TestFlight.passCheckpoint("Save new score : "+score.getUsername()+" "+score.getPoint()+" "+score.getDate().toString());
+//			TestFlight.passCheckpoint("Save new score : "+score.getUsername()+" "+score.getPoint()+" "+score.getDate().toString());
 		}
 	}
 	
@@ -658,8 +658,10 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 			soundManager.playSound(SoundManager.SOUND_TURN_CARD);
 			
 			//Change card clicked
-			cardViewClicked.imageview.setImageResource(cardClicked.imageId);
-			cardClicked.toggleSide();
+			if (firstCardIndex != -1) {
+				cardViewClicked.imageview.setImageResource(cardClicked.imageId);
+				cardClicked.toggleSide();
+			}
 			
 			if (secondCardIndex != -1) {
 				//Call animation back with time delay
@@ -698,6 +700,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 				cardClicked.toggleSide();
 			}
 			
+			//Reset for next round
             firstCardIndex = -1;
 			secondCardIndex = -1;
 			firstCardView = null;
@@ -708,6 +711,5 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		}
 	};
 }
-
 
 	
