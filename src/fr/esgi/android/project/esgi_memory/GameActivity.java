@@ -300,7 +300,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	
 	//Initialize Game
 	private void initGame() {
-		//Get array imagesId + timeTotal
+		//Get array card + timeTotal
 		TypedArray images;
 		if (level == ESGIMemoryApp.KEY_LEVEL_EASY) 
 			images = getResources().obtainTypedArray(R.array.images_easy);
@@ -309,7 +309,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 		else
 			images = getResources().obtainTypedArray(R.array.images_normal);
 					
-		//Transfer array imagesId into List
+		//Transfer array card into List
 		for (int i=0; i<images.length() ;i++) 
 			listCard.add(new Card(images.getResourceId(i, 0)));
 		//Add pair of each imageId
