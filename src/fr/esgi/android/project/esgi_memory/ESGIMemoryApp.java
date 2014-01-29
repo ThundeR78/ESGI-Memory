@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.testflightapp.lib.TestFlight;
-
 public class ESGIMemoryApp extends Application {
 	
 	private static final String TAG = "ESGIMemoryApp";

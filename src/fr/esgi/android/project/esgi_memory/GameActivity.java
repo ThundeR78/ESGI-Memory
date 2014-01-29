@@ -15,7 +15,6 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
@@ -36,9 +35,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.testflightapp.lib.TestFlight;
-
 import fr.esgi.android.project.esgi_memory.business.Card;
 import fr.esgi.android.project.esgi_memory.business.Score;
 import fr.esgi.android.project.esgi_memory.db.DatabaseHandler;
@@ -192,6 +188,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	    	//Stop and load a new game
 	    	stopTime();
 	    	refreshUI();
+	    	initGame();
 	    	loadGame();
 	    	break;
 	    case android.R.id.home: 
@@ -300,6 +297,7 @@ public class GameActivity extends ActionBarActivity implements OnClickListener {
 	
 	//Initialize Game
 	private void initGame() {
+		listCard = new ArrayList<Card>();
 		//Get array card + timeTotal
 		TypedArray images;
 		if (level == ESGIMemoryApp.KEY_LEVEL_EASY) 
